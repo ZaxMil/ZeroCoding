@@ -38,11 +38,13 @@ interface Series {
 }
 
 const Read = () => {
+  // ALL HOOKS MUST BE CALLED FIRST - NEVER AFTER CONDITIONAL RETURNS
   const { seriesSlug, chapterNumber } = useParams<{ seriesSlug: string; chapterNumber: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
   const { markChapterOpened } = useOpenedChapters();
+  const { readingMode, imageFit, imageScale, preferencesLoaded } = useChapterLayout();
   
   const [series, setSeries] = useState<Series | null>(null);
   const [chapter, setChapter] = useState<Chapter | null>(null);
@@ -50,8 +52,6 @@ const Read = () => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
-  const { readingMode, imageFit, imageScale, preferencesLoaded } = useChapterLayout();
 
   // Load series and chapter data
   useEffect(() => {
@@ -296,6 +296,14 @@ const Read = () => {
     loadData();
   }, [seriesSlug, chapterNumber, user?.id, toast, navigate]);
 
+  // Normalize page index when switching reading modes to prevent out-of-bounds
+  useEffect(() => {
+    if (preferencesLoaded && readingMode === 'double' && currentPageIndex % 2 !== 0) {
+      // For double page mode, ensure we're on an even page
+      setCurrentPageIndex(Math.floor(currentPageIndex / 2) * 2);
+    }
+  }, [readingMode, preferencesLoaded, currentPageIndex]);
+
   const goToNextChapter = () => {
     if (!chapter || !chapters.length || !series) return;
     
@@ -317,6 +325,7 @@ const Read = () => {
     }
   };
 
+  // CONDITIONAL RETURNS ONLY AFTER ALL HOOKS ARE CALLED
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -391,14 +400,6 @@ const Read = () => {
   const currentChapterIndex = chapters.findIndex(c => c.id === chapter.id);
   const hasNextChapter = currentChapterIndex < chapters.length - 1;
   const hasPrevChapter = currentChapterIndex > 0;
-
-  // Normalize page index when switching reading modes to prevent out-of-bounds
-  useEffect(() => {
-    if (preferencesLoaded && readingMode === 'double' && currentPageIndex % 2 !== 0) {
-      // For double page mode, ensure we're on an even page
-      setCurrentPageIndex(Math.floor(currentPageIndex / 2) * 2);
-    }
-  }, [readingMode, preferencesLoaded, currentPageIndex]);
 
   const renderReader = () => {
     const commonProps = {
