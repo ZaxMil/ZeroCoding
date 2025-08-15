@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight, Home, List, SkipBack, SkipForward, Settings, ZoomIn, ZoomOut, RotateCcw, User, Maximize2, RefreshCw } from 'lucide-react';
 import { useChapterLayout } from '@/hooks/useChapterLayout';
-import { ReaderControls } from './ReaderControls';
+import { ReaderSettingsSheet } from './ReaderSettingsSheet';
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
@@ -38,7 +38,7 @@ export const DoublePageReader = ({
   const { imageFit, imageScale } = useChapterLayout();
   const { user, userProfile } = useAuth();
   const [showControls, setShowControls] = useState(true);
-  const [controlsOpen, setControlsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [isPreloading, setIsPreloading] = useState(false);
   const [loadingPages, setLoadingPages] = useState<Record<number, boolean>>({});
   const [currentZoom, setCurrentZoom] = useState(100);
@@ -461,10 +461,20 @@ export const DoublePageReader = ({
         </Card>
       )}
 
-      {/* Reader Controls */}
-      <ReaderControls 
-        isVisible={controlsOpen} 
-        onToggle={() => setControlsOpen(!controlsOpen)} 
+      {/* Floating Settings Button */}
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={() => setSettingsOpen(true)}
+        className="fixed bottom-4 right-4 z-50 bg-background/95 backdrop-blur-sm border-border/50 hover:bg-accent"
+      >
+        <Settings className="h-4 w-4" />
+      </Button>
+
+      {/* Settings Panel */}
+      <ReaderSettingsSheet
+        isOpen={settingsOpen}
+        onOpenChange={setSettingsOpen}
       />
     </div>
   );

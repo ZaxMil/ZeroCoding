@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ChevronLeft, ChevronRight, Home, List, Settings, BookOpen, User, LogOut, Shield, Edit, Crown, Clock, ShoppingCart, RotateCcw, MessageCircle, X } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ChapterSettings } from './ChapterSettings';
+import { ReaderSettingsSheet } from './ReaderSettingsSheet';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -775,8 +775,12 @@ export const WebtoonReader = ({
         </div>
       </div>
 
-      {/* Chapter Settings Panel */}
-      <ChapterSettings isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} metrics={metrics} />
+      {/* Settings Panel */}
+      <ReaderSettingsSheet
+        isOpen={settingsOpen}
+        onOpenChange={setSettingsOpen}
+        metrics={metrics}
+      />
 
       {/* Keyboard Help Dialog */}
       <KeyboardShortcutsHelp shortcuts={shortcuts} open={showKeyboardHelp} onOpenChange={setShowKeyboardHelp} />
