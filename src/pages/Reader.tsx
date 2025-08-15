@@ -61,6 +61,11 @@ const Reader = () => {
   // Get reading mode from chapter layout hook
   const { readingMode } = useChapterLayout();
   
+  // Debug reading mode
+  useEffect(() => {
+    console.log('🔄 Current reading mode in Reader:', readingMode);
+  }, [readingMode]);
+  
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [showControls, setShowControls] = useState(true);
   const [isLoading, setIsLoading] = useState(true);

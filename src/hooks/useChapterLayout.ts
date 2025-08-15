@@ -15,6 +15,22 @@ export const useChapterLayout = () => {
   const [imageScale, setImageScale] = useState(100); // Scale percentage
   const [loading, setLoading] = useState(true);
 
+  // Clear old preferences and force reset
+  useEffect(() => {
+    const PREFERENCES_VERSION = "1.0";
+    const currentVersion = localStorage.getItem('preferences-version');
+    
+    if (currentVersion !== PREFERENCES_VERSION) {
+      console.log('🔄 Clearing old reading preferences...');
+      localStorage.removeItem('reading-mode');
+      localStorage.removeItem('chapter-layout');
+      localStorage.removeItem('image-gap');
+      localStorage.removeItem('image-fit');
+      localStorage.removeItem('image-scale');
+      localStorage.setItem('preferences-version', PREFERENCES_VERSION);
+    }
+  }, []);
+
   useEffect(() => {
     const loadLayout = async () => {
       try {
@@ -33,7 +49,10 @@ export const useChapterLayout = () => {
         }
         
         if (savedReadingMode && ['single', 'webtoon', 'double'].includes(savedReadingMode)) {
+          console.log('🔄 Loading saved reading mode:', savedReadingMode);
           setReadingMode(savedReadingMode as ReadingMode);
+        } else {
+          console.log('🔄 Using default reading mode: single');
         }
         
         if (savedImageGap) {
