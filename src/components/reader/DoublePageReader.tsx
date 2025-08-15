@@ -132,8 +132,8 @@ export const DoublePageReader = ({
         setTimeout(() => {
           setIsFlipping(false);
           setFlipDirection(null);
-        }, 800); // Match new curl animation duration
-      }, 400); // Half of animation for page swap
+        }, 400); // Match CSS animation duration
+      }, 200); // Half of animation for page swap
     } else {
       // Instant navigation when animation is disabled
       if (nextPage < pages.length) {
@@ -168,8 +168,8 @@ export const DoublePageReader = ({
         setTimeout(() => {
           setIsFlipping(false);
           setFlipDirection(null);
-        }, 800); // Match new curl animation duration
-      }, 400); // Half of animation for page swap
+        }, 400); // Match CSS animation duration
+      }, 200); // Half of animation for page swap
     } else {
       // Instant navigation when animation is disabled
       if (prevPage >= 0) {
@@ -386,111 +386,70 @@ export const DoublePageReader = ({
         className="relative w-full h-screen flex items-center justify-center pt-12"
         onClick={handleContainerClick}
       >
-        {/* Double Page Container with Curl Effect Animation */}
+        {/* Double Page Container with Flip Animation */}
         <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center perspective-1000">
-          <div className="flex w-full h-full gap-1 transform-style-preserve-3d">
+          <div 
+            className={`flex w-full h-full gap-1 transform-style-preserve-3d transition-transform duration-500 ease-out ${
+              isFlipping && flipDirection === 'next' ? 'animate-[flipNext_0.6s_ease-in-out]' :
+              isFlipping && flipDirection === 'prev' ? 'animate-[flipPrev_0.6s_ease-in-out]' : ''
+            }`}
+          >
             {/* Right Page (First in manga reading order) */}
-            <div className="flex-1 h-full relative">
-              {/* Main page container with curl effect */}
-              <div 
-                className={`relative w-full h-full transform-gpu overflow-hidden ${
-                  isFlipping && flipDirection === 'next' 
-                    ? 'animate-[pageCurlNext_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
-                    : isFlipping && flipDirection === 'prev' 
-                    ? 'animate-[pageCurlPrev_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
-                    : ''
-                } ${
-                  isFlipping ? 'animate-[pageLift_0.2s_ease-out]' : ''
-                }`}
-                style={{
-                  transformOrigin: flipDirection === 'next' ? 'right center' : 'left center'
-                }}
-              >
-                {/* Page curl shadow overlay */}
-                {isFlipping && (
-                  <div 
-                    className="absolute inset-0 z-10 curl-shadow-gradient opacity-60 transition-opacity duration-200"
-                    style={{
-                      mixBlendMode: 'multiply'
-                    }}
-                  />
-                )}
-                
-                {rightPage && (
-                  <img
-                    src={rightPage}
-                    alt={`Page ${rightPageIndex + 1}`}
-                    className="w-full h-full object-contain select-none"
-                    style={getImageStyles()}
-                    onClick={(e) => e.stopPropagation()}
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                    draggable={false}
-                    onLoad={() => setLoadingPages(prev => ({ ...prev, [rightPageIndex]: false }))}
-                    onLoadStart={() => setLoadingPages(prev => ({ ...prev, [rightPageIndex]: true }))}
-                  />
-                )}
-                
-                {loadingPages[rightPageIndex] && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-muted/20 z-20">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                  </div>
-                )}
-              </div>
+            <div 
+              className={`flex-1 h-full relative transform-gpu transition-all duration-300 ${
+                isFlipping ? 'flip-shadow-active' : 'flip-shadow'
+              }`}
+            >
+              {rightPage && (
+                <img
+                  src={rightPage}
+                  alt={`Page ${rightPageIndex + 1}`}
+                  className="w-full h-full object-contain select-none"
+                  style={getImageStyles()}
+                  onClick={(e) => e.stopPropagation()}
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                  draggable={false}
+                  onLoad={() => setLoadingPages(prev => ({ ...prev, [rightPageIndex]: false }))}
+                  onLoadStart={() => setLoadingPages(prev => ({ ...prev, [rightPageIndex]: true }))}
+                />
+              )}
+              {loadingPages[rightPageIndex] && (
+                <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              )}
             </div>
 
             {/* Left Page (Second in manga reading order) */}
-            <div className="flex-1 h-full relative">
-              {/* Main page container with curl effect */}
-              <div 
-                className={`relative w-full h-full transform-gpu overflow-hidden ${
-                  isFlipping && flipDirection === 'prev' 
-                    ? 'animate-[pageCurlNext_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
-                    : isFlipping && flipDirection === 'next' 
-                    ? 'animate-[pageCurlPrev_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
-                    : ''
-                } ${
-                  isFlipping ? 'animate-[pageLift_0.2s_ease-out]' : ''
-                }`}
-                style={{
-                  transformOrigin: flipDirection === 'prev' ? 'right center' : 'left center'
-                }}
-              >
-                {/* Page curl shadow overlay */}
-                {isFlipping && (
-                  <div 
-                    className="absolute inset-0 z-10 curl-shadow-gradient opacity-60 transition-opacity duration-200"
-                    style={{
-                      mixBlendMode: 'multiply'
-                    }}
-                  />
-                )}
-                
-                {leftPage && leftPageIndex !== null && (
-                  <img
-                    src={leftPage}
-                    alt={`Page ${leftPageIndex + 1}`}
-                    className="w-full h-full object-contain select-none"
-                    style={getImageStyles()}
-                    onClick={(e) => e.stopPropagation()}
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                    draggable={false}
-                    onLoad={() => setLoadingPages(prev => ({ ...prev, [leftPageIndex]: false }))}
-                    onLoadStart={() => setLoadingPages(prev => ({ ...prev, [leftPageIndex]: true }))}
-                  />
-                )}
-                
-                {leftPageIndex !== null && loadingPages[leftPageIndex] && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-muted/20 z-20">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                  </div>
-                )}
-              </div>
+            <div 
+              className={`flex-1 h-full relative transform-gpu transition-all duration-300 ${
+                isFlipping ? 'flip-shadow-active' : 'flip-shadow'
+              }`}
+            >
+              {leftPage && leftPageIndex !== null && (
+                <img
+                  src={leftPage}
+                  alt={`Page ${leftPageIndex + 1}`}
+                  className="w-full h-full object-contain select-none"
+                  style={getImageStyles()}
+                  onClick={(e) => e.stopPropagation()}
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                  draggable={false}
+                  onLoad={() => setLoadingPages(prev => ({ ...prev, [leftPageIndex]: false }))}
+                  onLoadStart={() => setLoadingPages(prev => ({ ...prev, [leftPageIndex]: true }))}
+                />
+              )}
+              {leftPageIndex !== null && loadingPages[leftPageIndex] && (
+                <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              )}
             </div>
           </div>
         </div>
