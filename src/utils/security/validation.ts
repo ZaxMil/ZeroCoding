@@ -240,15 +240,25 @@ export class SecurityValidator {
       threats.push('XSS Attack');
     }
 
-    // Check for path traversal
-    if (input.includes('../') || input.includes('..\\')) {
-      threats.push('Path Traversal');
-    }
+  // Check for path traversal
+  if (input.includes('../') || input.includes('..\\')) {
+    threats.push('Path Traversal');
+  }
 
-    // Check for command injection
-    if (/[;&|`]/.test(input)) {
-      threats.push('Command Injection');
-    }
+  // Check for command injection
+  if (/[;&|`]/.test(input)) {
+    threats.push('Command Injection');
+  }
+
+  // Check for file upload attacks
+  if (/\.(php|asp|jsp|exe|bat|cmd|sh)$/i.test(input)) {
+    threats.push('Malicious File Upload');
+  }
+
+  // Check for LDAP injection
+  if (/[()=*!&|]/.test(input) && input.length > 20) {
+    threats.push('LDAP Injection');
+  }
 
     return {
       isSecure: threats.length === 0,

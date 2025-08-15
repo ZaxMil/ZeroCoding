@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { AlertCircle, Mail, Phone, MapPin, Send, Shield, Clock, CheckCircle2, Zap, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { SecurityValidator, VALIDATION_PATTERNS } from '@/utils/security/validation';
 
 interface ContactFormData {
   name: string;
@@ -35,6 +36,7 @@ const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [mathQuestion, setMathQuestion] = useState({ question: '', answer: 0 });
   const [formStartTime, setFormStartTime] = useState<number>(0);
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
   const { toast } = useToast();
 
   // Generate random math question for spam protection
@@ -50,6 +52,8 @@ const Contact = () => {
   }, []);
 
   const validateForm = (): string | null => {
+    const errors: {[key: string]: string} = {};
+    
     // Check honeypot field (should be empty)
     if (formData.honeypot.trim() !== '') {
       return 'Spam detected';
@@ -57,7 +61,7 @@ const Contact = () => {
 
     // Check math answer
     if (parseInt(formData.mathAnswer) !== mathQuestion.answer) {
-      return 'Please solve the math question correctly';
+      errors.mathAnswer = 'Please solve the math question correctly';
     }
 
     // Check form submission speed (too fast = bot)
@@ -66,21 +70,48 @@ const Contact = () => {
       return 'Please take more time to fill out the form';
     }
 
-    // Basic field validation
-    if (!formData.name.trim() || formData.name.length < 2) {
-      return 'Please enter a valid name';
+    // Validate name
+    const nameResult = SecurityValidator.validateField(formData.name, {
+      required: true,
+      minLength: 2,
+      maxLength: 100,
+      pattern: VALIDATION_PATTERNS.safeText,
+      sanitize: true
+    });
+    if (!nameResult.isValid && nameResult.error) {
+      errors.name = nameResult.error;
     }
 
-    if (!formData.email.trim() || !formData.email.includes('@')) {
-      return 'Please enter a valid email address';
+    // Validate email
+    const emailResult = SecurityValidator.validateField(formData.email, {
+      required: true,
+      pattern: VALIDATION_PATTERNS.email,
+      sanitize: true
+    });
+    if (!emailResult.isValid && emailResult.error) {
+      errors.email = emailResult.error;
     }
 
-    if (!formData.subject.trim() || formData.subject.length < 5) {
-      return 'Please enter a meaningful subject';
+    // Validate subject
+    const subjectResult = SecurityValidator.validateField(formData.subject, {
+      required: true,
+      minLength: 5,
+      maxLength: 200,
+      sanitize: true
+    });
+    if (!subjectResult.isValid && subjectResult.error) {
+      errors.subject = subjectResult.error;
     }
 
-    if (!formData.message.trim() || formData.message.length < 20) {
-      return 'Please enter a detailed message (at least 20 characters)';
+    // Validate message
+    const messageResult = SecurityValidator.validateField(formData.message, {
+      required: true,
+      minLength: 20,
+      maxLength: 2000,
+      sanitize: true
+    });
+    if (!messageResult.isValid && messageResult.error) {
+      errors.message = messageResult.error;
     }
 
     // Check for spam keywords
@@ -89,10 +120,18 @@ const Contact = () => {
     const hasSpamKeywords = spamKeywords.some(keyword => messageText.includes(keyword));
     
     if (hasSpamKeywords) {
-      return 'Your message appears to be promotional. Please contact us for business inquiries through our official channels.';
+      errors.message = 'Your message appears to be promotional. Please contact us for business inquiries through our official channels.';
     }
 
-    return null;
+    // Security check
+    const allInputs = formData.name + formData.email + formData.subject + formData.message;
+    const securityCheck = SecurityValidator.isSecureInput(allInputs);
+    if (!securityCheck.isSecure) {
+      errors.security = `Security threat detected: ${securityCheck.threats.join(', ')}`;
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length > 0 ? 'Please fix the errors below' : null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -305,8 +344,9 @@ const Contact = () => {
                         value={formData.name}
                         onChange={(e) => updateFormData('name', e.target.value)}
                         placeholder="Your full name"
-                        className="mt-1 h-11"
+                        className={`mt-1 h-11 ${fieldErrors.name ? 'border-destructive' : ''}`}
                       />
+                      {fieldErrors.name && <p className="text-sm text-destructive mt-1">{fieldErrors.name}</p>}
                     </div>
 
                     <div>
@@ -318,8 +358,9 @@ const Contact = () => {
                         value={formData.email}
                         onChange={(e) => updateFormData('email', e.target.value)}
                         placeholder="your@email.com"
-                        className="mt-1 h-11"
+                        className={`mt-1 h-11 ${fieldErrors.email ? 'border-destructive' : ''}`}
                       />
+                      {fieldErrors.email && <p className="text-sm text-destructive mt-1">{fieldErrors.email}</p>}
                     </div>
                   </div>
 
@@ -351,8 +392,9 @@ const Contact = () => {
                         value={formData.subject}
                         onChange={(e) => updateFormData('subject', e.target.value)}
                         placeholder="Brief description of your inquiry"
-                        className="mt-1 h-11"
+                        className={`mt-1 h-11 ${fieldErrors.subject ? 'border-destructive' : ''}`}
                       />
+                      {fieldErrors.subject && <p className="text-sm text-destructive mt-1">{fieldErrors.subject}</p>}
                     </div>
                   </div>
 
@@ -365,11 +407,12 @@ const Contact = () => {
                       onChange={(e) => updateFormData('message', e.target.value)}
                       placeholder="Please provide details about your inquiry. The more information you provide, the better we can help you."
                       rows={6}
-                      className="mt-1 resize-none"
+                      className={`mt-1 resize-none ${fieldErrors.message ? 'border-destructive' : ''}`}
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       Minimum 20 characters required
                     </p>
+                    {fieldErrors.message && <p className="text-sm text-destructive mt-1">{fieldErrors.message}</p>}
                   </div>
 
                   {/* Math Question for Spam Protection */}
@@ -388,8 +431,9 @@ const Contact = () => {
                       value={formData.mathAnswer}
                       onChange={(e) => updateFormData('mathAnswer', e.target.value)}
                       placeholder="Enter the answer"
-                      className="w-32"
+                      className={`w-32 ${fieldErrors.mathAnswer ? 'border-destructive' : ''}`}
                     />
+                    {fieldErrors.mathAnswer && <p className="text-sm text-destructive mt-1">{fieldErrors.mathAnswer}</p>}
                   </div>
 
                   {/* Honeypot field - hidden from users */}

@@ -11,6 +11,7 @@ import { useTestAccounts } from '@/hooks/useTestAccounts';
 import { createTestAccounts } from '@/utils/setupTestAccounts';
 import { CaptchaWrapper } from '@/components/auth/CaptchaWrapper';
 import { useToast } from '@/hooks/use-toast';
+import { SecurityValidator, VALIDATION_PATTERNS } from '@/utils/security/validation';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -26,6 +27,7 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [captchaToken, setCaptchaToken] = useState('');
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
   const { signIn, signUp } = useAuth();
   const { loginAsAdmin, loginAsMember } = useTestAccounts();
   const [tab, setTab] = useState<'login' | 'signup'>(initialTab);
@@ -38,6 +40,7 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
     setConfirmPassword('');
     setName('');
     setIsLoading(false);
+    setErrors({});
   };
 
   const handleClose = () => {
@@ -45,8 +48,45 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
     onClose();
   };
 
+  const validateLoginForm = () => {
+    const newErrors: {[key: string]: string} = {};
+    
+    // Validate and sanitize email
+    const emailResult = SecurityValidator.validateField(email, {
+      required: true,
+      pattern: VALIDATION_PATTERNS.email,
+      sanitize: true
+    });
+    if (!emailResult.isValid && emailResult.error) {
+      newErrors.email = emailResult.error;
+    }
+    
+    // Validate password
+    const passwordResult = SecurityValidator.validateField(password, {
+      required: true,
+      minLength: 6,
+      sanitize: false
+    });
+    if (!passwordResult.isValid && passwordResult.error) {
+      newErrors.password = passwordResult.error;
+    }
+    
+    // Security check
+    const securityCheck = SecurityValidator.isSecureInput(email + password);
+    if (!securityCheck.isSecure) {
+      newErrors.security = `Security threat detected: ${securityCheck.threats.join(', ')}`;
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateLoginForm()) {
+      return;
+    }
     
     if (!captchaToken) {
       toast({ title: 'Captcha required', description: 'Please complete the captcha verification.', variant: 'destructive' });
@@ -72,15 +112,61 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
     }
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      toast({ title: 'Passwords do not match', description: 'Please confirm your password.', variant: 'destructive' });
-      return;
+  const validateSignupForm = () => {
+    const newErrors: {[key: string]: string} = {};
+    
+    // Validate and sanitize name
+    const nameResult = SecurityValidator.validateField(name, {
+      required: true,
+      minLength: 2,
+      maxLength: 50,
+      pattern: VALIDATION_PATTERNS.safeText,
+      sanitize: true
+    });
+    if (!nameResult.isValid && nameResult.error) {
+      newErrors.name = nameResult.error;
     }
     
-    if (password.length < 6) {
-      toast({ title: 'Weak password', description: 'Password must be at least 6 characters long.', variant: 'destructive' });
+    // Validate email
+    const emailResult = SecurityValidator.validateField(email, {
+      required: true,
+      pattern: VALIDATION_PATTERNS.email,
+      sanitize: true
+    });
+    if (!emailResult.isValid && emailResult.error) {
+      newErrors.email = emailResult.error;
+    }
+    
+    // Validate password
+    const passwordResult = SecurityValidator.validateField(password, {
+      required: true,
+      minLength: 6,
+      maxLength: 128,
+      sanitize: false
+    });
+    if (!passwordResult.isValid && passwordResult.error) {
+      newErrors.password = passwordResult.error;
+    }
+    
+    // Confirm password match
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+    
+    // Security check
+    const securityCheck = SecurityValidator.isSecureInput(name + email);
+    if (!securityCheck.isSecure) {
+      newErrors.security = `Security threat detected: ${securityCheck.threats.join(', ')}`;
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateSignupForm()) {
       return;
     }
     
@@ -174,9 +260,10 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 h-11"
+                    className={`pl-10 h-11 ${errors.email ? 'border-destructive' : ''}`}
                     required
                   />
+                  {errors.email && <p className="text-sm text-destructive mt-1">{errors.email}</p>}
                 </div>
               </div>
               
@@ -190,9 +277,10 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 h-11"
+                    className={`pl-10 h-11 ${errors.password ? 'border-destructive' : ''}`}
                     required
                   />
+                  {errors.password && <p className="text-sm text-destructive mt-1">{errors.password}</p>}
                 </div>
               </div>
               
@@ -218,9 +306,10 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
                     placeholder="Enter your full name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="pl-10 h-11"
+                    className={`pl-10 h-11 ${errors.name ? 'border-destructive' : ''}`}
                     required
                   />
+                  {errors.name && <p className="text-sm text-destructive mt-1">{errors.name}</p>}
                 </div>
               </div>
               
@@ -234,9 +323,10 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 h-11"
+                    className={`pl-10 h-11 ${errors.email ? 'border-destructive' : ''}`}
                     required
                   />
+                  {errors.email && <p className="text-sm text-destructive mt-1">{errors.email}</p>}
                 </div>
               </div>
               
@@ -250,9 +340,10 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
                     placeholder="Create a secure password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 h-11"
+                    className={`pl-10 h-11 ${errors.password ? 'border-destructive' : ''}`}
                     required
                   />
+                  {errors.password && <p className="text-sm text-destructive mt-1">{errors.password}</p>}
                 </div>
               </div>
               
@@ -266,9 +357,10 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) =>
                     placeholder="Confirm your password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="pl-10 h-11"
+                    className={`pl-10 h-11 ${errors.confirmPassword ? 'border-destructive' : ''}`}
                     required
                   />
+                  {errors.confirmPassword && <p className="text-sm text-destructive mt-1">{errors.confirmPassword}</p>}
                 </div>
               </div>
               

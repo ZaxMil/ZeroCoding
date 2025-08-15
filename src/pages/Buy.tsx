@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { EnhancedSEOHelmet } from '@/components/EnhancedSEOHelmet';
+import { SecurityValidator, VALIDATION_PATTERNS } from '@/utils/security/validation';
 
 interface LicenseDetails {
   id: string;
@@ -34,6 +35,7 @@ const Buy = () => {
   const [purchaseComplete, setPurchaseComplete] = useState(false);
   const [licenseDetails, setLicenseDetails] = useState<LicenseDetails | null>(null);
   const [downloadReady, setDownloadReady] = useState(false);
+  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
   
   const [form, setForm] = useState<PurchaseForm>({
     firstName: '',
@@ -110,11 +112,85 @@ const Buy = () => {
   };
 
   const validateForm = () => {
-    if (!form.firstName.trim()) return 'First name is required';
-    if (!form.lastName.trim()) return 'Last name is required';
-    if (!form.email.trim()) return 'Email is required';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return 'Please enter a valid email';
-    return null;
+    const errors: {[key: string]: string} = {};
+    
+    // Validate first name
+    const firstNameResult = SecurityValidator.validateField(form.firstName, {
+      required: true,
+      minLength: 2,
+      maxLength: 50,
+      pattern: VALIDATION_PATTERNS.safeText,
+      sanitize: true
+    });
+    if (!firstNameResult.isValid && firstNameResult.error) {
+      errors.firstName = firstNameResult.error;
+    }
+    
+    // Validate last name
+    const lastNameResult = SecurityValidator.validateField(form.lastName, {
+      required: true,
+      minLength: 2,
+      maxLength: 50,
+      pattern: VALIDATION_PATTERNS.safeText,
+      sanitize: true
+    });
+    if (!lastNameResult.isValid && lastNameResult.error) {
+      errors.lastName = lastNameResult.error;
+    }
+    
+    // Validate email
+    const emailResult = SecurityValidator.validateField(form.email, {
+      required: true,
+      pattern: VALIDATION_PATTERNS.email,
+      sanitize: true
+    });
+    if (!emailResult.isValid && emailResult.error) {
+      errors.email = emailResult.error;
+    }
+    
+    // Validate optional fields if provided
+    if (form.company) {
+      const companyResult = SecurityValidator.validateField(form.company, {
+        maxLength: 100,
+        pattern: VALIDATION_PATTERNS.safeText,
+        sanitize: true
+      });
+      if (!companyResult.isValid && companyResult.error) {
+        errors.company = companyResult.error;
+      }
+    }
+    
+    if (form.phone) {
+      const phoneResult = SecurityValidator.validateField(form.phone, {
+        maxLength: 20,
+        pattern: /^[\+]?[0-9\s\-\(\)]{10,20}$/,
+        sanitize: true
+      });
+      if (!phoneResult.isValid && phoneResult.error) {
+        errors.phone = 'Please enter a valid phone number';
+      }
+    }
+    
+    if (form.country) {
+      const countryResult = SecurityValidator.validateField(form.country, {
+        maxLength: 50,
+        pattern: VALIDATION_PATTERNS.safeText,
+        sanitize: true
+      });
+      if (!countryResult.isValid && countryResult.error) {
+        errors.country = countryResult.error;
+      }
+    }
+    
+    // Security check for all inputs
+    const allInputs = Object.values(form).join(' ');
+    const securityCheck = SecurityValidator.isSecureInput(allInputs);
+    if (!securityCheck.isSecure) {
+      errors.security = `Security threat detected: ${securityCheck.threats.join(', ')}`;
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0 ? null : 'Please fix the errors below';
   };
 
   const processPayment = async (method: 'stripe' | 'paypal') => {
@@ -423,8 +499,10 @@ const Buy = () => {
                     id="firstName"
                     value={form.firstName}
                     onChange={(e) => handleInputChange('firstName', e.target.value)}
+                    className={formErrors.firstName ? 'border-destructive' : ''}
                     required
                   />
+                  {formErrors.firstName && <p className="text-sm text-destructive mt-1">{formErrors.firstName}</p>}
                 </div>
                 <div>
                   <Label htmlFor="lastName">Last Name *</Label>
@@ -432,8 +510,10 @@ const Buy = () => {
                     id="lastName"
                     value={form.lastName}
                     onChange={(e) => handleInputChange('lastName', e.target.value)}
+                    className={formErrors.lastName ? 'border-destructive' : ''}
                     required
                   />
+                  {formErrors.lastName && <p className="text-sm text-destructive mt-1">{formErrors.lastName}</p>}
                 </div>
                 <div className="md:col-span-2">
                   <Label htmlFor="email">Email Address *</Label>
@@ -442,8 +522,10 @@ const Buy = () => {
                     type="email"
                     value={form.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
+                    className={formErrors.email ? 'border-destructive' : ''}
                     required
                   />
+                  {formErrors.email && <p className="text-sm text-destructive mt-1">{formErrors.email}</p>}
                 </div>
                 <div>
                   <Label htmlFor="company">Company (Optional)</Label>
@@ -451,7 +533,9 @@ const Buy = () => {
                     id="company"
                     value={form.company}
                     onChange={(e) => handleInputChange('company', e.target.value)}
+                    className={formErrors.company ? 'border-destructive' : ''}
                   />
+                  {formErrors.company && <p className="text-sm text-destructive mt-1">{formErrors.company}</p>}
                 </div>
                 <div>
                   <Label htmlFor="country">Country</Label>
@@ -459,7 +543,9 @@ const Buy = () => {
                     id="country"
                     value={form.country}
                     onChange={(e) => handleInputChange('country', e.target.value)}
+                    className={formErrors.country ? 'border-destructive' : ''}
                   />
+                  {formErrors.country && <p className="text-sm text-destructive mt-1">{formErrors.country}</p>}
                 </div>
                 <div className="md:col-span-2">
                   <Label htmlFor="phone">Phone (Optional)</Label>
@@ -467,7 +553,9 @@ const Buy = () => {
                     id="phone"
                     value={form.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
+                    className={formErrors.phone ? 'border-destructive' : ''}
                   />
+                  {formErrors.phone && <p className="text-sm text-destructive mt-1">{formErrors.phone}</p>}
                 </div>
               </div>
 
