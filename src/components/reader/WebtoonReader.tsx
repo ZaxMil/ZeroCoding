@@ -45,6 +45,7 @@ interface WebtoonReaderProps {
   chapterNumber: number;
   seriesSlug?: string;
   chapterId?: string;
+  allowInlineComments?: boolean;
 }
 export const WebtoonReader = ({
   pages,
@@ -59,7 +60,8 @@ export const WebtoonReader = ({
   chapterTitle,
   chapterNumber,
   seriesSlug,
-  chapterId
+  chapterId,
+  allowInlineComments = true
 }: WebtoonReaderProps) => {
   const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
   const suppressAutoScroll = useRef(false);
@@ -725,41 +727,43 @@ export const WebtoonReader = ({
       </Card>
 
       {/* Comments Section - Inline at bottom */}
-      <div className={`w-full max-w-4xl mx-auto mt-8 px-4 ${boxedWidth ? 'max-w-3xl' : 'max-w-none'}`}>
-        {showComments && chapterId && (
-          <Card className="p-6 bg-card/95 backdrop-blur-sm border-border/50">
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-2">Chapter Comments</h3>
-              <p className="text-sm text-muted-foreground">
-                Share your thoughts about Chapter {chapterNumber}
-              </p>
+      {allowInlineComments && (
+        <div className={`w-full max-w-4xl mx-auto mt-8 px-4 ${boxedWidth ? 'max-w-3xl' : 'max-w-none'}`}>
+          {showComments && chapterId && (
+            <Card className="p-6 bg-card/95 backdrop-blur-sm border-border/50">
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold mb-2">Chapter Comments</h3>
+                <p className="text-sm text-muted-foreground">
+                  Share your thoughts about Chapter {chapterNumber}
+                </p>
+              </div>
+              <EnhancedUnifiedCommentSystem 
+                targetType="chapter" 
+                targetId={chapterId} 
+                targetTitle={chapterTitle} 
+                showRating={true} 
+              />
+            </Card>
+          )}
+          
+          {/* Show comments button if not visible yet */}
+          {!showComments && (
+            <div className="text-center py-8">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowComments(true)}
+                className="px-8"
+              >
+                <MessageCircle className="h-4 w-4 mr-2" />
+                Show Comments
+              </Button>
             </div>
-            <EnhancedUnifiedCommentSystem 
-              targetType="chapter" 
-              targetId={chapterId} 
-              targetTitle={chapterTitle} 
-              showRating={true} 
-            />
-          </Card>
-        )}
-        
-        {/* Show comments button if not visible yet */}
-        {!showComments && (
-          <div className="text-center py-8">
-            <Button 
-              variant="outline" 
-              onClick={() => setShowComments(true)}
-              className="px-8"
-            >
-              <MessageCircle className="h-4 w-4 mr-2" />
-              Show Comments
-            </Button>
-          </div>
-        )}
-        
-        {/* Bottom spacing */}
-        <div className="h-20" />
-      </div>
+          )}
+          
+          {/* Bottom spacing */}
+          <div className="h-20" />
+        </div>
+      )}
 
       {/* Floating Settings Button with Circular Progress */}
       <div className="fixed bottom-4 right-4 z-50">

@@ -428,6 +428,7 @@ const Read = () => {
           <WebtoonReader
             {...commonProps}
             seriesSlug={series.slug || series.id}
+            allowInlineComments={false}
           />
         );
     }
