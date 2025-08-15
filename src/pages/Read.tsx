@@ -7,6 +7,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Loader2, Home } from 'lucide-react';
 import { WebtoonReader } from '@/components/reader/WebtoonReader';
+import { SinglePageReader } from '@/components/reader/SinglePageReader';
+import { DoublePageReader } from '@/components/reader/DoublePageReader';
 import { useChapterLayout } from '@/hooks/useChapterLayout';
 import { useOpenedChapters } from '@/hooks/useOpenedChapters';
 import { EnhancedSEOHelmet } from '@/components/EnhancedSEOHelmet';
@@ -49,7 +51,7 @@ const Read = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  const { readingMode, imageFit, imageScale } = useChapterLayout();
+  const { readingMode, imageFit, imageScale, preferencesLoaded } = useChapterLayout();
 
   // Load series and chapter data
   useEffect(() => {
@@ -390,6 +392,46 @@ const Read = () => {
   const hasNextChapter = currentChapterIndex < chapters.length - 1;
   const hasPrevChapter = currentChapterIndex > 0;
 
+  // Normalize page index when switching reading modes to prevent out-of-bounds
+  useEffect(() => {
+    if (preferencesLoaded && readingMode === 'double' && currentPageIndex % 2 !== 0) {
+      // For double page mode, ensure we're on an even page
+      setCurrentPageIndex(Math.floor(currentPageIndex / 2) * 2);
+    }
+  }, [readingMode, preferencesLoaded, currentPageIndex]);
+
+  const renderReader = () => {
+    const commonProps = {
+      pages: chapter.pages,
+      currentPage: currentPageIndex,
+      onPageChange: setCurrentPageIndex,
+      onNavigateHome: () => navigate('/'),
+      onNavigateChapterList: () => navigate(`/series/${series.slug || series.id}`),
+      onPreviousChapter: goToPreviousChapter,
+      onNextChapter: goToNextChapter,
+      hasPreviousChapter: hasPrevChapter,
+      hasNextChapter: hasNextChapter,
+      chapterTitle: chapter.title,
+      chapterNumber: chapter.chapter_number,
+      chapterId: chapter.id
+    };
+
+    switch (readingMode) {
+      case 'single':
+        return <SinglePageReader {...commonProps} />;
+      case 'double':
+        return <DoublePageReader {...commonProps} />;
+      case 'webtoon':
+      default:
+        return (
+          <WebtoonReader
+            {...commonProps}
+            seriesSlug={series.slug || series.id}
+          />
+        );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <EnhancedSEOHelmet 
@@ -430,20 +472,7 @@ const Read = () => {
         }}
       />
       
-      <WebtoonReader
-        pages={chapter.pages}
-        currentPage={currentPageIndex}
-        onPageChange={setCurrentPageIndex}
-        onNavigateHome={() => navigate('/')}
-        onNavigateChapterList={() => navigate(`/series/${series.slug || series.id}`)}
-        onPreviousChapter={goToPreviousChapter}
-        onNextChapter={goToNextChapter}
-        hasPreviousChapter={hasPrevChapter}
-        hasNextChapter={hasNextChapter}
-        chapterTitle={chapter.title}
-        chapterNumber={chapter.chapter_number}
-        seriesSlug={series.slug || series.id}
-      />
+      {renderReader()}
       
       {/* Comments Section */}
       <div className="container mx-auto px-4 py-8">

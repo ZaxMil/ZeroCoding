@@ -6,6 +6,7 @@ import Analytics from './Analytics';
 import { EnhancedSEOHelmet } from './EnhancedSEOHelmet';
 import Layout from './Layout';
 import ErrorBoundary from './ErrorBoundary';
+import AuthModal from './AuthModal';
 
 interface RouteWrapperProps {
   children: ReactNode;
@@ -42,6 +43,24 @@ export const RouteWrapper: React.FC<RouteWrapperProps> = ({
   keywords,
   image
 }) => {
+  const [showAuthModal, setShowAuthModal] = React.useState(false);
+  const [authTab, setAuthTab] = React.useState<'login' | 'signup'>('login');
+
+  // Listen for global auth modal open events
+  React.useEffect(() => {
+    const openHandler = (e: Event) => {
+      const ce = e as CustomEvent<{ tab?: 'login' | 'signup' }>;
+      const tab = ce.detail?.tab === 'signup' ? 'signup' : 'login';
+      setAuthTab(tab);
+      setShowAuthModal(true);
+    };
+
+    window.addEventListener('open-auth-modal', openHandler as EventListener);
+    return () => {
+      window.removeEventListener('open-auth-modal', openHandler as EventListener);
+    };
+  }, []);
+
   let content = children;
 
   // Wrap with Layout if enabled

@@ -127,7 +127,7 @@ export const ChapterSettings = ({ isOpen, onClose, metrics }: ChapterSettingsPro
                 value={[imageScale]}
                 onValueChange={(value) => updateImageScale(value[0])}
                 min={50}
-                max={100}
+                max={200}
                 step={10}
                 className="w-full"
               />
