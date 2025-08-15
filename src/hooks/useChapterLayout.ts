@@ -13,6 +13,7 @@ export const useChapterLayout = () => {
   const [imageGap, setImageGap] = useState(0); // Gap in pixels - 0 for seamless webtoon
   const [imageFit, setImageFit] = useState<ImageFit>('height');
   const [imageScale, setImageScale] = useState(100); // Scale percentage
+  const [autoHideControls, setAutoHideControls] = useState(false); // Auto-hide controls setting
   const [preferencesLoaded, setPreferencesLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -28,6 +29,7 @@ export const useChapterLayout = () => {
       localStorage.removeItem('image-gap');
       localStorage.removeItem('image-fit');
       localStorage.removeItem('image-scale');
+      localStorage.removeItem('auto-hide-controls');
       localStorage.setItem('preferences-version', PREFERENCES_VERSION);
     }
   }, []);
@@ -44,6 +46,7 @@ export const useChapterLayout = () => {
         const savedImageGap = localStorage.getItem('image-gap');
         const savedImageFit = localStorage.getItem('image-fit');
         const savedImageScale = localStorage.getItem('image-scale');
+        const savedAutoHideControls = localStorage.getItem('auto-hide-controls');
         
         if (savedLayout) {
           const parsedLayout = parseInt(savedLayout) as ChapterLayout;
@@ -83,6 +86,13 @@ export const useChapterLayout = () => {
           }
         }
         
+        if (savedAutoHideControls !== null) {
+          setAutoHideControls(savedAutoHideControls === 'true');
+        } else {
+          // Default to false (keep controls visible)
+          setAutoHideControls(false);
+        }
+        
         setPreferencesLoaded(true);
         console.log('🔄 Preferences loaded successfully');
       } catch (error) {
@@ -115,13 +125,14 @@ export const useChapterLayout = () => {
   // Sync preferences across components without reload
   useEffect(() => {
     const handler = (e: Event) => {
-      const evt = e as CustomEvent<Partial<{ layout: ChapterLayout; readingMode: ReadingMode; imageGap: number; imageFit: ImageFit; imageScale: number }>>;
+      const evt = e as CustomEvent<Partial<{ layout: ChapterLayout; readingMode: ReadingMode; imageGap: number; imageFit: ImageFit; imageScale: number; autoHideControls: boolean }>>;
       const detail = evt.detail || {};
       if (detail.layout !== undefined) setLayout(detail.layout);
       if (detail.readingMode !== undefined) setReadingMode(detail.readingMode);
       if (detail.imageGap !== undefined) setImageGap(detail.imageGap);
       if (detail.imageFit !== undefined) setImageFit(detail.imageFit);
       if (detail.imageScale !== undefined) setImageScale(detail.imageScale);
+      if (detail.autoHideControls !== undefined) setAutoHideControls(detail.autoHideControls);
     };
     window.addEventListener('chapterPreferencesChange', handler as EventListener);
     return () => window.removeEventListener('chapterPreferencesChange', handler as EventListener);
@@ -153,12 +164,18 @@ export const useChapterLayout = () => {
     await savePreferences({ imageScale: clamped });
   };
 
+  const updateAutoHideControls = async (enabled: boolean) => {
+    setAutoHideControls(enabled);
+    await savePreferences({ autoHideControls: enabled });
+  };
+
   const savePreferences = async (prefs: {
     layout?: ChapterLayout;
     readingMode?: ReadingMode;
     imageGap?: number;
     imageFit?: ImageFit;
     imageScale?: number;
+    autoHideControls?: boolean;
   }) => {
     try {
       // Save to localStorage for all users since database columns don't exist yet
@@ -177,6 +194,9 @@ export const useChapterLayout = () => {
       if (prefs.imageScale !== undefined) {
         localStorage.setItem('image-scale', prefs.imageScale.toString());
       }
+      if (prefs.autoHideControls !== undefined) {
+        localStorage.setItem('auto-hide-controls', prefs.autoHideControls.toString());
+      }
 
       // Notify all open components about preference changes
       window.dispatchEvent(new CustomEvent('chapterPreferencesChange', { detail: prefs }));
@@ -191,11 +211,13 @@ export const useChapterLayout = () => {
     imageGap,
     imageFit,
     imageScale,
+    autoHideControls,
     updateLayout,
     updateReadingMode,
     updateImageGap,
     updateImageFit,
     updateImageScale,
+    updateAutoHideControls,
     loading,
     preferencesLoaded
   };

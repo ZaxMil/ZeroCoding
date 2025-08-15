@@ -35,7 +35,7 @@ export const DoublePageReader = ({
   chapterTitle,
   chapterNumber,
 }: DoublePageReaderProps) => {
-  const { imageFit, imageScale } = useChapterLayout();
+  const { imageFit, imageScale, autoHideControls } = useChapterLayout();
   const { user, userProfile } = useAuth();
   const [showControls, setShowControls] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -61,11 +61,13 @@ export const DoublePageReader = ({
     };
   };
 
-  // Auto-hide controls
+  // Auto-hide controls (only if enabled)
   useEffect(() => {
+    if (!autoHideControls) return;
+    
     const timer = setTimeout(() => setShowControls(false), 3000);
     return () => clearTimeout(timer);
-  }, [showControls]);
+  }, [showControls, autoHideControls]);
 
   // Keyboard navigation
   useEffect(() => {

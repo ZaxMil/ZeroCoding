@@ -48,10 +48,12 @@ export const ReaderSettingsSheet = ({ isOpen, onOpenChange, metrics }: ReaderSet
     imageGap,
     imageFit,
     imageScale,
+    autoHideControls,
     updateReadingMode,
     updateImageGap,
     updateImageFit,
     updateImageScale,
+    updateAutoHideControls,
     loading
   } = useChapterLayout();
 
@@ -275,6 +277,20 @@ export const ReaderSettingsSheet = ({ isOpen, onOpenChange, metrics }: ReaderSet
                   settings={keyboardSettings}
                   onSettingsChange={updateKeyboardSettings}
                 />
+
+                <Separator />
+
+                {/* Auto-hide Controls */}
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm font-medium">Auto-hide Controls</Label>
+                  <Switch
+                    checked={autoHideControls}
+                    onCheckedChange={updateAutoHideControls}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground -mt-2">
+                  Automatically hide reading controls after 3 seconds (Single/Double page modes only)
+                </p>
 
                 <Separator />
 
