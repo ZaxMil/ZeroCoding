@@ -268,7 +268,7 @@ export const EmojiReactionSystem: React.FC<EmojiReactionSystemProps> = ({
       </Card>;
   }
   return <Card className={`border-border/30 bg-card/20 backdrop-blur-sm ${className}`}>
-      <div className="p-6">
+      <div className="p-6 px-[24px] py-[5px]">
         <div className="text-center mb-6">
           
           <p className="text-muted-foreground text-sm">
