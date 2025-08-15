@@ -386,50 +386,128 @@
   }
 
   /* Book page flip animations */
-  @keyframes flipNext {
+  /* Elastic Flip Animations with Bounce */
+  @keyframes elasticFlipNext {
     0% {
-      transform: perspective(1200px) rotateY(0deg);
+      transform: perspective(1200px) rotateY(0deg) scale(1);
       filter: brightness(1);
     }
-    25% {
-      transform: perspective(1200px) rotateY(-15deg) translateX(-5px);
-      filter: brightness(0.9);
+    15% {
+      transform: perspective(1200px) rotateY(-20deg) scale(1.02) translateX(-3px);
+      filter: brightness(0.95);
+    }
+    30% {
+      transform: perspective(1200px) rotateY(-60deg) scale(0.98) translateX(-10px);
+      filter: brightness(0.8);
     }
     50% {
-      transform: perspective(1200px) rotateY(-90deg) translateX(-20px);
-      filter: brightness(0.7);
+      transform: perspective(1200px) rotateY(-100deg) scale(0.95) translateX(-15px);
+      filter: brightness(0.6);
     }
-    75% {
-      transform: perspective(1200px) rotateY(-165deg) translateX(-5px);
+    70% {
+      transform: perspective(1200px) rotateY(-140deg) scale(0.98) translateX(-12px);
+      filter: brightness(0.75);
+    }
+    85% {
+      transform: perspective(1200px) rotateY(-170deg) scale(1.01) translateX(-4px);
       filter: brightness(0.9);
     }
+    95% {
+      transform: perspective(1200px) rotateY(-185deg) scale(1.02);
+      filter: brightness(0.98);
+    }
     100% {
-      transform: perspective(1200px) rotateY(-180deg);
+      transform: perspective(1200px) rotateY(-180deg) scale(1);
       filter: brightness(1);
     }
   }
 
-  @keyframes flipPrev {
+  @keyframes elasticFlipPrev {
     0% {
-      transform: perspective(1200px) rotateY(-180deg);
+      transform: perspective(1200px) rotateY(-180deg) scale(1);
       filter: brightness(1);
     }
-    25% {
-      transform: perspective(1200px) rotateY(-165deg) translateX(-5px);
-      filter: brightness(0.9);
+    15% {
+      transform: perspective(1200px) rotateY(-160deg) scale(1.02) translateX(-3px);
+      filter: brightness(0.95);
+    }
+    30% {
+      transform: perspective(1200px) rotateY(-120deg) scale(0.98) translateX(-10px);
+      filter: brightness(0.8);
     }
     50% {
-      transform: perspective(1200px) rotateY(-90deg) translateX(-20px);
-      filter: brightness(0.7);
+      transform: perspective(1200px) rotateY(-80deg) scale(0.95) translateX(-15px);
+      filter: brightness(0.6);
     }
-    75% {
-      transform: perspective(1200px) rotateY(-15deg) translateX(-5px);
+    70% {
+      transform: perspective(1200px) rotateY(-40deg) scale(0.98) translateX(-12px);
+      filter: brightness(0.75);
+    }
+    85% {
+      transform: perspective(1200px) rotateY(-10deg) scale(1.01) translateX(-4px);
       filter: brightness(0.9);
     }
+    95% {
+      transform: perspective(1200px) rotateY(5deg) scale(1.02);
+      filter: brightness(0.98);
+    }
     100% {
-      transform: perspective(1200px) rotateY(0deg);
+      transform: perspective(1200px) rotateY(0deg) scale(1);
       filter: brightness(1);
     }
+  }
+
+  /* Elastic bounce for page containers */
+  @keyframes elasticBounceNext {
+    0% {
+      transform: scale(1) translateX(0);
+    }
+    20% {
+      transform: scale(1.03) translateX(-5px);
+    }
+    40% {
+      transform: scale(0.97) translateX(-3px);
+    }
+    60% {
+      transform: scale(1.01) translateX(-1px);
+    }
+    80% {
+      transform: scale(0.99) translateX(0);
+    }
+    100% {
+      transform: scale(1) translateX(0);
+    }
+  }
+
+  @keyframes elasticBouncePrev {
+    0% {
+      transform: scale(1) translateX(0);
+    }
+    20% {
+      transform: scale(1.03) translateX(5px);
+    }
+    40% {
+      transform: scale(0.97) translateX(3px);
+    }
+    60% {
+      transform: scale(1.01) translateX(1px);
+    }
+    80% {
+      transform: scale(0.99) translateX(0);
+    }
+    100% {
+      transform: scale(1) translateX(0);
+    }
+  }
+
+  /* Shadow effects for elastic flip */
+  .elastic-flip-shadow {
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.15));
+    transition: filter 0.3s ease;
+  }
+
+  .elastic-flip-shadow-active {
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.3)) drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
   }
 }
 
