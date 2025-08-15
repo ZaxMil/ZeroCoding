@@ -385,51 +385,99 @@
       0 0 0 1px hsl(0 0% 0% / 0.1);
   }
 
-  /* Book page flip animations */
-  @keyframes flipNext {
+  /* Page Curl Effect Animations */
+  @keyframes pageCurlNext {
     0% {
-      transform: perspective(1200px) rotateY(0deg);
-      filter: brightness(1);
+      transform: perspective(1200px) rotateY(0deg) translateZ(0px);
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      filter: brightness(1) drop-shadow(0 0 0 transparent);
     }
-    25% {
-      transform: perspective(1200px) rotateY(-15deg) translateX(-5px);
-      filter: brightness(0.9);
+    20% {
+      transform: perspective(1200px) rotateY(-5deg) translateZ(10px);
+      clip-path: polygon(0% 0%, 95% 0%, 90% 100%, 0% 100%);
+      filter: brightness(0.95) drop-shadow(5px 0 10px rgba(0,0,0,0.2));
     }
-    50% {
-      transform: perspective(1200px) rotateY(-90deg) translateX(-20px);
-      filter: brightness(0.7);
+    40% {
+      transform: perspective(1200px) rotateY(-25deg) translateZ(30px);
+      clip-path: polygon(0% 0%, 85% 0%, 70% 100%, 0% 100%);
+      filter: brightness(0.85) drop-shadow(15px 0 20px rgba(0,0,0,0.4));
     }
-    75% {
-      transform: perspective(1200px) rotateY(-165deg) translateX(-5px);
-      filter: brightness(0.9);
+    60% {
+      transform: perspective(1200px) rotateY(-70deg) translateZ(50px);
+      clip-path: polygon(0% 0%, 70% 0%, 40% 100%, 0% 100%);
+      filter: brightness(0.7) drop-shadow(25px 0 30px rgba(0,0,0,0.6));
+    }
+    80% {
+      transform: perspective(1200px) rotateY(-120deg) translateZ(30px);
+      clip-path: polygon(0% 0%, 30% 0%, 10% 100%, 0% 100%);
+      filter: brightness(0.8) drop-shadow(20px 0 25px rgba(0,0,0,0.5));
     }
     100% {
-      transform: perspective(1200px) rotateY(-180deg);
-      filter: brightness(1);
+      transform: perspective(1200px) rotateY(-180deg) translateZ(0px);
+      clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+      filter: brightness(1) drop-shadow(0 0 0 transparent);
     }
   }
 
-  @keyframes flipPrev {
+  @keyframes pageCurlPrev {
     0% {
-      transform: perspective(1200px) rotateY(-180deg);
-      filter: brightness(1);
+      transform: perspective(1200px) rotateY(-180deg) translateZ(0px);
+      clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+      filter: brightness(1) drop-shadow(0 0 0 transparent);
     }
-    25% {
-      transform: perspective(1200px) rotateY(-165deg) translateX(-5px);
-      filter: brightness(0.9);
+    20% {
+      transform: perspective(1200px) rotateY(-160deg) translateZ(10px);
+      clip-path: polygon(90% 0%, 100% 0%, 100% 100%, 95% 100%);
+      filter: brightness(0.95) drop-shadow(-5px 0 10px rgba(0,0,0,0.2));
     }
-    50% {
-      transform: perspective(1200px) rotateY(-90deg) translateX(-20px);
-      filter: brightness(0.7);
+    40% {
+      transform: perspective(1200px) rotateY(-120deg) translateZ(30px);
+      clip-path: polygon(70% 0%, 100% 0%, 100% 100%, 85% 100%);
+      filter: brightness(0.85) drop-shadow(-15px 0 20px rgba(0,0,0,0.4));
     }
-    75% {
-      transform: perspective(1200px) rotateY(-15deg) translateX(-5px);
-      filter: brightness(0.9);
+    60% {
+      transform: perspective(1200px) rotateY(-70deg) translateZ(50px);
+      clip-path: polygon(40% 0%, 100% 0%, 100% 100%, 70% 100%);
+      filter: brightness(0.7) drop-shadow(-25px 0 30px rgba(0,0,0,0.6));
+    }
+    80% {
+      transform: perspective(1200px) rotateY(-25deg) translateZ(30px);
+      clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 30% 100%);
+      filter: brightness(0.8) drop-shadow(-20px 0 25px rgba(0,0,0,0.5));
     }
     100% {
-      transform: perspective(1200px) rotateY(0deg);
-      filter: brightness(1);
+      transform: perspective(1200px) rotateY(0deg) translateZ(0px);
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      filter: brightness(1) drop-shadow(0 0 0 transparent);
     }
+  }
+
+  /* Page lifting effect before curl */
+  @keyframes pageLift {
+    0% {
+      transform: translateZ(0px) rotateX(0deg);
+      box-shadow: 0 0 0 transparent;
+    }
+    50% {
+      transform: translateZ(15px) rotateX(5deg);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    100% {
+      transform: translateZ(0px) rotateX(0deg);
+      box-shadow: 0 0 0 transparent;
+    }
+  }
+
+  /* Enhanced curl shadow gradients */
+  .curl-shadow-gradient {
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0,0,0,0.1) 20%,
+      rgba(0,0,0,0.3) 50%,
+      rgba(0,0,0,0.1) 80%,
+      transparent 100%
+    );
   }
 }
 
