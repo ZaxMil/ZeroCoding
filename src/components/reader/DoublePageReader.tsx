@@ -277,42 +277,43 @@ export const DoublePageReader = ({
       {/* Header */}
       {showControls && (
         <Card className="fixed top-0 left-0 right-0 z-50 rounded-none border-b bg-background/95 backdrop-blur-sm animate-fade-in">
-          <div className="w-full px-4 py-3">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <Button variant="ghost" size="sm" onClick={onNavigateHome}>
-                  <Home className="h-4 w-4 mr-2" />
+          <div className="w-full px-4 py-2">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" className="text-xs h-7 px-2" onClick={onNavigateHome}>
+                  <Home className="h-3 w-3 mr-1" />
                   Home
                 </Button>
-                <Button variant="ghost" size="sm" onClick={onNavigateChapterList}>
-                  <List className="h-4 w-4 mr-2" />
+                <Button variant="ghost" size="sm" className="text-xs h-7 px-2" onClick={onNavigateChapterList}>
+                  <List className="h-3 w-3 mr-1" />
                   Chapters
                 </Button>
                 <Button 
                   variant="ghost" 
                   size="sm" 
+                  className="text-xs h-7 px-2"
                   onClick={reloadChapter}
                   disabled={isPreloading}
                 >
-                  <RefreshCw className={`h-4 w-4 mr-2 ${isPreloading ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`h-3 w-3 mr-1 ${isPreloading ? 'animate-spin' : ''}`} />
                   Reload
                 </Button>
               </div>
               
               <div className="text-center flex-1">
-                <h1 className="font-bold text-lg">Ch. {chapterNumber}</h1>
-                <p className="text-sm text-muted-foreground truncate">{chapterTitle}</p>
+                <h1 className="font-bold text-base">Ch. {chapterNumber}</h1>
+                <p className="text-xs text-muted-foreground truncate">{chapterTitle}</p>
               </div>
               
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-xs text-muted-foreground">
                   {rightPageIndex + 1}-{leftPageIndex ? leftPageIndex + 1 : rightPageIndex + 1}/{pages.length}
                 </span>
                 {user && (
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-6 w-6">
                     <AvatarImage src="" />
                     <AvatarFallback>
-                      <User className="h-4 w-4" />
+                      <User className="h-3 w-3" />
                     </AvatarFallback>
                   </Avatar>
                 )}
@@ -321,7 +322,7 @@ export const DoublePageReader = ({
           </div>
           
           {/* Progress Bar */}
-          <div className="w-full bg-muted/30 h-1">
+          <div className="w-full bg-muted/30 h-0.5">
             <div 
               className="h-full bg-primary transition-all duration-300" 
               style={{ width: `${progressPercentage}%` }}
@@ -333,7 +334,7 @@ export const DoublePageReader = ({
       {/* Main Reader Area */}
       <div 
         ref={containerRef}
-        className="relative w-full h-screen flex items-center justify-center pt-16"
+        className="relative w-full h-screen flex items-center justify-center pt-12"
         onClick={handleContainerClick}
       >
         {/* Double Page Container - Simple Layout */}
@@ -396,22 +397,22 @@ export const DoublePageReader = ({
           <>
             <Button
               variant="outline"
-              size="icon"
-              className="fixed left-4 top-1/2 -translate-y-1/2 z-40 bg-background/95 backdrop-blur-sm"
+              size="sm"
+              className="fixed left-4 top-1/2 -translate-y-1/2 z-40 bg-background/95 backdrop-blur-sm h-8 w-8 p-0"
               onClick={goToNextPage}
               disabled={currentPage >= pages.length - 1 && !hasNextChapter}
             >
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="h-5 w-5" />
             </Button>
             
             <Button
               variant="outline"
-              size="icon"
-              className="fixed right-4 top-1/2 -translate-y-1/2 z-40 bg-background/95 backdrop-blur-sm"
+              size="sm"
+              className="fixed right-4 top-1/2 -translate-y-1/2 z-40 bg-background/95 backdrop-blur-sm h-8 w-8 p-0"
               onClick={goToPreviousPage}
               disabled={currentPage === 0 && !hasPreviousChapter}
             >
-              <ChevronRight className="h-6 w-6" />
+              <ChevronRight className="h-5 w-5" />
             </Button>
           </>
         )}
@@ -420,42 +421,44 @@ export const DoublePageReader = ({
       {/* Bottom Controls */}
       {showControls && (
         <Card className="fixed bottom-0 left-0 right-0 z-50 rounded-none border-t bg-background/95 backdrop-blur-sm animate-fade-in">
-          <div className="w-full px-4 py-3">
-            <div className="flex items-center justify-between gap-4">
+          <div className="w-full px-4 py-2">
+            <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
+                  className="text-xs h-7 px-2"
                   onClick={onPreviousChapter}
                   disabled={!hasPreviousChapter}
                 >
-                  <SkipBack className="h-4 w-4 mr-2" />
+                  <SkipBack className="h-3 w-3 mr-1" />
                   Prev Chapter
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
+                  className="text-xs h-7 px-2"
                   onClick={onNextChapter}
                   disabled={!hasNextChapter}
                 >
                   Next Chapter
-                  <SkipForward className="h-4 w-4 ml-2" />
+                  <SkipForward className="h-3 w-3 ml-1" />
                 </Button>
               </div>
 
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="icon" onClick={zoomOut}>
-                  <ZoomOut className="h-4 w-4" />
+              <div className="flex items-center gap-1">
+                <Button variant="outline" size="sm" className="h-7 w-7 p-0" onClick={zoomOut}>
+                  <ZoomOut className="h-3 w-3" />
                 </Button>
-                <span className="text-sm font-mono min-w-12 text-center">{currentZoom}%</span>
-                <Button variant="outline" size="icon" onClick={zoomIn}>
-                  <ZoomIn className="h-4 w-4" />
+                <span className="text-xs font-mono min-w-10 text-center">{currentZoom}%</span>
+                <Button variant="outline" size="sm" className="h-7 w-7 p-0" onClick={zoomIn}>
+                  <ZoomIn className="h-3 w-3" />
                 </Button>
-                <Button variant="outline" size="icon" onClick={resetZoom}>
-                  <RotateCcw className="h-4 w-4" />
+                <Button variant="outline" size="sm" className="h-7 w-7 p-0" onClick={resetZoom}>
+                  <RotateCcw className="h-3 w-3" />
                 </Button>
-                <Button variant="outline" size="icon" onClick={toggleFullscreen}>
-                  <Maximize2 className="h-4 w-4" />
+                <Button variant="outline" size="sm" className="h-7 w-7 p-0" onClick={toggleFullscreen}>
+                  <Maximize2 className="h-3 w-3" />
                 </Button>
               </div>
             </div>
@@ -466,11 +469,11 @@ export const DoublePageReader = ({
       {/* Floating Settings Button */}
       <Button
         variant="outline"
-        size="icon"
+        size="sm"
         onClick={() => setSettingsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 bg-background/95 backdrop-blur-sm border-border/50 hover:bg-accent"
+        className="fixed bottom-4 right-4 z-50 bg-background/95 backdrop-blur-sm border-border/50 hover:bg-accent h-8 w-8 p-0"
       >
-        <Settings className="h-4 w-4" />
+        <Settings className="h-3 w-3" />
       </Button>
 
       {/* Settings Panel */}
