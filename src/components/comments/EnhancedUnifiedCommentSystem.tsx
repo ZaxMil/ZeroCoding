@@ -53,6 +53,7 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
   const [sortBy, setSortBy] = useState('newest');
   const [showSampleComments, setShowSampleComments] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [replyTo, setReplyTo] = useState<string | null>(null);
   
   const {
     comments: realComments,
@@ -90,9 +91,10 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
         target_id: targetId,
         target_type: targetType,
         content,
-        parent_id: null
+        parent_id: replyTo
       }, attachments);
       setNewComment('');
+      setReplyTo(null); // Clear reply state after submission
     } catch (error) {
       console.error('Failed to submit comment:', error);
     }
@@ -154,6 +156,48 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
     }
   };
 
+  const handleLike = async (commentId: string) => {
+    if (!user) {
+      toast.error('Please log in to like comments');
+      return;
+    }
+
+    try {
+      // Use existing comment likes system for compatibility
+      const tableName = targetType === 'chapter' ? 'comments' : 'series_comments';
+      const { error } = await supabase
+        .from('comment_likes')
+        .upsert([{
+          user_id: user.id,
+          comment_id: commentId,
+          is_like: true
+        }], { onConflict: 'user_id,comment_id' });
+
+      if (error) throw error;
+      
+      // Refresh comments to update like count
+      window.location.reload();
+    } catch (error) {
+      console.error('Error liking comment:', error);
+      toast.error('Failed to like comment');
+    }
+  };
+
+  const handleReply = (parentId: string) => {
+    // Store the parent ID for the reply
+    setReplyTo(parentId);
+    // Scroll to comment input
+    const commentInput = document.querySelector('[data-comment-input]');
+    if (commentInput) {
+      commentInput.scrollIntoView({ behavior: 'smooth' });
+      // Focus the input if it's a textarea or input element
+      const input = commentInput.querySelector('textarea, input');
+      if (input) {
+        (input as HTMLElement).focus();
+      }
+    }
+  };
+
   return (
     <ThemeAwareComments className={className} showThemeControls={false}>
       {/* Sample Comments Notice */}
@@ -170,13 +214,13 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
           onSortChange={setSortBy}
           onReaction={handleReaction}
           onRemoveReaction={removeReaction}
-          onReply={(parentId) => console.log('Reply to:', parentId)}
+          onReply={(parentId) => handleReply(parentId)}
           onEdit={(comment) => editComment(comment.id, comment.content)}
           onDelete={deleteComment}
           onPin={pinComment}
           onBookmark={handleBookmark}
           onReport={handleReport}
-          onLike={(commentId) => console.log('Like comment:', commentId)}
+          onLike={handleLike}
           onNewComment={handleNewComment}
           currentUserId={user?.id}
           showModerationActions={user?.app_metadata?.role === 'admin'}
@@ -202,13 +246,13 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
             onSortChange={setSortBy}
             onReaction={handleReaction}
             onRemoveReaction={removeReaction}
-            onReply={(parentId) => console.log('Reply to:', parentId)}
+            onReply={(parentId) => handleReply(parentId)}
             onEdit={(comment) => editComment(comment.id, comment.content)}
             onDelete={deleteComment}
             onPin={pinComment}
             onBookmark={handleBookmark}
             onReport={handleReport}
-            onLike={(commentId) => console.log('Like comment:', commentId)}
+            onLike={handleLike}
             currentUserId={user?.id}
             showModerationActions={user?.app_metadata?.role === 'admin'}
           />
