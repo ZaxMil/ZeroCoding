@@ -17,6 +17,7 @@ import {
   DollarSign, TrendingUp, Settings, Save 
 } from 'lucide-react';
 import { db } from '@/utils/DatabaseCompatibility';
+import { AdminEdgeFunctions } from '@/utils/adminEdgeFunctions';
 
 interface CoinPricingRule {
   id: string;

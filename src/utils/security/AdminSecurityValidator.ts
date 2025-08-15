@@ -16,6 +16,48 @@ export const ADMIN_VALIDATION_PATTERNS = {
 
 // Admin validation schemas
 export const ADMIN_VALIDATION_SCHEMAS = {
+  // Coin Pricing Management
+  coinPricingForm: {
+    coin_amount: {
+      required: true,
+      pattern: /^\d+$/
+    },
+    price_usd: {
+      required: true,
+      pattern: /^\d+(\.\d{1,2})?$/
+    },
+    currency: {
+      required: true,
+      pattern: /^(USD|EUR|GBP|JPY|CAD)$/
+    },
+    region: {
+      required: true,
+      pattern: /^(global|us|eu|asia|latam)$/
+    },
+    user_group: {
+      maxLength: 50,
+      sanitize: true
+    },
+    promo_code: {
+      maxLength: 20,
+      sanitize: true
+    },
+    search_query: {
+      maxLength: 100,
+      sanitize: true
+    },
+    overridden_price: {
+      required: true,
+      pattern: /^\d+(\.\d{1,2})?$/
+    },
+    reason_for_change: {
+      required: true,
+      minLength: 10,
+      maxLength: 500,
+      sanitize: true
+    }
+  },
+
   // Series Management
   seriesForm: {
     title: {
