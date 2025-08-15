@@ -8,6 +8,9 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { AdminFormValidator, FieldValidator } from './validation/AdminFormValidator';
+import { UnsavedChangesGuard, useUnsavedChanges } from './validation/UnsavedChangesGuard';
+import { useAdminValidation } from '@/utils/security/AdminSecurityValidator';
 import { 
   Upload, 
   X, 
@@ -49,6 +52,8 @@ export const ChapterEditor = ({ chapter, isOpen, onClose, onSave }: ChapterEdito
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(true);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     title: '',
     chapter_number: 1,
@@ -58,6 +63,8 @@ export const ChapterEditor = ({ chapter, isOpen, onClose, onSave }: ChapterEdito
     seo_title: '',
     seo_description: ''
   });
+  const { hasUnsavedChanges, markAsSaved, showGuard, setShowGuard, handleSaveAndNavigate, handleDiscardAndNavigate } = useUnsavedChanges(formData);
+  const { validateFile, assessSecurity } = useAdminValidation();
   const [chapterImages, setChapterImages] = useState<string[]>([]);
   const [previewMode, setPreviewMode] = useState(false);
 

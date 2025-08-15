@@ -6,6 +6,9 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { AdminFormValidator, FieldValidator } from './validation/AdminFormValidator';
+import { useAdminValidation } from '@/utils/security/AdminSecurityValidator';
+import { useSimpleRole } from '@/hooks/useSimpleRole';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -42,6 +45,10 @@ const CoinPricingManager = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRule, setSelectedRule] = useState<CoinPricingRule | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(true);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const { isAdmin } = useSimpleRole();
+  const { validateForm, assessSecurity } = useAdminValidation();
   const [formData, setFormData] = useState({
     user_group: '',
     coin_amount: 100,
@@ -50,6 +57,16 @@ const CoinPricingManager = () => {
     currency: 'USD',
     promo_code: ''
   });
+
+  // Validate coin amount (1-100000, integer)
+  const validateCoinAmount = (value: number) => {
+    return value >= 1 && value <= 100000 && Number.isInteger(value);
+  };
+
+  // Validate price (0.01-9999.99, two decimals)
+  const validatePrice = (value: number) => {
+    return value >= 0.01 && value <= 9999.99 && Number((value).toFixed(2)) === value;
+  };
 
   const regions = [
     { value: 'global', label: 'Global' },
@@ -145,6 +162,34 @@ const CoinPricingManager = () => {
   };
 
   const handleSaveRule = async () => {
+    // Validate form before saving
+    if (!isFormValid) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix all validation errors before saving.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!validateCoinAmount(formData.coin_amount)) {
+      toast({
+        title: "Invalid Coin Amount",
+        description: "Coin amount must be between 1 and 100,000 (integer).",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!validatePrice(formData.price_usd)) {
+      toast({
+        title: "Invalid Price",
+        description: "Price must be between $0.01 and $9,999.99 (two decimals).",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       const ruleData = {
         ...formData,

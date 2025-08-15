@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { AdminFormValidator, FieldValidator } from './validation/AdminFormValidator';
+import { useAdminValidation } from '@/utils/security/AdminSecurityValidator';
+import { useSimpleRole } from '@/hooks/useSimpleRole';
 import {
   Table,
   TableBody,
@@ -85,7 +88,12 @@ export const CommentsManager = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [chapterFilter, setChapterFilter] = useState<string>("all");
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null);
+  const [moderationNote, setModerationNote] = useState("");
+  const [isFormValid, setIsFormValid] = useState(true);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const { toast } = useToast();
+  const { isAdmin, isEditor } = useSimpleRole();
+  const { validateForm, assessSecurity } = useAdminValidation();
 
   useEffect(() => {
     fetchComments();
@@ -235,14 +243,38 @@ export const CommentsManager = () => {
           <CardDescription>Moderate and manage user comments</CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Real-time validation */}
+          <AdminFormValidator
+            formType="moderationForm"
+            data={{ search_query: searchTerm, moderation_note: moderationNote }}
+            onValidationChange={(isValid, errors) => {
+              setIsFormValid(isValid);
+              setValidationErrors(errors);
+            }}
+            showSecurityStatus={true}
+            className="mb-4"
+          />
+
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search comments, users..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value;
+                  const security = assessSecurity(sanitizedValue);
+                  if (!security.blocked) {
+                    setSearchTerm(sanitizedValue);
+                  }
+                }}
                 className="pl-10"
+              />
+              <FieldValidator
+                field="search_query"
+                value={searchTerm}
+                rule={{ maxLength: 200, sanitize: true }}
+                className="absolute right-2 top-2"
               />
             </div>
             <Select value={chapterFilter} onValueChange={setChapterFilter}>
@@ -313,35 +345,56 @@ export const CommentsManager = () => {
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <DropdownMenuItem onClick={() => setSelectedComment(comment)}>
                             <Eye className="h-4 w-4 mr-2" />
                             View Full Comment
                           </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                Delete Comment
-                              </DropdownMenuItem>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This action cannot be undone. This will permanently delete the comment.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => deleteComment(comment.id)}>
-                                  Delete
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
+                          {(isAdmin || isEditor) && (
+                            <>
+                              <DropdownMenuSeparator />
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Delete Comment
+                                  </DropdownMenuItem>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Delete Comment</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This action cannot be undone. This will permanently delete the comment and any associated data.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <div className="space-y-2 my-4">
+                                    <label className="text-sm font-medium">Deletion Reason (Optional)</label>
+                                    <Input
+                                      placeholder="Reason for deletion..."
+                                      value={moderationNote}
+                                      onChange={(e) => setModerationNote(e.target.value)}
+                                    />
+                                    <FieldValidator
+                                      field="moderation_note"
+                                      value={moderationNote}
+                                      rule={{ maxLength: 500, sanitize: true }}
+                                    />
+                                  </div>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction 
+                                      onClick={() => deleteComment(comment.id)}
+                                      disabled={!isFormValid}
+                                      className="bg-destructive hover:bg-destructive/90"
+                                    >
+                                      Delete Comment
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

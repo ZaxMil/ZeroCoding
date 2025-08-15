@@ -10,6 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, Save, Trash2, Edit3, Eye, Calendar, Tag, Image, FileText, Globe } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { AdminFormValidator, FieldValidator } from './validation/AdminFormValidator';
+import { UnsavedChangesGuard, useUnsavedChanges } from './validation/UnsavedChangesGuard';
+import { useAdminValidation } from '@/utils/security/AdminSecurityValidator';
+import { useSimpleRole } from '@/hooks/useSimpleRole';
 import { formatDistanceToNow } from 'date-fns';
 interface BlogPost {
   id: string;
@@ -36,15 +40,18 @@ const STATUS_OPTIONS = [{
   label: 'Published'
 }];
 export const BlogManager = () => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
   const [newTag, setNewTag] = useState("");
+  const [isFormValid, setIsFormValid] = useState(true);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const { hasUnsavedChanges, markAsSaved, showGuard, setShowGuard, handleSaveAndNavigate, handleDiscardAndNavigate } = useUnsavedChanges(selectedPost || {});
+  const { isAdmin, isEditor } = useSimpleRole();
+  const { validateForm, assessSecurity } = useAdminValidation();
   useEffect(() => {
     loadPosts();
   }, []);
@@ -311,11 +318,27 @@ export const BlogManager = () => {
         }}>
               ← Back to Articles
             </Button>
-            <Button onClick={handleSave} disabled={saving} className="gap-2">
+            <Button 
+              onClick={handleSave} 
+              disabled={saving || !isFormValid} 
+              className="gap-2"
+            >
               <Save className="h-4 w-4" />
               {saving ? "Saving..." : "Save Article"}
             </Button>
           </div>
+
+          {/* Real-time validation */}
+          <AdminFormValidator
+            formType="seriesForm"
+            data={selectedPost}
+            onValidationChange={(isValid, errors) => {
+              setIsFormValid(isValid);
+              setValidationErrors(errors);
+            }}
+            showSecurityStatus={true}
+            className="mb-4"
+          />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
             {/* Main Content */}
@@ -327,10 +350,23 @@ export const BlogManager = () => {
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="title">Title</Label>
-                    <Input id="title" value={selectedPost.title} onChange={e => setSelectedPost(prev => prev ? {
-                  ...prev,
-                  title: e.target.value
-                } : null)} placeholder="Enter article title..." />
+                    <Input 
+                      id="title" 
+                      value={selectedPost.title} 
+                      onChange={e => {
+                        const sanitizedValue = e.target.value;
+                        const security = assessSecurity(sanitizedValue);
+                        if (!security.blocked) {
+                          setSelectedPost(prev => prev ? { ...prev, title: sanitizedValue } : null);
+                        }
+                      }} 
+                      placeholder="Enter article title..." 
+                    />
+                    <FieldValidator
+                      field="title"
+                      value={selectedPost.title}
+                      rule={{ required: true, maxLength: 200, sanitize: true }}
+                    />
                   </div>
 
                   <div className="space-y-2">
@@ -351,10 +387,24 @@ export const BlogManager = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="content">Content</Label>
-                    <Textarea id="content" value={selectedPost.content} onChange={e => setSelectedPost(prev => prev ? {
-                  ...prev,
-                  content: e.target.value
-                } : null)} placeholder="Article content (HTML supported)..." rows={12} />
+                    <Textarea 
+                      id="content" 
+                      value={selectedPost.content} 
+                      onChange={e => {
+                        const sanitizedValue = e.target.value;
+                        const security = assessSecurity(sanitizedValue);
+                        if (!security.blocked) {
+                          setSelectedPost(prev => prev ? { ...prev, content: sanitizedValue } : null);
+                        }
+                      }} 
+                      placeholder="Article content (safe HTML supported)..." 
+                      rows={12} 
+                    />
+                    <FieldValidator
+                      field="content"
+                      value={selectedPost.content}
+                      rule={{ required: true, maxLength: 50000, sanitize: true, allowedTags: ['p', 'br', 'strong', 'em', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }}
+                    />
                   </div>
                 </CardContent>
               </Card>

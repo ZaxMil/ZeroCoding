@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { AdminFormValidator, FieldValidator } from './validation/AdminFormValidator';
+import { UnsavedChangesGuard, useUnsavedChanges } from './validation/UnsavedChangesGuard';
+import { useAdminValidation } from '@/utils/security/AdminSecurityValidator';
+import { useSimpleRole } from '@/hooks/useSimpleRole';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Table,
@@ -81,6 +85,10 @@ export const ChapterManager = ({ initialSeriesId }: ChapterManagerProps) => {
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [allSeries, setAllSeries] = useState<Series[]>([]);
   const [selectedSeriesId, setSelectedSeriesId] = useState<string>(initialSeriesId || "all");
+  const [isFormValid, setIsFormValid] = useState(true);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const { isAdmin, isEditor } = useSimpleRole();
+  const { validateFile, assessSecurity } = useAdminValidation();
   const [stats, setStats] = useState<ChapterStats>({
     totalViews: 0,
     totalDownloads: 0,

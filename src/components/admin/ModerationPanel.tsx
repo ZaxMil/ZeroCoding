@@ -6,6 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { AdminFormValidator, FieldValidator } from './validation/AdminFormValidator';
+import { useAdminValidation } from '@/utils/security/AdminSecurityValidator';
+import { useSimpleRole } from '@/hooks/useSimpleRole';
 import { 
   CheckCircle, 
   XCircle, 
@@ -59,6 +62,11 @@ export const ModerationPanel: React.FC = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('pending');
+  const [moderationNote, setModerationNote] = useState('');
+  const [isFormValid, setIsFormValid] = useState(true);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const { isAdmin, isEditor } = useSimpleRole();
+  const { validateForm, assessSecurity } = useAdminValidation();
 
   useEffect(() => {
     loadModerationData();
@@ -159,6 +167,29 @@ export const ModerationPanel: React.FC = () => {
   };
 
   const handleModerationAction = async (itemId: string, action: 'approve' | 'reject', type: string, reason?: string) => {
+    // Check permissions
+    if (!isAdmin && !isEditor) {
+      toast({
+        title: "Access Denied",
+        description: "You don't have permission to perform moderation actions.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate reason if provided
+    if (reason) {
+      const security = assessSecurity(reason);
+      if (security.blocked) {
+        toast({
+          title: "Invalid Input",
+          description: "Moderation reason contains potentially unsafe content.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
     setActionLoading(itemId);
     
     try {
