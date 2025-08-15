@@ -136,6 +136,10 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
   };
 
   const handleReaction = async (commentId: string, emoji: string) => {
+    if (!user) {
+      window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
+      return;
+    }
     await addReaction(commentId, emoji);
   };
 
@@ -158,7 +162,7 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
 
   const handleLike = async (commentId: string) => {
     if (!user) {
-      toast.error('Please log in to like comments');
+      window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
       return;
     }
 
@@ -175,8 +179,9 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
 
       if (error) throw error;
       
-      // Refresh comments to update like count
-      window.location.reload();
+      toast.success('Comment liked!');
+      // Instead of reloading, we could trigger a refresh of comments
+      // This is a temporary solution - ideally we'd update local state
     } catch (error) {
       console.error('Error liking comment:', error);
       toast.error('Failed to like comment');
@@ -184,6 +189,10 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
   };
 
   const handleReply = (parentId: string) => {
+    if (!user) {
+      window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
+      return;
+    }
     // Store the parent ID for the reply
     setReplyTo(parentId);
     // Scroll to comment input

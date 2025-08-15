@@ -347,6 +347,14 @@ export const ModernCommentItem: React.FC<ModernCommentItemProps> = ({
               )}
             </Button>
 
+            {/* Quick Reactions */}
+            <QuickReactionBar
+              commentId={comment.id}
+              reactions={formatReactions()}
+              onReaction={onReaction!}
+              onRemoveReaction={onRemoveReaction!}
+            />
+
             {/* Reply Button */}
             {depth < maxDepth && (
               <Button
@@ -359,14 +367,6 @@ export const ModernCommentItem: React.FC<ModernCommentItemProps> = ({
                 Reply
               </Button>
             )}
-
-            {/* Quick Reactions */}
-            <QuickReactionBar
-              commentId={comment.id}
-              reactions={formatReactions()}
-              onReaction={onReaction!}
-              onRemoveReaction={onRemoveReaction!}
-            />
           </div>
 
           <div className="flex items-center gap-1">

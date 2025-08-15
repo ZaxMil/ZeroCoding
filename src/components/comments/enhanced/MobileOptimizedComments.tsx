@@ -188,8 +188,8 @@ export const MobileOptimizedComments: React.FC<MobileOptimizedCommentsProps> = (
 
       {/* Comments List */}
       <div className={cn(
-        "transition-all duration-300 ease-in-out overflow-hidden",
-        isExpanded ? "max-h-[70vh] overflow-y-auto" : "max-h-96"
+        "transition-all duration-300 ease-in-out",
+        isExpanded ? "max-h-[70vh]" : "max-h-96"
       )}>
         {loading ? (
           <div className="p-6 space-y-4">

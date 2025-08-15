@@ -554,7 +554,7 @@ export const WebtoonReader = ({
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    onClick={() => window.dispatchEvent(new CustomEvent('openAuthModal', { detail: { mode: 'signin' } }))}
+                    onClick={() => window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }))}
                     className="px-2 sm:px-3 text-xs sm:text-sm"
                   >
                     Sign In
@@ -693,7 +693,7 @@ export const WebtoonReader = ({
       </Card>
 
       {/* Comments Section - Full screen overlay when active */}
-      {showComments && chapterId && <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm overflow-hidden">
+      {showComments && chapterId && <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm">
           <div className="h-full flex flex-col">
             <div className="max-w-4xl mx-auto p-4 flex-shrink-0">
               <div className="flex items-center justify-between mb-4">
@@ -703,8 +703,8 @@ export const WebtoonReader = ({
                 </Button>
               </div>
             </div>
-            <div className="flex-1 overflow-y-auto">
-              <div className="max-w-4xl mx-auto px-4 pb-4">
+            <div className="flex-1 min-h-0">
+              <div className="max-w-4xl mx-auto px-4 pb-4 h-full">
                 <EnhancedUnifiedCommentSystem targetType="chapter" targetId={chapterId} targetTitle={chapterTitle} showRating={true} />
               </div>
             </div>
