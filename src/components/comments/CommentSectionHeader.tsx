@@ -111,7 +111,7 @@ export const CommentSectionHeader: React.FC<CommentSectionHeaderProps> = ({
   };
 
   const handleLogin = () => {
-    window.dispatchEvent(new CustomEvent('open-auth-modal'));
+    window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
   };
 
   return (
