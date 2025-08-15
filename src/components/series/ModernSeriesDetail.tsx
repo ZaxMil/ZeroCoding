@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { Button } from '@/components/ui/button';
 import { EnhancedUnifiedCommentSystem } from '@/components/comments/EnhancedUnifiedCommentSystem';
 import { supabase } from '@/integrations/supabase/client';
@@ -370,39 +370,39 @@ const ModernSeriesDetail = () => {
       <div className="container mx-auto px-4 py-4">
         <NextUpCTA seriesId={id!} />
       </div>
-      {/* Content Tabs */}
+      {/* Chapters Section */}
       <div className="container mx-auto px-4 py-6">
-        <Tabs defaultValue="chapters" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-6">
-            <TabsTrigger value="chapters" className="text-sm">
-              {listMode === 'pagination' ? 'Chapters' : `Chapters (${chapters.length})`}
-            </TabsTrigger>
-            <TabsTrigger value="comments" className="text-sm">
-              Comments
-            </TabsTrigger>
-          </TabsList>
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+            <div className="w-1 h-8 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            {listMode === 'pagination' ? 'Chapters' : `Chapters (${chapters.length})`}
+          </h2>
+          
+          {listMode === 'pagination' ? (
+            <React.Suspense fallback={<div className="py-6" aria-busy="true" aria-live="polite">Loading chapters…</div>}>
+              <SeriesChaptersPaginated seriesId={id!} seriesSlug={series?.slug || id} />
+            </React.Suspense>
+          ) : (
+            <ModernChapterGrid chapters={chapters} seriesSlug={series?.slug || id} />
+          )}
+        </div>
+      </div>
 
-          <TabsContent value="chapters" className="mt-0">
-            {listMode === 'pagination' ? (
-              <React.Suspense fallback={<div className="py-6" aria-busy="true" aria-live="polite">Loading chapters…</div>}>
-                <SeriesChaptersPaginated seriesId={id!} seriesSlug={series?.slug || id} />
-              </React.Suspense>
-            ) : (
-              <ModernChapterGrid chapters={chapters} seriesSlug={series?.slug || id} />
-            )}
-          </TabsContent>
-
-          <TabsContent value="comments" className="mt-0">
-            <div className="bg-card/50 border border-border/20 rounded-lg p-6">
-              <EnhancedUnifiedCommentSystem 
-                targetType="series"
-                targetId={id!}
-                targetTitle={series.title}
-                showRating={false}
-              />
-            </div>
-          </TabsContent>
-        </Tabs>
+      {/* Comments Section */}
+      <div className="container mx-auto px-4 py-6">
+        <div className="bg-gradient-to-r from-card/60 to-card/30 backdrop-blur-xl border border-border/20 rounded-xl p-6">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+            <div className="w-1 h-8 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            Comments & Reviews
+          </h2>
+          
+          <EnhancedUnifiedCommentSystem 
+            targetType="series"
+            targetId={id!}
+            targetTitle={series.title}
+            showRating={false}
+          />
+        </div>
       </div>
       </div>
     </>
