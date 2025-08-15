@@ -9,6 +9,8 @@ import { runtime } from '@/config/runtime';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoinWallet } from '@/hooks/useCoinWallet';
 import { getMockWallet, getUnlockedChapters, addUnlockedChapter } from '@/lib/mockStorage';
+import { AsyncErrorBoundary } from '@/components/AsyncErrorBoundary';
+import { logger } from '@/utils/logger';
 
 interface ChapterPrice {
   coin_cost: number;
@@ -23,7 +25,7 @@ interface ChapterUnlockButtonProps {
   onUnlocked?: () => void;
 }
 
-export const ChapterUnlockButton: React.FC<ChapterUnlockButtonProps> = ({
+const ChapterUnlockButtonComponent: React.FC<ChapterUnlockButtonProps> = ({
   chapterId,
   chapterTitle = "Chapter",
   className = "",
@@ -97,7 +99,7 @@ export const ChapterUnlockButton: React.FC<ChapterUnlockButtonProps> = ({
       setIsPremium(premiumData || false);
 
     } catch (error) {
-      console.error('Error checking access:', error);
+      logger.error('Error checking chapter access:', error);
     } finally {
       setLoading(false);
     }
@@ -127,7 +129,7 @@ export const ChapterUnlockButton: React.FC<ChapterUnlockButtonProps> = ({
       if (!authUser) throw new Error('Not authenticated');
 
       // Start transaction-like operations
-      console.log('[coins-unlock] Starting unlock process for chapter:', chapterId);
+      logger.info('Starting unlock process for chapter:', chapterId);
 
       // 1. Check if user has sufficient coins
       const { data: walletData, error: walletError } = await supabase
@@ -193,7 +195,7 @@ export const ChapterUnlockButton: React.FC<ChapterUnlockButtonProps> = ({
 
       if (accessError) throw new Error('Failed to grant chapter access');
 
-      console.log('[coins-unlock] Successfully unlocked chapter:', chapterId);
+      logger.info('Successfully unlocked chapter:', chapterId);
       
       setHasAccess(true);
       setUserBalance(newBalance);
@@ -202,7 +204,7 @@ export const ChapterUnlockButton: React.FC<ChapterUnlockButtonProps> = ({
       onUnlocked?.();
       toast({ title: 'Chapter Unlocked!', description: `You've unlocked ${chapterTitle} for ${price.coin_cost} coins.` });
     } catch (error: any) {
-      console.error('[coins-unlock] error', { error: error?.message, chapterId });
+      logger.error('Chapter unlock error:', { error: error?.message, chapterId });
       toast({ title: 'Error', description: `Unlock failed: ${error?.message || 'Unknown error'}`, variant: 'destructive' });
     } finally {
       setUnlocking(false);
@@ -324,3 +326,9 @@ export const ChapterUnlockButton: React.FC<ChapterUnlockButtonProps> = ({
     </>
   );
 };
+
+export const ChapterUnlockButton: React.FC<ChapterUnlockButtonProps> = (props) => (
+  <AsyncErrorBoundary componentName="Chapter Unlock Button">
+    <ChapterUnlockButtonComponent {...props} />
+  </AsyncErrorBoundary>
+);

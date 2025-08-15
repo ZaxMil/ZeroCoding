@@ -19,7 +19,7 @@ interface AuthModalProps {
 }
 
 const AuthModal = ({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) => {
-  console.log('🔐 AuthModal render:', { isOpen, initialTab }); // Debug log
+  // AuthModal render tracking removed for production
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

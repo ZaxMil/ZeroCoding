@@ -229,7 +229,7 @@ export const EnhancedMangaCard = ({
                     <div className="h-6 bg-muted rounded" />
                   </div> : <div className="space-y-1">
                      {(() => {
-                console.log(`EnhancedMangaCard - Series ${series.id} (${series.title}): chapters found=${chapters.length}`);
+                // Chapter count logging removed for production
                 // If no real chapters, show fake locked ones to entice users
                 const chaptersToShow = chapters.length > 0 ? chapters : [{
                   id: `${series.id}-fake-3`,

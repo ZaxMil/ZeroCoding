@@ -10,6 +10,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { runtime } from '@/config/runtime';
 import { addUnlockedChapter } from '@/lib/mockStorage';
 import CoinStorePopup from './CoinStorePopup';
+import { AsyncErrorBoundary } from '@/components/AsyncErrorBoundary';
+import { logger } from '@/utils/logger';
 
 interface ChapterUnlockPopupProps {
   isOpen: boolean;
@@ -20,7 +22,7 @@ interface ChapterUnlockPopupProps {
   onUnlocked?: () => void;
 }
 
-const ChapterUnlockPopup: React.FC<ChapterUnlockPopupProps> = ({
+const ChapterUnlockPopupComponent: React.FC<ChapterUnlockPopupProps> = ({
   isOpen,
   onClose,
   chapterId,
@@ -56,7 +58,7 @@ const ChapterUnlockPopup: React.FC<ChapterUnlockPopupProps> = ({
       if (!authUser) throw new Error('Not authenticated');
 
       // Start transaction-like operations
-      console.log('[coins-unlock] Starting unlock process for chapter:', chapterId);
+      logger.info('Starting unlock process for chapter:', chapterId);
 
       // 1. Check if user has sufficient coins
       const { data: walletData, error: walletError } = await supabase
@@ -120,7 +122,7 @@ const ChapterUnlockPopup: React.FC<ChapterUnlockPopupProps> = ({
 
       if (accessError) throw new Error('Failed to grant chapter access');
 
-      console.log('[coins-unlock] Successfully unlocked chapter:', chapterId);
+      logger.info('Successfully unlocked chapter:', chapterId);
       
       onUnlocked?.();
       onClose();
@@ -128,7 +130,7 @@ const ChapterUnlockPopup: React.FC<ChapterUnlockPopupProps> = ({
       refreshWallet();
       toast({ title: 'Chapter Unlocked!', description: `You've successfully unlocked ${chapterTitle}` });
     } catch (error: any) {
-      console.error('[coins-unlock] error', { error: error?.message, chapterId });
+      logger.error('Chapter unlock error:', { error: error?.message, chapterId });
       toast({ title: 'Unlock Failed', description: `Unlock failed: ${error?.message || 'Unknown error'}`, variant: 'destructive' });
     } finally {
       setUnlocking(false);
@@ -257,5 +259,11 @@ const ChapterUnlockPopup: React.FC<ChapterUnlockPopupProps> = ({
     </>
   );
 };
+
+const ChapterUnlockPopup: React.FC<ChapterUnlockPopupProps> = (props) => (
+  <AsyncErrorBoundary componentName="Chapter Unlock Popup">
+    <ChapterUnlockPopupComponent {...props} />
+  </AsyncErrorBoundary>
+);
 
 export default ChapterUnlockPopup;

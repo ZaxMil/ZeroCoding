@@ -48,7 +48,7 @@ export const DevOverlay = ({ isOpen, onClose }: DevOverlayProps) => {
   const handleRoleChange = (role: 'anon' | 'member' | 'admin') => {
     setMockRole(role);
     // In real implementation, this would update mock auth state
-    console.log('Dev: Changed role to', role);
+    // Dev role change logging removed for production
   };
 
   const handleCoinsUpdate = () => {
@@ -60,7 +60,7 @@ export const DevOverlay = ({ isOpen, onClose }: DevOverlayProps) => {
   };
 
   const toggleFeature = (feature: string) => {
-    console.log('Dev: Toggled feature', feature);
+    // Dev feature toggle logging removed for production
   };
 
   if (!isOpen) return null;

@@ -9,13 +9,15 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoinWallet } from '@/hooks/useCoinWallet';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { AsyncErrorBoundary } from '@/components/AsyncErrorBoundary';
+import { logger } from '@/utils/logger';
 
 interface CoinStorePopupProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CoinStorePopup: React.FC<CoinStorePopupProps> = ({ isOpen, onClose }) => {
+const CoinStorePopupComponent: React.FC<CoinStorePopupProps> = ({ isOpen, onClose }) => {
   const { user } = useAuth();
   const { wallet, refreshWallet } = useCoinWallet();
   const { toast } = useToast();
@@ -73,7 +75,7 @@ const CoinStorePopup: React.FC<CoinStorePopupProps> = ({ isOpen, onClose }) => {
         onClose();
       }
     } catch (error) {
-      console.error('Error initiating purchase:', error);
+      logger.error('Error initiating purchase:', error);
       toast({
         title: "Purchase Failed",
         description: "Unable to start payment process. Please try again.",
@@ -204,5 +206,11 @@ const CoinStorePopup: React.FC<CoinStorePopupProps> = ({ isOpen, onClose }) => {
     </Dialog>
   );
 };
+
+const CoinStorePopup: React.FC<CoinStorePopupProps> = (props) => (
+  <AsyncErrorBoundary componentName="Coin Store Popup">
+    <CoinStorePopupComponent {...props} />
+  </AsyncErrorBoundary>
+);
 
 export default CoinStorePopup;

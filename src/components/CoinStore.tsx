@@ -7,6 +7,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoinWallet } from '@/hooks/useCoinWallet';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { AsyncErrorBoundary } from '@/components/AsyncErrorBoundary';
+import { logger } from '@/utils/logger';
 
 interface CoinPackage {
   id: string;
@@ -20,7 +22,7 @@ interface CoinPackage {
   popular?: boolean;
 }
 
-const CoinStore = () => {
+const CoinStoreComponent = () => {
   const { user } = useAuth();
   const { wallet, refreshWallet } = useCoinWallet();
   const { toast } = useToast();
@@ -105,7 +107,7 @@ const CoinStore = () => {
         });
       }
     } catch (error) {
-      console.error('Error initiating purchase:', error);
+      logger.error('Error initiating coin purchase:', error);
       toast({
         title: "Purchase Failed",
         description: "Unable to start payment process. Please try again.",
@@ -274,5 +276,11 @@ const CoinStore = () => {
     </div>
   );
 };
+
+const CoinStore = () => (
+  <AsyncErrorBoundary componentName="Coin Store">
+    <CoinStoreComponent />
+  </AsyncErrorBoundary>
+);
 
 export default CoinStore;

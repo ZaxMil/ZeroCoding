@@ -268,7 +268,7 @@ export const SeriesGrid: React.FC<SeriesGridProps> = ({
                   <h4 className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide">Latest Chapters</h4>
                    <div className="space-y-1 max-h-24 sm:max-h-28 overflow-y-auto scrollbar-hide">
                      {(() => {
-                       console.log(`SeriesGrid - Series ${item.id} (${item.title}): latest_chapter=${item.latest_chapter}`);
+                       // Latest chapter logging removed for production
                        // Always show some locked chapters to entice users to sign up and buy
                        const latestChapter = item.latest_chapter || 3; // Default to chapter 3 if no data
                        const chaptersToShow = [];

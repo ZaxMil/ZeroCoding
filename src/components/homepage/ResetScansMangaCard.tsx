@@ -141,7 +141,7 @@ export const ResetScansMangaCard = ({ series, showMetadata = true }: ResetScansM
               {/* Chapter badges */}
               <div className="flex gap-1">
                 {(() => {
-                  console.log(`ResetScansMangaCard - Series ${series.id} (${series.title}): chapters found=${chapters.length}`);
+                  // Chapter count logging removed for production
                   // If we have real chapters, show them, otherwise show fake locked ones to entice users
                   const chaptersToShow = chapters.length > 0 ? chapters : [
                     { number: 3, is_locked: true, created_at: new Date().toISOString() },

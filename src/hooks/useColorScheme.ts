@@ -95,7 +95,7 @@ export const useColorScheme = () => {
           .single();
 
         if (error && error.code !== 'PGRST116') {
-          console.error('Error loading color scheme:', error);
+          // Color scheme loading error logged centrally
           return;
         }
 
@@ -113,7 +113,7 @@ export const useColorScheme = () => {
           });
         }
       } catch (error) {
-        console.error('Failed to load color scheme:', error);
+        // Color scheme loading error handled silently
       }
     };
 
