@@ -386,7 +386,7 @@ export const DoublePageReader = ({
         className="relative w-full h-screen flex items-center justify-center pt-12"
         onClick={handleContainerClick}
       >
-        {/* Double Page Container with Curl Effect Animation */}
+        {/* Double Page Container with Layered Flip Animation */}
         <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center perspective-1000">
           <div className="flex w-full h-full gap-1 transform-style-preserve-3d">
             {/* Right Page (First in manga reading order) */}
@@ -429,10 +429,10 @@ export const DoublePageReader = ({
                   transformOrigin: flipDirection === 'next' ? 'right center' : 'left center'
                 }}
               >
-                {/* Page curl shadow overlay */}
+                {/* Dynamic shadow overlay */}
                 {isFlipping && (
                   <div 
-                    className="absolute inset-0 z-10 curl-shadow-gradient opacity-60 transition-opacity duration-200"
+                    className="absolute inset-0 z-40 layered-flip-shadow opacity-30 transition-opacity duration-200"
                     style={{
                       mixBlendMode: 'multiply'
                     }}
