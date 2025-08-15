@@ -1,0 +1,78 @@
+/* Spoiler text styling */
+.spoiler-text {
+  background-color: currentColor;
+  color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.spoiler-text:hover,
+.spoiler-text.revealed {
+  background-color: transparent;
+  color: inherit;
+}
+
+.spoiler-text::selection {
+  background-color: transparent;
+}
+
+/* TipTap editor styles */
+.ProseMirror {
+  outline: none;
+  padding: 0.75rem;
+  min-height: 150px;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}
+
+.ProseMirror blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+}
+
+.ProseMirror ul, .ProseMirror ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.ProseMirror li {
+  margin: 0.25rem 0;
+}
+
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.ProseMirror a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+}
+
+.ProseMirror a:hover {
+  text-decoration: none;
+}
+
+.mention {
+  background-color: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+}
+
+.mention:hover {
+  background-color: hsl(var(--primary) / 0.2);
+}
