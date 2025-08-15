@@ -132,8 +132,8 @@ export const DoublePageReader = ({
         setTimeout(() => {
           setIsFlipping(false);
           setFlipDirection(null);
-        }, 900); // Match new layered flip animation duration
-      }, 450); // Half of animation for page swap
+        }, 800); // Match new curl animation duration
+      }, 400); // Half of animation for page swap
     } else {
       // Instant navigation when animation is disabled
       if (nextPage < pages.length) {
@@ -168,8 +168,8 @@ export const DoublePageReader = ({
         setTimeout(() => {
           setIsFlipping(false);
           setFlipDirection(null);
-        }, 900); // Match new layered flip animation duration
-      }, 450); // Half of animation for page swap
+        }, 800); // Match new curl animation duration
+      }, 400); // Half of animation for page swap
     } else {
       // Instant navigation when animation is disabled
       if (prevPage >= 0) {
@@ -386,53 +386,30 @@ export const DoublePageReader = ({
         className="relative w-full h-screen flex items-center justify-center pt-12"
         onClick={handleContainerClick}
       >
-        {/* Double Page Container with Layered Flip Animation */}
+        {/* Double Page Container with Curl Effect Animation */}
         <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center perspective-1000">
           <div className="flex w-full h-full gap-1 transform-style-preserve-3d">
             {/* Right Page (First in manga reading order) */}
             <div className="flex-1 h-full relative">
-              {/* Page thickness layer (bottom) */}
-              {isFlipping && (
-                <div 
-                  className={`absolute inset-0 w-full h-2 top-1/2 -translate-y-1/2 page-thickness z-0 ${
-                    flipDirection === 'next' 
-                      ? 'animate-[thicknessFlipNext_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
-                      : 'animate-[thicknessFlipPrev_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]'
-                  }`}
-                  style={{
-                    transformOrigin: flipDirection === 'next' ? 'right center' : 'left center'
-                  }}
-                />
-              )}
-
-              {/* Book spine (middle layer) */}
-              {isFlipping && (
-                <div 
-                  className={`absolute inset-0 w-1 left-1/2 -translate-x-1/2 book-spine z-10 ${
-                    flipDirection === 'next' 
-                      ? 'animate-[spineFlipNext_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
-                      : 'animate-[spineFlipPrev_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]'
-                  }`}
-                />
-              )}
-
-              {/* Front page layer (main content) */}
+              {/* Main page container with curl effect */}
               <div 
-                className={`relative w-full h-full transform-gpu overflow-hidden z-30 ${
+                className={`relative w-full h-full transform-gpu overflow-hidden ${
                   isFlipping && flipDirection === 'next' 
-                    ? 'animate-[frontPageFlipNext_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
+                    ? 'animate-[pageCurlNext_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
                     : isFlipping && flipDirection === 'prev' 
-                    ? 'animate-[frontPageFlipPrev_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
+                    ? 'animate-[pageCurlPrev_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
                     : ''
+                } ${
+                  isFlipping ? 'animate-[pageLift_0.2s_ease-out]' : ''
                 }`}
                 style={{
                   transformOrigin: flipDirection === 'next' ? 'right center' : 'left center'
                 }}
               >
-                {/* Dynamic shadow overlay */}
+                {/* Page curl shadow overlay */}
                 {isFlipping && (
                   <div 
-                    className="absolute inset-0 z-40 layered-flip-shadow opacity-30 transition-opacity duration-200"
+                    className="absolute inset-0 z-10 curl-shadow-gradient opacity-60 transition-opacity duration-200"
                     style={{
                       mixBlendMode: 'multiply'
                     }}
@@ -466,48 +443,25 @@ export const DoublePageReader = ({
 
             {/* Left Page (Second in manga reading order) */}
             <div className="flex-1 h-full relative">
-              {/* Page thickness layer (bottom) */}
-              {isFlipping && (
-                <div 
-                  className={`absolute inset-0 w-full h-2 top-1/2 -translate-y-1/2 page-thickness z-0 ${
-                    flipDirection === 'prev' 
-                      ? 'animate-[thicknessFlipNext_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
-                      : 'animate-[thicknessFlipPrev_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]'
-                  }`}
-                  style={{
-                    transformOrigin: flipDirection === 'prev' ? 'right center' : 'left center'
-                  }}
-                />
-              )}
-
-              {/* Book spine (middle layer) */}
-              {isFlipping && (
-                <div 
-                  className={`absolute inset-0 w-1 left-1/2 -translate-x-1/2 book-spine z-10 ${
-                    flipDirection === 'prev' 
-                      ? 'animate-[spineFlipNext_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
-                      : 'animate-[spineFlipPrev_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]'
-                  }`}
-                />
-              )}
-
-              {/* Front page layer (main content) */}
+              {/* Main page container with curl effect */}
               <div 
-                className={`relative w-full h-full transform-gpu overflow-hidden z-30 ${
+                className={`relative w-full h-full transform-gpu overflow-hidden ${
                   isFlipping && flipDirection === 'prev' 
-                    ? 'animate-[frontPageFlipNext_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
+                    ? 'animate-[pageCurlNext_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
                     : isFlipping && flipDirection === 'next' 
-                    ? 'animate-[frontPageFlipPrev_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
+                    ? 'animate-[pageCurlPrev_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' 
                     : ''
+                } ${
+                  isFlipping ? 'animate-[pageLift_0.2s_ease-out]' : ''
                 }`}
                 style={{
                   transformOrigin: flipDirection === 'prev' ? 'right center' : 'left center'
                 }}
               >
-                {/* Dynamic shadow overlay */}
+                {/* Page curl shadow overlay */}
                 {isFlipping && (
                   <div 
-                    className="absolute inset-0 z-40 layered-flip-shadow opacity-50 transition-opacity duration-200"
+                    className="absolute inset-0 z-10 curl-shadow-gradient opacity-60 transition-opacity duration-200"
                     style={{
                       mixBlendMode: 'multiply'
                     }}
@@ -532,7 +486,7 @@ export const DoublePageReader = ({
                 )}
                 
                 {leftPageIndex !== null && loadingPages[leftPageIndex] && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-muted/20 z-50">
+                  <div className="absolute inset-0 flex items-center justify-center bg-muted/20 z-20">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                   </div>
                 )}

@@ -1,9 +1,131 @@
+@import url('./components/comments/spoiler.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Manga Reader Design System - Modern dark theme with Japanese aesthetics */
+
 @layer base {
   :root {
+    /* RTL/LTR Support */
+    --font-language: 'Noto Sans', sans-serif;
+    /* Improved warm theme with better contrast */
+    --background: 220 13% 18%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 13% 16%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 13% 15%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Warm orange primary for better contrast */
+    --primary: 25 95% 53%;
+    --primary-foreground: 220 13% 18%;
+
+    --secondary: 220 13% 22%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 13% 20%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 220 13% 24%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 13% 26%;
+    --input: 220 13% 20%;
+    --ring: 25 95% 53%;
+
+    /* Refined manga colors */
+    --manga-red: 0 72% 51%;
+    --manga-red-hover: 0 72% 46%;
+    --manga-gold: 25 95% 53%;
+    --manga-blue: 210 100% 60%;
+    --reader-bg: 220 13% 15%;
+    --chapter-progress: 142 76% 36%;
+    
+    /* Subtle gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220 13% 18%), hsl(220 13% 22%));
+    --gradient-card: linear-gradient(145deg, hsl(220 13% 16%), hsl(220 13% 14%));
+    --gradient-accent: linear-gradient(90deg, hsl(25 95% 53%), hsl(33 100% 50%));
+    --gradient-surface: linear-gradient(180deg, hsl(220 13% 20%), hsl(220 13% 16%));
+    
+    /* Refined shadows */
+    --shadow-manga: 0 8px 25px -5px hsl(0 0% 0% / 0.3);
+    --shadow-card: 0 4px 15px -2px hsl(0 0% 0% / 0.2);
+    --shadow-glow: 0 0 20px hsl(25 95% 53% / 0.15);
+    --shadow-hover: 0 6px 20px -3px hsl(0 0% 0% / 0.25);
+    
+    /* Smooth transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-gentle: all 0.2s ease-out;
+    --transition-flip: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Scrollbar colors */
+    --sb-thumb: hsl(var(--muted-foreground) / 0.35);
+    --sb-thumb-hover: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Admin Dashboard Theme Variants */
+  .admin-theme-white {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -13,97 +135,26 @@
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
     --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
+    --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-
-    /* Manga-specific colors */
-    --manga-red: 0 69% 47%;
-    --manga-red-hover: 0 69% 42%;
-    --manga-gold: 42 87% 55%;
-    --manga-blue: 214 84% 56%;
-    
-    /* Reader-specific colors */
-    --reader-bg: 0 0% 0%;
-    --chapter-progress: 142 72% 29%;
-    
-    /* Sidebar */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    
-    /* Scrollbar */
-    --sb-thumb: 210 40% 80%;
-    --sb-thumb-hover: 210 40% 70%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+  .admin-theme-dark {
+    /* Uses existing dark theme */
+  }
 
-    /* Manga-specific colors for dark mode */
-    --manga-red: 0 69% 52%;
-    --manga-red-hover: 0 69% 47%;
-    --manga-gold: 42 87% 60%;
-    --manga-blue: 214 84% 61%;
-    
-    /* Reader-specific colors for dark mode */
-    --reader-bg: 0 0% 0%;
-    --chapter-progress: 142 72% 34%;
-    
-    /* Sidebar dark */
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 94.1%;
-    --sidebar-primary-foreground: 240 5.9% 10%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    
-    /* Scrollbar dark */
-    --sb-thumb: 217.2 32.6% 25%;
-    --sb-thumb-hover: 217.2 32.6% 35%;
+  .admin-theme-custom {
+    --primary: var(--admin-custom-primary);
+    --primary-foreground: var(--admin-custom-primary-foreground);
+    --ring: var(--admin-custom-primary);
   }
 }
 
@@ -111,151 +162,191 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-language);
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
   
-  /* Perspective utilities for 3D animations */
-  .perspective-1000 {
-    perspective: 1000px;
+  /* RTL Support */
+  [dir="rtl"] {
+    direction: rtl;
   }
   
-  .perspective-2000 {
-    perspective: 2000px;
+  [dir="ltr"] {
+    direction: ltr;
   }
   
-  .transform-style-preserve-3d {
-    transform-style: preserve-3d;
+  /* Direction-aware utilities */
+  [dir="rtl"] .rtl\:text-right {
+    text-align: right;
   }
   
-  .transform-gpu {
-    transform: translateZ(0);
-    will-change: transform;
+  [dir="rtl"] .rtl\:text-left {
+    text-align: left;
   }
   
-  /* Backface visibility for flipping cards */
-  .backface-hidden {
-    backface-visibility: hidden;
+  [dir="rtl"] .rtl\:mr-auto {
+    margin-right: auto;
+  }
+  
+  [dir="rtl"] .rtl\:ml-auto {
+    margin-left: auto;
+  }
+  
+  [dir="rtl"] .rtl\:flex-row-reverse {
+    flex-direction: row-reverse;
+  }
+  
+  /* RTL spacing adjustments */
+  [dir="rtl"] .rtl\:space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
   }
 }
 
 @layer components {
-  .hero-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-foreground)));
-  }
-  
-  .hero-text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .card-elegant {
-    background: hsl(var(--card));
-    box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.1);
-    border: 1px solid hsl(var(--border));
-  }
-  
-  .glass-card {
-    background: hsl(var(--background) / 0.8);
-    backdrop-filter: blur(12px);
-    border: 1px solid hsl(var(--border) / 0.5);
-  }
-  
-  .smooth-transition {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
+  /* Mouse movement animations */
   .hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    @apply transition-all duration-300 ease-out;
   }
-  
   .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px -15px hsl(var(--primary) / 0.2);
+    @apply transform -translate-y-1 shadow-lg;
   }
   
-  .gradient-border {
-    position: relative;
-    background: hsl(var(--background));
+  /* Interactive card animations */
+  .interactive-card {
+    @apply transition-all duration-300 ease-out transform-gpu;
+  }
+  .interactive-card:hover {
+    @apply shadow-lg scale-[1.02];
   }
   
-  .gradient-border::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    padding: 1px;
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    border-radius: inherit;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: subtract;
+  /* Smooth mouse following effects */
+  .mouse-reactive {
+    @apply transition-transform duration-300 ease-out;
   }
   
-  /* Enhanced floating label */
-  .floating-label {
-    position: relative;
+  /* Hide scrollbar while keeping functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+  }
+
+  /* Ultra small screen utilities for 240px+ screens */
+  .text-xs-smaller {
+    font-size: 0.6rem;
+    line-height: 0.75rem;
   }
   
-  .floating-label input:focus + label,
-  .floating-label input:not(:placeholder-shown) + label {
-    transform: translateY(-1.5rem) scale(0.875);
-    color: hsl(var(--primary));
+  .p-xs {
+    padding: 0.25rem;
   }
   
-  .floating-label label {
-    position: absolute;
-    left: 0.75rem;
-    top: 0.75rem;
-    transition: all 0.2s ease-out;
-    pointer-events: none;
-    color: hsl(var(--muted-foreground));
+  .px-xs {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
   }
   
-  /* Reading mode specific styles */
-  .reading-container {
-    background: hsl(var(--reader-bg));
-    min-height: 100vh;
+  .py-xs {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
   
-  .page-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 1rem;
+  .m-xs {
+    margin: 0.25rem;
   }
   
-  .double-page-spread {
-    display: flex;
+  .mx-xs {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+  }
+  
+  .my-xs {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .gap-xs {
     gap: 0.25rem;
-    max-width: 100%;
-    max-height: 90vh;
   }
   
-  .manga-page {
-    max-width: 50%;
+  .space-x-xs > :not([hidden]) ~ :not([hidden]) {
+    margin-left: 0.25rem;
+  }
+  
+  .space-y-xs > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.25rem;
+  }
+
+  /* Responsive text scaling for very small screens */
+  @media (max-width: 320px) {
+    .responsive-text-xs {
+      font-size: 0.65rem;
+      line-height: 0.85rem;
+    }
+    
+    .responsive-text-sm {
+      font-size: 0.75rem;
+      line-height: 1rem;
+    }
+    
+    .responsive-text-base {
+      font-size: 0.8rem;
+      line-height: 1.1rem;
+    }
+    
+    .responsive-text-lg {
+      font-size: 0.9rem;
+      line-height: 1.2rem;
+    }
+    
+    .responsive-text-xl {
+      font-size: 1rem;
+      line-height: 1.3rem;
+    }
+  }
+
+  /* Responsive containers for ultra small screens */
+  @media (max-width: 320px) {
+    .container {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+  
+  /* Force all elements to respect viewport width */
+  img, video, iframe, canvas, svg {
+    max-width: 100vw !important;
     height: auto;
-    object-fit: contain;
+    box-sizing: border-box;
   }
   
-  .webtoon-scroll {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--image-gap, 0px);
+  /* Prevent any container from exceeding viewport */
+  .webtoon-container {
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
-  
-  .webtoon-page {
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-    object-fit: contain;
+
+  /* 3D Reading Mode Animation Classes */
+  .perspective-1000 {
+    perspective: 1000px;
   }
-  
-  /* Animation variables */
-  :root {
-    --transition-flip: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  .rotate-y-neg-180 {
+    transform: rotateY(-180deg);
   }
 
   /* Book page flip animation */
@@ -294,217 +385,99 @@
       0 0 0 1px hsl(0 0% 0% / 0.1);
   }
 
-  /* Layered flip animations with depth and book-like layers */
-  @keyframes pageFlipNext {
+  /* Page Curl Effect Animations */
+  @keyframes pageCurlNext {
     0% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(0px);
+      transform: perspective(1200px) rotateY(0deg) translateZ(0px);
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      filter: brightness(1) drop-shadow(0 0 0 transparent);
     }
-    25% {
-      transform: perspective(1000px) rotateY(-45deg) translateZ(20px);
+    20% {
+      transform: perspective(1200px) rotateY(-5deg) translateZ(10px);
+      clip-path: polygon(0% 0%, 95% 0%, 90% 100%, 0% 100%);
+      filter: brightness(0.95) drop-shadow(5px 0 10px rgba(0,0,0,0.2));
+    }
+    40% {
+      transform: perspective(1200px) rotateY(-25deg) translateZ(30px);
+      clip-path: polygon(0% 0%, 85% 0%, 70% 100%, 0% 100%);
+      filter: brightness(0.85) drop-shadow(15px 0 20px rgba(0,0,0,0.4));
+    }
+    60% {
+      transform: perspective(1200px) rotateY(-70deg) translateZ(50px);
+      clip-path: polygon(0% 0%, 70% 0%, 40% 100%, 0% 100%);
+      filter: brightness(0.7) drop-shadow(25px 0 30px rgba(0,0,0,0.6));
+    }
+    80% {
+      transform: perspective(1200px) rotateY(-120deg) translateZ(30px);
+      clip-path: polygon(0% 0%, 30% 0%, 10% 100%, 0% 100%);
+      filter: brightness(0.8) drop-shadow(20px 0 25px rgba(0,0,0,0.5));
+    }
+    100% {
+      transform: perspective(1200px) rotateY(-180deg) translateZ(0px);
+      clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+      filter: brightness(1) drop-shadow(0 0 0 transparent);
+    }
+  }
+
+  @keyframes pageCurlPrev {
+    0% {
+      transform: perspective(1200px) rotateY(-180deg) translateZ(0px);
+      clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+      filter: brightness(1) drop-shadow(0 0 0 transparent);
+    }
+    20% {
+      transform: perspective(1200px) rotateY(-160deg) translateZ(10px);
+      clip-path: polygon(90% 0%, 100% 0%, 100% 100%, 95% 100%);
+      filter: brightness(0.95) drop-shadow(-5px 0 10px rgba(0,0,0,0.2));
+    }
+    40% {
+      transform: perspective(1200px) rotateY(-120deg) translateZ(30px);
+      clip-path: polygon(70% 0%, 100% 0%, 100% 100%, 85% 100%);
+      filter: brightness(0.85) drop-shadow(-15px 0 20px rgba(0,0,0,0.4));
+    }
+    60% {
+      transform: perspective(1200px) rotateY(-70deg) translateZ(50px);
+      clip-path: polygon(40% 0%, 100% 0%, 100% 100%, 70% 100%);
+      filter: brightness(0.7) drop-shadow(-25px 0 30px rgba(0,0,0,0.6));
+    }
+    80% {
+      transform: perspective(1200px) rotateY(-25deg) translateZ(30px);
+      clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 30% 100%);
+      filter: brightness(0.8) drop-shadow(-20px 0 25px rgba(0,0,0,0.5));
+    }
+    100% {
+      transform: perspective(1200px) rotateY(0deg) translateZ(0px);
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      filter: brightness(1) drop-shadow(0 0 0 transparent);
+    }
+  }
+
+  /* Page lifting effect before curl */
+  @keyframes pageLift {
+    0% {
+      transform: translateZ(0px) rotateX(0deg);
+      box-shadow: 0 0 0 transparent;
     }
     50% {
-      transform: perspective(1000px) rotateY(-90deg) translateZ(30px);
-    }
-    75% {
-      transform: perspective(1000px) rotateY(-135deg) translateZ(20px);
+      transform: translateZ(15px) rotateX(5deg);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
     }
     100% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(0px);
+      transform: translateZ(0px) rotateX(0deg);
+      box-shadow: 0 0 0 transparent;
     }
   }
 
-  @keyframes pageFlipPrev {
-    0% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(0px);
-    }
-    25% {
-      transform: perspective(1000px) rotateY(-135deg) translateZ(20px);
-    }
-    50% {
-      transform: perspective(1000px) rotateY(-90deg) translateZ(30px);
-    }
-    75% {
-      transform: perspective(1000px) rotateY(-45deg) translateZ(20px);
-    }
-    100% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(0px);
-    }
-  }
-
-  /* Front page layer animation */
-  @keyframes frontPageFlipNext {
-    0% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(10px);
-      opacity: 1;
-    }
-    30% {
-      transform: perspective(1000px) rotateY(-60deg) translateZ(25px);
-      opacity: 0.9;
-    }
-    70% {
-      transform: perspective(1000px) rotateY(-120deg) translateZ(25px);
-      opacity: 0.7;
-    }
-    100% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(5px);
-      opacity: 0.3;
-    }
-  }
-
-  @keyframes frontPageFlipPrev {
-    0% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(5px);
-      opacity: 0.3;
-    }
-    30% {
-      transform: perspective(1000px) rotateY(-120deg) translateZ(25px);
-      opacity: 0.7;
-    }
-    70% {
-      transform: perspective(1000px) rotateY(-60deg) translateZ(25px);
-      opacity: 0.9;
-    }
-    100% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(10px);
-      opacity: 1;
-    }
-  }
-
-  /* Back page layer animation */
-  @keyframes backPageFlipNext {
-    0% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(5px);
-      opacity: 0.8;
-    }
-    30% {
-      transform: perspective(1000px) rotateY(-30deg) translateZ(15px);
-      opacity: 0.9;
-    }
-    70% {
-      transform: perspective(1000px) rotateY(-150deg) translateZ(15px);
-      opacity: 0.9;
-    }
-    100% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(10px);
-      opacity: 1;
-    }
-  }
-
-  @keyframes backPageFlipPrev {
-    0% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(10px);
-      opacity: 1;
-    }
-    30% {
-      transform: perspective(1000px) rotateY(-150deg) translateZ(15px);
-      opacity: 0.9;
-    }
-    70% {
-      transform: perspective(1000px) rotateY(-30deg) translateZ(15px);
-      opacity: 0.9;
-    }
-    100% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(5px);
-      opacity: 0.8;
-    }
-  }
-
-  /* Spine shadow animation */
-  @keyframes spineFlipNext {
-    0% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(0px) scaleX(0);
-      opacity: 0;
-    }
-    50% {
-      transform: perspective(1000px) rotateY(-90deg) translateZ(2px) scaleX(1);
-      opacity: 1;
-    }
-    100% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(0px) scaleX(0);
-      opacity: 0;
-    }
-  }
-
-  @keyframes spineFlipPrev {
-    0% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(0px) scaleX(0);
-      opacity: 0;
-    }
-    50% {
-      transform: perspective(1000px) rotateY(-90deg) translateZ(2px) scaleX(1);
-      opacity: 1;
-    }
-    100% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(0px) scaleX(0);
-      opacity: 0;
-    }
-  }
-
-  /* Page thickness shadow */
-  @keyframes thicknessFlipNext {
-    0% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(-2px) scaleY(1);
-      opacity: 0.3;
-    }
-    50% {
-      transform: perspective(1000px) rotateY(-90deg) translateZ(8px) scaleY(1.1);
-      opacity: 0.6;
-    }
-    100% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(-2px) scaleY(1);
-      opacity: 0.3;
-    }
-  }
-
-  @keyframes thicknessFlipPrev {
-    0% {
-      transform: perspective(1000px) rotateY(-180deg) translateZ(-2px) scaleY(1);
-      opacity: 0.3;
-    }
-    50% {
-      transform: perspective(1000px) rotateY(-90deg) translateZ(8px) scaleY(1.1);
-      opacity: 0.6;
-    }
-    100% {
-      transform: perspective(1000px) rotateY(0deg) translateZ(-2px) scaleY(1);
-      opacity: 0.3;
-    }
-  }
-
-  /* Dynamic shadow gradient */
-  .layered-flip-shadow {
+  /* Enhanced curl shadow gradients */
+  .curl-shadow-gradient {
     background: linear-gradient(
-      90deg,
+      to right,
       transparent 0%,
       rgba(0,0,0,0.1) 20%,
-      rgba(0,0,0,0.4) 50%,
+      rgba(0,0,0,0.3) 50%,
       rgba(0,0,0,0.1) 80%,
       transparent 100%
     );
-  }
-
-  /* Book spine effect */
-  .book-spine {
-    background: linear-gradient(
-      180deg,
-      rgba(139, 69, 19, 0.8) 0%,
-      rgba(101, 50, 15, 0.9) 50%,
-      rgba(139, 69, 19, 0.8) 100%
-    );
-    border-left: 1px solid rgba(139, 69, 19, 0.6);
-    border-right: 1px solid rgba(139, 69, 19, 0.6);
-  }
-
-  /* Page thickness illusion */
-  .page-thickness {
-    background: linear-gradient(
-      90deg,
-      rgba(240, 240, 240, 0.9) 0%,
-      rgba(220, 220, 220, 0.95) 50%,
-      rgba(240, 240, 240, 0.9) 100%
-    );
-    border-top: 1px solid rgba(200, 200, 200, 0.8);
-    border-bottom: 1px solid rgba(200, 200, 200, 0.8);
   }
 }
 
@@ -525,5 +498,8 @@
   }
   *::-webkit-scrollbar-thumb:hover {
     background-color: var(--sb-thumb-hover);
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
   }
 }
