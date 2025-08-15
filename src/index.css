@@ -372,168 +372,252 @@
     transition: var(--transition-flip);
   }
 
-  /* Enhanced shadows for 3D effect with layered depth */
-  .layered-flip-shadow {
+  /* Enhanced shadows for hybrid flip effect */
+  .hybrid-flip-shadow {
     box-shadow: 
       0 8px 25px -8px hsl(0 0% 0% / 0.25),
       inset 1px 0 2px hsl(0 0% 0% / 0.05),
       0 0 0 0.5px hsl(0 0% 100% / 0.03);
-    border-radius: 2px;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
   }
 
-  .layered-flip-shadow-active {
+  .hybrid-flip-shadow-active {
     box-shadow: 
       0 25px 60px -20px hsl(0 0% 0% / 0.4),
       inset 3px 0 6px hsl(0 0% 0% / 0.15),
       0 0 0 0.5px hsl(0 0% 100% / 0.05),
       -1px 0 8px hsl(25 95% 53% / 0.08);
-    border-radius: 2px;
+    border-radius: 3px;
   }
 
-  /* Book spine effect */
-  .book-spine-shadow {
+  /* Hybrid spine effect with dynamic glow */
+  .hybrid-spine-shadow {
     box-shadow: 
       inset 2px 0 4px hsl(0 0% 0% / 0.1),
-      2px 0 8px hsl(0 0% 0% / 0.15);
+      2px 0 8px hsl(0 0% 0% / 0.15),
+      0 0 12px hsl(25 95% 53% / 0.05);
   }
 
-  /* Layered Flip with Depth - Book-like Multi-layer Animation */
+  /* Hybrid Flip Animation - Custom Combination of Multiple Approaches */
   
-  /* Main flip animations with realistic depth */
-  @keyframes layeredFlipNext {
+  /* Main hybrid flip with 3D perspective, elastic timing, and dynamic lighting */
+  @keyframes hybridFlipNext {
     0% {
-      transform: perspective(1400px) rotateY(0deg) translateZ(0px);
-      filter: brightness(1) blur(0px);
+      transform: perspective(1600px) rotateY(0deg) translateZ(0px) scale(1);
+      filter: brightness(1) blur(0px) hue-rotate(0deg);
+      box-shadow: 0 8px 25px hsl(0 0% 0% / 0.2);
     }
-    10% {
-      transform: perspective(1400px) rotateY(-15deg) translateZ(5px);
-      filter: brightness(0.98) blur(0px);
+    5% {
+      transform: perspective(1600px) rotateY(-8deg) translateZ(2px) scale(1.02);
+      filter: brightness(1.05) blur(0px) hue-rotate(2deg);
+      box-shadow: 0 12px 30px hsl(0 0% 0% / 0.25);
+    }
+    15% {
+      transform: perspective(1600px) rotateY(-25deg) translateZ(8px) scale(1.05);
+      filter: brightness(0.95) blur(0.3px) hue-rotate(5deg);
+      box-shadow: 0 18px 40px hsl(0 0% 0% / 0.3);
     }
     25% {
-      transform: perspective(1400px) rotateY(-45deg) translateZ(15px);
-      filter: brightness(0.9) blur(0.5px);
+      transform: perspective(1600px) rotateY(-50deg) translateZ(15px) scale(0.98);
+      filter: brightness(0.85) blur(0.8px) hue-rotate(8deg);
+      box-shadow: 0 25px 55px hsl(0 0% 0% / 0.35);
+    }
+    40% {
+      transform: perspective(1600px) rotateY(-80deg) translateZ(22px) scale(0.95);
+      filter: brightness(0.7) blur(1.2px) hue-rotate(12deg);
+      box-shadow: 0 35px 70px hsl(0 0% 0% / 0.4);
     }
     50% {
-      transform: perspective(1400px) rotateY(-90deg) translateZ(25px);
-      filter: brightness(0.7) blur(1px);
+      transform: perspective(1600px) rotateY(-90deg) translateZ(25px) scale(0.93);
+      filter: brightness(0.6) blur(1.5px) hue-rotate(15deg);
+      box-shadow: 0 40px 80px hsl(0 0% 0% / 0.45);
+    }
+    60% {
+      transform: perspective(1600px) rotateY(-100deg) translateZ(22px) scale(0.95);
+      filter: brightness(0.7) blur(1.2px) hue-rotate(12deg);
+      box-shadow: 0 35px 70px hsl(0 0% 0% / 0.4);
     }
     75% {
-      transform: perspective(1400px) rotateY(-135deg) translateZ(15px);
-      filter: brightness(0.9) blur(0.5px);
+      transform: perspective(1600px) rotateY(-130deg) translateZ(15px) scale(0.98);
+      filter: brightness(0.85) blur(0.8px) hue-rotate(8deg);
+      box-shadow: 0 25px 55px hsl(0 0% 0% / 0.35);
     }
-    90% {
-      transform: perspective(1400px) rotateY(-165deg) translateZ(5px);
-      filter: brightness(0.98) blur(0px);
+    85% {
+      transform: perspective(1600px) rotateY(-155deg) translateZ(8px) scale(1.05);
+      filter: brightness(0.95) blur(0.3px) hue-rotate(5deg);
+      box-shadow: 0 18px 40px hsl(0 0% 0% / 0.3);
+    }
+    95% {
+      transform: perspective(1600px) rotateY(-172deg) translateZ(2px) scale(1.02);
+      filter: brightness(1.05) blur(0px) hue-rotate(2deg);
+      box-shadow: 0 12px 30px hsl(0 0% 0% / 0.25);
     }
     100% {
-      transform: perspective(1400px) rotateY(-180deg) translateZ(0px);
-      filter: brightness(1) blur(0px);
+      transform: perspective(1600px) rotateY(-180deg) translateZ(0px) scale(1);
+      filter: brightness(1) blur(0px) hue-rotate(0deg);
+      box-shadow: 0 8px 25px hsl(0 0% 0% / 0.2);
     }
   }
 
-  @keyframes layeredFlipPrev {
+  @keyframes hybridFlipPrev {
     0% {
-      transform: perspective(1400px) rotateY(-180deg) translateZ(0px);
-      filter: brightness(1) blur(0px);
+      transform: perspective(1600px) rotateY(-180deg) translateZ(0px) scale(1);
+      filter: brightness(1) blur(0px) hue-rotate(0deg);
+      box-shadow: 0 8px 25px hsl(0 0% 0% / 0.2);
     }
-    10% {
-      transform: perspective(1400px) rotateY(-165deg) translateZ(5px);
-      filter: brightness(0.98) blur(0px);
+    5% {
+      transform: perspective(1600px) rotateY(-172deg) translateZ(2px) scale(1.02);
+      filter: brightness(1.05) blur(0px) hue-rotate(2deg);
+      box-shadow: 0 12px 30px hsl(0 0% 0% / 0.25);
+    }
+    15% {
+      transform: perspective(1600px) rotateY(-155deg) translateZ(8px) scale(1.05);
+      filter: brightness(0.95) blur(0.3px) hue-rotate(5deg);
+      box-shadow: 0 18px 40px hsl(0 0% 0% / 0.3);
     }
     25% {
-      transform: perspective(1400px) rotateY(-135deg) translateZ(15px);
-      filter: brightness(0.9) blur(0.5px);
+      transform: perspective(1600px) rotateY(-130deg) translateZ(15px) scale(0.98);
+      filter: brightness(0.85) blur(0.8px) hue-rotate(8deg);
+      box-shadow: 0 25px 55px hsl(0 0% 0% / 0.35);
+    }
+    40% {
+      transform: perspective(1600px) rotateY(-100deg) translateZ(22px) scale(0.95);
+      filter: brightness(0.7) blur(1.2px) hue-rotate(12deg);
+      box-shadow: 0 35px 70px hsl(0 0% 0% / 0.4);
     }
     50% {
-      transform: perspective(1400px) rotateY(-90deg) translateZ(25px);
-      filter: brightness(0.7) blur(1px);
+      transform: perspective(1600px) rotateY(-90deg) translateZ(25px) scale(0.93);
+      filter: brightness(0.6) blur(1.5px) hue-rotate(15deg);
+      box-shadow: 0 40px 80px hsl(0 0% 0% / 0.45);
+    }
+    60% {
+      transform: perspective(1600px) rotateY(-80deg) translateZ(22px) scale(0.95);
+      filter: brightness(0.7) blur(1.2px) hue-rotate(12deg);
+      box-shadow: 0 35px 70px hsl(0 0% 0% / 0.4);
     }
     75% {
-      transform: perspective(1400px) rotateY(-45deg) translateZ(15px);
-      filter: brightness(0.9) blur(0.5px);
+      transform: perspective(1600px) rotateY(-50deg) translateZ(15px) scale(0.98);
+      filter: brightness(0.85) blur(0.8px) hue-rotate(8deg);
+      box-shadow: 0 25px 55px hsl(0 0% 0% / 0.35);
     }
-    90% {
-      transform: perspective(1400px) rotateY(-15deg) translateZ(5px);
-      filter: brightness(0.98) blur(0px);
+    85% {
+      transform: perspective(1600px) rotateY(-25deg) translateZ(8px) scale(1.05);
+      filter: brightness(0.95) blur(0.3px) hue-rotate(5deg);
+      box-shadow: 0 18px 40px hsl(0 0% 0% / 0.3);
+    }
+    95% {
+      transform: perspective(1600px) rotateY(-8deg) translateZ(2px) scale(1.02);
+      filter: brightness(1.05) blur(0px) hue-rotate(2deg);
+      box-shadow: 0 12px 30px hsl(0 0% 0% / 0.25);
     }
     100% {
-      transform: perspective(1400px) rotateY(0deg) translateZ(0px);
-      filter: brightness(1) blur(0px);
+      transform: perspective(1600px) rotateY(0deg) translateZ(0px) scale(1);
+      filter: brightness(1) blur(0px) hue-rotate(0deg);
+      box-shadow: 0 8px 25px hsl(0 0% 0% / 0.2);
     }
   }
 
-  /* Layered depth animations for individual pages */
-  @keyframes layeredDepthNext {
+  /* Hybrid elastic bounce with staggered timing */
+  @keyframes hybridBounceNext {
     0% {
-      transform: translateZ(0px) scale(1);
-      box-shadow: 0 5px 15px hsl(0 0% 0% / 0.2);
+      transform: scale(1) translateX(0) rotateZ(0deg);
     }
-    20% {
-      transform: translateZ(3px) scale(1.005);
-      box-shadow: 0 8px 25px hsl(0 0% 0% / 0.25);
+    10% {
+      transform: scale(1.03) translateX(-2px) rotateZ(0.5deg);
     }
-    40% {
-      transform: translateZ(8px) scale(1.01);
-      box-shadow: 0 15px 40px hsl(0 0% 0% / 0.3);
+    25% {
+      transform: scale(0.97) translateX(-6px) rotateZ(-0.3deg);
     }
-    60% {
-      transform: translateZ(12px) scale(1.015);
-      box-shadow: 0 20px 55px hsl(0 0% 0% / 0.35);
+    45% {
+      transform: scale(1.01) translateX(-4px) rotateZ(0.2deg);
+    }
+    65% {
+      transform: scale(0.99) translateX(-1px) rotateZ(-0.1deg);
     }
     80% {
-      transform: translateZ(6px) scale(1.008);
-      box-shadow: 0 12px 30px hsl(0 0% 0% / 0.28);
+      transform: scale(1.005) translateX(0px) rotateZ(0deg);
     }
     100% {
-      transform: translateZ(0px) scale(1);
-      box-shadow: 0 5px 15px hsl(0 0% 0% / 0.2);
+      transform: scale(1) translateX(0) rotateZ(0deg);
     }
   }
 
-  @keyframes layeredDepthPrev {
+  @keyframes hybridBouncePrev {
     0% {
-      transform: translateZ(0px) scale(1);
-      box-shadow: 0 5px 15px hsl(0 0% 0% / 0.2);
+      transform: scale(1) translateX(0) rotateZ(0deg);
     }
-    20% {
-      transform: translateZ(3px) scale(1.005);
-      box-shadow: 0 8px 25px hsl(0 0% 0% / 0.25);
+    10% {
+      transform: scale(1.03) translateX(2px) rotateZ(-0.5deg);
     }
-    40% {
-      transform: translateZ(8px) scale(1.01);
-      box-shadow: 0 15px 40px hsl(0 0% 0% / 0.3);
+    25% {
+      transform: scale(0.97) translateX(6px) rotateZ(0.3deg);
     }
-    60% {
-      transform: translateZ(12px) scale(1.015);
-      box-shadow: 0 20px 55px hsl(0 0% 0% / 0.35);
+    45% {
+      transform: scale(1.01) translateX(4px) rotateZ(-0.2deg);
+    }
+    65% {
+      transform: scale(0.99) translateX(1px) rotateZ(0.1deg);
     }
     80% {
-      transform: translateZ(6px) scale(1.008);
-      box-shadow: 0 12px 30px hsl(0 0% 0% / 0.28);
+      transform: scale(1.005) translateX(0px) rotateZ(0deg);
     }
     100% {
-      transform: translateZ(0px) scale(1);
-      box-shadow: 0 5px 15px hsl(0 0% 0% / 0.2);
+      transform: scale(1) translateX(0) rotateZ(0deg);
     }
   }
 
-  /* Spine shadow animation */
-  @keyframes spineGlow {
+  /* Dynamic page separation with elastic settling */
+  @keyframes hybridPageSeparation {
     0% {
-      box-shadow: 
-        inset 2px 0 4px hsl(0 0% 0% / 0.1),
-        0 5px 15px hsl(0 0% 0% / 0.2);
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+    20% {
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+    40% {
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+    60% {
+      margin-left: 6px;
+      margin-right: 6px;
+    }
+    80% {
+      margin-left: 2px;
+      margin-right: 2px;
+    }
+    100% {
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+  }
+
+  /* Ambient glow effect during flip */
+  @keyframes hybridAmbientGlow {
+    0% {
+      background: linear-gradient(45deg, transparent, transparent);
+    }
+    25% {
+      background: linear-gradient(45deg, 
+        hsl(25 95% 53% / 0.03), 
+        hsl(210 100% 60% / 0.02));
     }
     50% {
-      box-shadow: 
-        inset 4px 0 8px hsl(0 0% 0% / 0.2),
-        0 15px 35px hsl(0 0% 0% / 0.3),
-        -2px 0 10px hsl(25 95% 53% / 0.1);
+      background: linear-gradient(45deg, 
+        hsl(25 95% 53% / 0.05), 
+        hsl(210 100% 60% / 0.03));
+    }
+    75% {
+      background: linear-gradient(45deg, 
+        hsl(25 95% 53% / 0.03), 
+        hsl(210 100% 60% / 0.02));
     }
     100% {
-      box-shadow: 
-        inset 2px 0 4px hsl(0 0% 0% / 0.1),
-        0 5px 15px hsl(0 0% 0% / 0.2);
+      background: linear-gradient(45deg, transparent, transparent);
     }
   }
 

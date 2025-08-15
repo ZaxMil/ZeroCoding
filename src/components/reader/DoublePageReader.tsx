@@ -132,8 +132,8 @@ export const DoublePageReader = ({
         setTimeout(() => {
           setIsFlipping(false);
           setFlipDirection(null);
-        }, 800); // Match CSS animation duration (1.0s)
-      }, 200); // Shorter delay for layered effect
+        }, 1000); // Match CSS animation duration (1.2s)
+      }, 150); // Shorter delay for hybrid effect
     } else {
       // Instant navigation when animation is disabled
       if (nextPage < pages.length) {
@@ -168,8 +168,8 @@ export const DoublePageReader = ({
         setTimeout(() => {
           setIsFlipping(false);
           setFlipDirection(null);
-        }, 800); // Match CSS animation duration (1.0s)
-      }, 200); // Shorter delay for layered effect
+        }, 1000); // Match CSS animation duration (1.2s)
+      }, 150); // Shorter delay for hybrid effect
     } else {
       // Instant navigation when animation is disabled
       if (prevPage >= 0) {
@@ -390,16 +390,16 @@ export const DoublePageReader = ({
         <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center perspective-1000">
           <div 
             className={`flex w-full h-full gap-1 transform-style-preserve-3d transition-transform duration-200 ${
-              isFlipping && flipDirection === 'next' ? 'animate-[layeredFlipNext_1.0s_cubic-bezier(0.25,0.1,0.25,1)]' :
-              isFlipping && flipDirection === 'prev' ? 'animate-[layeredFlipPrev_1.0s_cubic-bezier(0.25,0.1,0.25,1)]' : ''
+              isFlipping && flipDirection === 'next' ? 'animate-[hybridFlipNext_1.2s_cubic-bezier(0.175,0.885,0.32,1.275),hybridPageSeparation_1.2s_ease-out,hybridAmbientGlow_1.2s_ease-in-out]' :
+              isFlipping && flipDirection === 'prev' ? 'animate-[hybridFlipPrev_1.2s_cubic-bezier(0.175,0.885,0.32,1.275),hybridPageSeparation_1.2s_ease-out,hybridAmbientGlow_1.2s_ease-in-out]' : ''
             }`}
           >
             {/* Right Page (First in manga reading order) */}
             <div 
               className={`flex-1 h-full relative transform-gpu transition-all duration-300 ${
-                isFlipping && flipDirection === 'next' ? 'layered-flip-shadow-active book-spine-shadow animate-[layeredDepthNext_1.0s_cubic-bezier(0.25,0.1,0.25,1),spineGlow_1.0s_ease-in-out]' :
-                isFlipping && flipDirection === 'prev' ? 'layered-flip-shadow-active book-spine-shadow animate-[layeredDepthPrev_1.0s_cubic-bezier(0.25,0.1,0.25,1),spineGlow_1.0s_ease-in-out]' :
-                'layered-flip-shadow'
+                isFlipping && flipDirection === 'next' ? 'hybrid-flip-shadow-active hybrid-spine-shadow animate-[hybridBounceNext_1.2s_cubic-bezier(0.68,-0.55,0.265,1.55)]' :
+                isFlipping && flipDirection === 'prev' ? 'hybrid-flip-shadow-active hybrid-spine-shadow animate-[hybridBouncePrev_1.2s_cubic-bezier(0.68,-0.55,0.265,1.55)]' :
+                'hybrid-flip-shadow'
               }`}
             >
               {rightPage && (
@@ -428,9 +428,9 @@ export const DoublePageReader = ({
             {/* Left Page (Second in manga reading order) */}
             <div 
               className={`flex-1 h-full relative transform-gpu transition-all duration-300 ${
-                isFlipping && flipDirection === 'next' ? 'layered-flip-shadow-active book-spine-shadow animate-[layeredDepthNext_1.0s_cubic-bezier(0.25,0.1,0.25,1),spineGlow_1.0s_ease-in-out]' :
-                isFlipping && flipDirection === 'prev' ? 'layered-flip-shadow-active book-spine-shadow animate-[layeredDepthPrev_1.0s_cubic-bezier(0.25,0.1,0.25,1),spineGlow_1.0s_ease-in-out]' :
-                'layered-flip-shadow'
+                isFlipping && flipDirection === 'next' ? 'hybrid-flip-shadow-active hybrid-spine-shadow animate-[hybridBounceNext_1.2s_cubic-bezier(0.68,-0.55,0.265,1.55)]' :
+                isFlipping && flipDirection === 'prev' ? 'hybrid-flip-shadow-active hybrid-spine-shadow animate-[hybridBouncePrev_1.2s_cubic-bezier(0.68,-0.55,0.265,1.55)]' :
+                'hybrid-flip-shadow'
               }`}
             >
               {leftPage && leftPageIndex !== null && (
