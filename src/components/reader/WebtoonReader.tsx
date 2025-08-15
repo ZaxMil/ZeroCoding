@@ -2,9 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ChevronLeft, ChevronRight, Home, List, Settings, BookOpen } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Home, List, Settings, BookOpen, User, LogOut, Shield, Edit, Crown, Clock, ShoppingCart } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { ChapterSettings } from './ChapterSettings';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useSubscription } from '@/hooks/useSubscription';
 import { useChapterLayout } from '@/hooks/useChapterLayout';
 import { useAdvancedImagePreloader } from '@/hooks/useAdvancedImagePreloader';
 import { useAdvancedReadingProgress } from '@/hooks/useAdvancedReadingProgress';
@@ -82,8 +92,12 @@ export const WebtoonReader = ({
     readingMode
   } = useChapterLayout();
   const {
-    user
+    user,
+    userProfile,
+    signOut,
+    isLoading
   } = useAuth();
+  const { isPremium } = useSubscription();
   const navigate = useNavigate();
 
   // Enhanced progress tracking with scroll position support
@@ -429,6 +443,125 @@ export const WebtoonReader = ({
               <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
                 {currentPage + 1}/{pages.length}
               </span>
+              
+              {/* Authentication Controls */}
+              {!isLoading && (
+                user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="flex items-center gap-1 px-1 sm:px-2 hover:bg-accent">
+                        <Avatar className="h-6 w-6 sm:h-7 sm:w-7">
+                          <AvatarImage src="" />
+                          <AvatarFallback className="text-xs">
+                            <User className="h-3 w-3" />
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="hidden md:inline-block text-xs max-w-20 truncate">
+                          {userProfile?.username || user?.email?.split('@')[0] || 'User'}
+                        </span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56 bg-background/95 backdrop-blur-sm border-border">
+                      <div className="px-3 py-2 border-b border-border/50">
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage src="" />
+                            <AvatarFallback>
+                              <User className="h-4 w-4" />
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">
+                              {userProfile?.username || user?.email?.split('@')[0] || 'User'}
+                            </p>
+                            <p className="text-xs text-muted-foreground truncate">
+                              {user?.email}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex gap-1 mt-2">
+                          {userProfile?.role === 'admin' && (
+                            <Badge variant="outline" className="bg-manga-red/20 text-manga-red border-manga-red/30 text-xs px-1 py-0">
+                              <Crown className="h-2 w-2 mr-1" />
+                              Admin
+                            </Badge>
+                          )}
+                          {userProfile?.role === 'author' && (
+                            <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30 text-xs px-1 py-0">
+                              <Edit className="h-2 w-2 mr-1" />
+                              Author
+                            </Badge>
+                          )}
+                          {isPremium && (
+                            <Badge variant="outline" className="bg-gradient-to-r from-yellow-500/20 to-amber-500/20 text-yellow-400 border-yellow-500/30 text-xs px-1 py-0">
+                              <Crown className="h-2 w-2 mr-1" />
+                              Premium
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <DropdownMenuItem asChild>
+                        <Link to="/profile" className="cursor-pointer">
+                          <User className="mr-2 h-4 w-4" />
+                          Profile
+                        </Link>
+                      </DropdownMenuItem>
+                      
+                      <DropdownMenuItem asChild>
+                        <Link to="/history" className="cursor-pointer">
+                          <Clock className="mr-2 h-4 w-4" />
+                          Reading History
+                        </Link>
+                      </DropdownMenuItem>
+                      
+                      <DropdownMenuItem asChild>
+                        <Link to="/bundles" className="cursor-pointer">
+                          <ShoppingCart className="mr-2 h-4 w-4" />
+                          Bundles
+                        </Link>
+                      </DropdownMenuItem>
+                      
+                      <DropdownMenuSeparator />
+                      
+                      {userProfile?.role === 'admin' && (
+                        <DropdownMenuItem asChild>
+                          <Link to="/admin" className="cursor-pointer">
+                            <Shield className="mr-2 h-4 w-4" />
+                            Admin Panel
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
+                      
+                      {(userProfile?.role === 'author' || userProfile?.role === 'admin') && (
+                        <DropdownMenuItem asChild>
+                          <Link to="/author" className="cursor-pointer">
+                            <Edit className="mr-2 h-4 w-4" />
+                            Author Panel
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
+                      
+                      {(userProfile?.role === 'admin' || userProfile?.role === 'author') && <DropdownMenuSeparator />}
+                      
+                      <DropdownMenuItem onClick={signOut} className="cursor-pointer">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign Out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => window.dispatchEvent(new CustomEvent('openAuthModal', { detail: { mode: 'signin' } }))}
+                    className="px-2 sm:px-3 text-xs sm:text-sm"
+                  >
+                    Sign In
+                  </Button>
+                )
+              )}
+              
               <Button variant="ghost" size="sm" onClick={() => setSettingsOpen(!settingsOpen)} className="px-2">
                 <Settings className="h-4 w-4" />
               </Button>
