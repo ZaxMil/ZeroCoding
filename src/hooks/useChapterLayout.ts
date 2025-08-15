@@ -9,7 +9,7 @@ export type ImageFit = 'contain' | 'width' | 'height' | 'auto';
 export const useChapterLayout = () => {
   const { user } = useAuth();
   const [layout, setLayout] = useState<ChapterLayout>(1);
-  const [readingMode, setReadingMode] = useState<ReadingMode>('webtoon');
+  const [readingMode, setReadingMode] = useState<ReadingMode>('single');
   const [imageGap, setImageGap] = useState(0); // Gap in pixels - 0 for seamless webtoon
   const [imageFit, setImageFit] = useState<ImageFit>('height');
   const [imageScale, setImageScale] = useState(100); // Scale percentage
