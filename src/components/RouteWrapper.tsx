@@ -115,5 +115,14 @@ export const RouteWrapper: React.FC<RouteWrapperProps> = ({
     );
   }
 
-  return <>{content}</>;
+  return (
+    <>
+      {content}
+      <AuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialTab={authTab}
+      />
+    </>
+  );
 };
