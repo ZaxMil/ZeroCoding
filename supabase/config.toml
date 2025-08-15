@@ -1,7 +1,1 @@
 project_id = "eslcxgomsaizesekdvcc"
-
-[functions.admin-validation]
-verify_jwt = true
-
-[functions.content-moderation]
-verify_jwt = true
