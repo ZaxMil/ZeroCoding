@@ -14,6 +14,7 @@ export const useChapterLayout = () => {
   const [imageFit, setImageFit] = useState<ImageFit>('height');
   const [imageScale, setImageScale] = useState(100); // Scale percentage
   const [autoHideControls, setAutoHideControls] = useState(false); // Auto-hide controls setting
+  const [pageFlipAnimation, setPageFlipAnimation] = useState(true); // Page flip animation for double mode
   const [preferencesLoaded, setPreferencesLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -30,6 +31,7 @@ export const useChapterLayout = () => {
       localStorage.removeItem('image-fit');
       localStorage.removeItem('image-scale');
       localStorage.removeItem('auto-hide-controls');
+      localStorage.removeItem('page-flip-animation');
       localStorage.setItem('preferences-version', PREFERENCES_VERSION);
     }
   }, []);
@@ -47,6 +49,7 @@ export const useChapterLayout = () => {
         const savedImageFit = localStorage.getItem('image-fit');
         const savedImageScale = localStorage.getItem('image-scale');
         const savedAutoHideControls = localStorage.getItem('auto-hide-controls');
+        const savedPageFlipAnimation = localStorage.getItem('page-flip-animation');
         
         if (savedLayout) {
           const parsedLayout = parseInt(savedLayout) as ChapterLayout;
@@ -93,6 +96,13 @@ export const useChapterLayout = () => {
           setAutoHideControls(false);
         }
         
+        if (savedPageFlipAnimation !== null) {
+          setPageFlipAnimation(savedPageFlipAnimation === 'true');
+        } else {
+          // Default to true (enable page flip animation)
+          setPageFlipAnimation(true);
+        }
+        
         setPreferencesLoaded(true);
         console.log('🔄 Preferences loaded successfully');
       } catch (error) {
@@ -125,7 +135,7 @@ export const useChapterLayout = () => {
   // Sync preferences across components without reload
   useEffect(() => {
     const handler = (e: Event) => {
-      const evt = e as CustomEvent<Partial<{ layout: ChapterLayout; readingMode: ReadingMode; imageGap: number; imageFit: ImageFit; imageScale: number; autoHideControls: boolean }>>;
+      const evt = e as CustomEvent<Partial<{ layout: ChapterLayout; readingMode: ReadingMode; imageGap: number; imageFit: ImageFit; imageScale: number; autoHideControls: boolean; pageFlipAnimation: boolean }>>;
       const detail = evt.detail || {};
       if (detail.layout !== undefined) setLayout(detail.layout);
       if (detail.readingMode !== undefined) setReadingMode(detail.readingMode);
@@ -133,6 +143,7 @@ export const useChapterLayout = () => {
       if (detail.imageFit !== undefined) setImageFit(detail.imageFit);
       if (detail.imageScale !== undefined) setImageScale(detail.imageScale);
       if (detail.autoHideControls !== undefined) setAutoHideControls(detail.autoHideControls);
+      if (detail.pageFlipAnimation !== undefined) setPageFlipAnimation(detail.pageFlipAnimation);
     };
     window.addEventListener('chapterPreferencesChange', handler as EventListener);
     return () => window.removeEventListener('chapterPreferencesChange', handler as EventListener);
@@ -169,6 +180,11 @@ export const useChapterLayout = () => {
     await savePreferences({ autoHideControls: enabled });
   };
 
+  const updatePageFlipAnimation = async (enabled: boolean) => {
+    setPageFlipAnimation(enabled);
+    await savePreferences({ pageFlipAnimation: enabled });
+  };
+
   const savePreferences = async (prefs: {
     layout?: ChapterLayout;
     readingMode?: ReadingMode;
@@ -176,6 +192,7 @@ export const useChapterLayout = () => {
     imageFit?: ImageFit;
     imageScale?: number;
     autoHideControls?: boolean;
+    pageFlipAnimation?: boolean;
   }) => {
     try {
       // Save to localStorage for all users since database columns don't exist yet
@@ -197,6 +214,9 @@ export const useChapterLayout = () => {
       if (prefs.autoHideControls !== undefined) {
         localStorage.setItem('auto-hide-controls', prefs.autoHideControls.toString());
       }
+      if (prefs.pageFlipAnimation !== undefined) {
+        localStorage.setItem('page-flip-animation', prefs.pageFlipAnimation.toString());
+      }
 
       // Notify all open components about preference changes
       window.dispatchEvent(new CustomEvent('chapterPreferencesChange', { detail: prefs }));
@@ -212,12 +232,14 @@ export const useChapterLayout = () => {
     imageFit,
     imageScale,
     autoHideControls,
+    pageFlipAnimation,
     updateLayout,
     updateReadingMode,
     updateImageGap,
     updateImageFit,
     updateImageScale,
     updateAutoHideControls,
+    updatePageFlipAnimation,
     loading,
     preferencesLoaded
   };

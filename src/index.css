@@ -384,6 +384,53 @@
       0 20px 50px -15px hsl(0 0% 0% / 0.4),
       0 0 0 1px hsl(0 0% 0% / 0.1);
   }
+
+  /* Book page flip animations */
+  @keyframes flipNext {
+    0% {
+      transform: perspective(1200px) rotateY(0deg);
+      filter: brightness(1);
+    }
+    25% {
+      transform: perspective(1200px) rotateY(-15deg) translateX(-5px);
+      filter: brightness(0.9);
+    }
+    50% {
+      transform: perspective(1200px) rotateY(-90deg) translateX(-20px);
+      filter: brightness(0.7);
+    }
+    75% {
+      transform: perspective(1200px) rotateY(-165deg) translateX(-5px);
+      filter: brightness(0.9);
+    }
+    100% {
+      transform: perspective(1200px) rotateY(-180deg);
+      filter: brightness(1);
+    }
+  }
+
+  @keyframes flipPrev {
+    0% {
+      transform: perspective(1200px) rotateY(-180deg);
+      filter: brightness(1);
+    }
+    25% {
+      transform: perspective(1200px) rotateY(-165deg) translateX(-5px);
+      filter: brightness(0.9);
+    }
+    50% {
+      transform: perspective(1200px) rotateY(-90deg) translateX(-20px);
+      filter: brightness(0.7);
+    }
+    75% {
+      transform: perspective(1200px) rotateY(-15deg) translateX(-5px);
+      filter: brightness(0.9);
+    }
+    100% {
+      transform: perspective(1200px) rotateY(0deg);
+      filter: brightness(1);
+    }
+  }
 }
 
 @layer base {

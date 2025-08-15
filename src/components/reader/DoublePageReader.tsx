@@ -35,7 +35,7 @@ export const DoublePageReader = ({
   chapterTitle,
   chapterNumber,
 }: DoublePageReaderProps) => {
-  const { imageFit, imageScale, autoHideControls } = useChapterLayout();
+  const { imageFit, imageScale, autoHideControls, pageFlipAnimation } = useChapterLayout();
   const { user, userProfile } = useAuth();
   const [showControls, setShowControls] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -44,6 +44,8 @@ export const DoublePageReader = ({
   const [currentZoom, setCurrentZoom] = useState(100);
   const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [flipDirection, setFlipDirection] = useState<'next' | 'prev' | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Calculate pages for manga reading order (right-to-left)
@@ -109,28 +111,76 @@ export const DoublePageReader = ({
   }, [showControls, currentZoom]);
 
   const goToNextPage = useCallback(() => {
+    if (isFlipping) return; // Prevent navigation during animation
+    
     const nextPage = currentPage + 2; // Skip 2 pages in double page mode
     
-    if (nextPage < pages.length) {
-      onPageChange(nextPage);
-      resetZoom();
-    } else if (hasNextChapter) {
-      onNextChapter();
+    if (pageFlipAnimation && (nextPage < pages.length || hasNextChapter)) {
+      setIsFlipping(true);
+      setFlipDirection('next');
+      
+      // Delay the actual page change for flip animation
+      setTimeout(() => {
+        if (nextPage < pages.length) {
+          onPageChange(nextPage);
+          resetZoom();
+        } else if (hasNextChapter) {
+          onNextChapter();
+        }
+        
+        // Reset animation state
+        setTimeout(() => {
+          setIsFlipping(false);
+          setFlipDirection(null);
+        }, 400); // Match CSS animation duration
+      }, 200); // Half of animation for page swap
+    } else {
+      // Instant navigation when animation is disabled
+      if (nextPage < pages.length) {
+        onPageChange(nextPage);
+        resetZoom();
+      } else if (hasNextChapter) {
+        onNextChapter();
+      }
     }
     setShowControls(true);
-  }, [currentPage, pages.length, hasNextChapter, onPageChange, onNextChapter]);
+  }, [currentPage, pages.length, hasNextChapter, onPageChange, onNextChapter, pageFlipAnimation, isFlipping]);
 
   const goToPreviousPage = useCallback(() => {
+    if (isFlipping) return; // Prevent navigation during animation
+    
     const prevPage = Math.max(0, currentPage - 2); // Go back 2 pages in double page mode
     
-    if (prevPage >= 0) {
-      onPageChange(prevPage);
-      resetZoom();
-    } else if (hasPreviousChapter) {
-      onPreviousChapter();
+    if (pageFlipAnimation && (prevPage >= 0 || hasPreviousChapter)) {
+      setIsFlipping(true);
+      setFlipDirection('prev');
+      
+      // Delay the actual page change for flip animation
+      setTimeout(() => {
+        if (prevPage >= 0) {
+          onPageChange(prevPage);
+          resetZoom();
+        } else if (hasPreviousChapter) {
+          onPreviousChapter();
+        }
+        
+        // Reset animation state
+        setTimeout(() => {
+          setIsFlipping(false);
+          setFlipDirection(null);
+        }, 400); // Match CSS animation duration
+      }, 200); // Half of animation for page swap
+    } else {
+      // Instant navigation when animation is disabled
+      if (prevPage >= 0) {
+        onPageChange(prevPage);
+        resetZoom();
+      } else if (hasPreviousChapter) {
+        onPreviousChapter();
+      }
     }
     setShowControls(true);
-  }, [currentPage, hasPreviousChapter, onPageChange, onPreviousChapter]);
+  }, [currentPage, hasPreviousChapter, onPageChange, onPreviousChapter, pageFlipAnimation, isFlipping]);
 
   const zoomIn = () => setCurrentZoom(prev => Math.min(300, prev + 25));
   const zoomOut = () => setCurrentZoom(prev => Math.max(25, prev - 25));
@@ -179,8 +229,8 @@ export const DoublePageReader = ({
   }, [currentPage, pages]);
 
   const handleContainerClick = (e: React.MouseEvent) => {
-    // Don't navigate if we're panning or zoomed in
-    if (currentZoom > 100 || isPanning) return;
+    // Don't navigate if we're panning, zoomed in, or flipping
+    if (currentZoom > 100 || isPanning || isFlipping) return;
     
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
@@ -336,11 +386,20 @@ export const DoublePageReader = ({
         className="relative w-full h-screen flex items-center justify-center pt-12"
         onClick={handleContainerClick}
       >
-        {/* Double Page Container - Simple Layout */}
-        <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center">
-          <div className="flex w-full h-full gap-1">
+        {/* Double Page Container with Flip Animation */}
+        <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center perspective-1000">
+          <div 
+            className={`flex w-full h-full gap-1 transform-style-preserve-3d transition-transform duration-500 ease-out ${
+              isFlipping && flipDirection === 'next' ? 'animate-[flipNext_0.6s_ease-in-out]' :
+              isFlipping && flipDirection === 'prev' ? 'animate-[flipPrev_0.6s_ease-in-out]' : ''
+            }`}
+          >
             {/* Right Page (First in manga reading order) */}
-            <div className="flex-1 h-full relative">
+            <div 
+              className={`flex-1 h-full relative transform-gpu transition-all duration-300 ${
+                isFlipping ? 'flip-shadow-active' : 'flip-shadow'
+              }`}
+            >
               {rightPage && (
                 <img
                   src={rightPage}
@@ -365,7 +424,11 @@ export const DoublePageReader = ({
             </div>
 
             {/* Left Page (Second in manga reading order) */}
-            <div className="flex-1 h-full relative">
+            <div 
+              className={`flex-1 h-full relative transform-gpu transition-all duration-300 ${
+                isFlipping ? 'flip-shadow-active' : 'flip-shadow'
+              }`}
+            >
               {leftPage && leftPageIndex !== null && (
                 <img
                   src={leftPage}

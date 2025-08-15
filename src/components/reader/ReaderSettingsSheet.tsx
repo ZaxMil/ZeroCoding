@@ -49,11 +49,13 @@ export const ReaderSettingsSheet = ({ isOpen, onOpenChange, metrics }: ReaderSet
     imageFit,
     imageScale,
     autoHideControls,
+    pageFlipAnimation,
     updateReadingMode,
     updateImageGap,
     updateImageFit,
     updateImageScale,
     updateAutoHideControls,
+    updatePageFlipAnimation,
     loading
   } = useChapterLayout();
 
@@ -136,6 +138,22 @@ export const ReaderSettingsSheet = ({ isOpen, onOpenChange, metrics }: ReaderSet
                   {readingMode === 'double' && 'Side-by-side pages for wide screen reading'}
                 </p>
               </div>
+
+              {/* Page Flip Animation (Double Mode Only) */}
+              {readingMode === 'double' && (
+                <>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm font-medium">Page Flip Animation</Label>
+                    <Switch
+                      checked={pageFlipAnimation}
+                      onCheckedChange={updatePageFlipAnimation}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground -mt-2">
+                    Realistic page turning animation when navigating in double page mode
+                  </p>
+                </>
+              )}
 
               <Separator />
 
