@@ -132,8 +132,8 @@ export const DoublePageReader = ({
         setTimeout(() => {
           setIsFlipping(false);
           setFlipDirection(null);
-        }, 600); // Match CSS animation duration (0.8s - 0.2s delay)
-      }, 300); // Slightly longer delay for elastic effect
+        }, 800); // Match CSS animation duration (1.0s)
+      }, 200); // Shorter delay for layered effect
     } else {
       // Instant navigation when animation is disabled
       if (nextPage < pages.length) {
@@ -168,8 +168,8 @@ export const DoublePageReader = ({
         setTimeout(() => {
           setIsFlipping(false);
           setFlipDirection(null);
-        }, 600); // Match CSS animation duration (0.8s - 0.2s delay)
-      }, 300); // Slightly longer delay for elastic effect
+        }, 800); // Match CSS animation duration (1.0s)
+      }, 200); // Shorter delay for layered effect
     } else {
       // Instant navigation when animation is disabled
       if (prevPage >= 0) {
@@ -390,16 +390,16 @@ export const DoublePageReader = ({
         <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center perspective-1000">
           <div 
             className={`flex w-full h-full gap-1 transform-style-preserve-3d transition-transform duration-200 ${
-              isFlipping && flipDirection === 'next' ? 'animate-[elasticFlipNext_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' :
-              isFlipping && flipDirection === 'prev' ? 'animate-[elasticFlipPrev_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)]' : ''
+              isFlipping && flipDirection === 'next' ? 'animate-[layeredFlipNext_1.0s_cubic-bezier(0.25,0.1,0.25,1)]' :
+              isFlipping && flipDirection === 'prev' ? 'animate-[layeredFlipPrev_1.0s_cubic-bezier(0.25,0.1,0.25,1)]' : ''
             }`}
           >
             {/* Right Page (First in manga reading order) */}
             <div 
               className={`flex-1 h-full relative transform-gpu transition-all duration-300 ${
-                isFlipping && flipDirection === 'next' ? 'elastic-flip-shadow-active animate-[elasticBounceNext_0.8s_cubic-bezier(0.68,-0.55,0.265,1.55)]' :
-                isFlipping && flipDirection === 'prev' ? 'elastic-flip-shadow-active animate-[elasticBouncePrev_0.8s_cubic-bezier(0.68,-0.55,0.265,1.55)]' :
-                'elastic-flip-shadow'
+                isFlipping && flipDirection === 'next' ? 'layered-flip-shadow-active book-spine-shadow animate-[layeredDepthNext_1.0s_cubic-bezier(0.25,0.1,0.25,1),spineGlow_1.0s_ease-in-out]' :
+                isFlipping && flipDirection === 'prev' ? 'layered-flip-shadow-active book-spine-shadow animate-[layeredDepthPrev_1.0s_cubic-bezier(0.25,0.1,0.25,1),spineGlow_1.0s_ease-in-out]' :
+                'layered-flip-shadow'
               }`}
             >
               {rightPage && (
@@ -428,9 +428,9 @@ export const DoublePageReader = ({
             {/* Left Page (Second in manga reading order) */}
             <div 
               className={`flex-1 h-full relative transform-gpu transition-all duration-300 ${
-                isFlipping && flipDirection === 'next' ? 'elastic-flip-shadow-active animate-[elasticBounceNext_0.8s_cubic-bezier(0.68,-0.55,0.265,1.55)]' :
-                isFlipping && flipDirection === 'prev' ? 'elastic-flip-shadow-active animate-[elasticBouncePrev_0.8s_cubic-bezier(0.68,-0.55,0.265,1.55)]' :
-                'elastic-flip-shadow'
+                isFlipping && flipDirection === 'next' ? 'layered-flip-shadow-active book-spine-shadow animate-[layeredDepthNext_1.0s_cubic-bezier(0.25,0.1,0.25,1),spineGlow_1.0s_ease-in-out]' :
+                isFlipping && flipDirection === 'prev' ? 'layered-flip-shadow-active book-spine-shadow animate-[layeredDepthPrev_1.0s_cubic-bezier(0.25,0.1,0.25,1),spineGlow_1.0s_ease-in-out]' :
+                'layered-flip-shadow'
               }`}
             >
               {leftPage && leftPageIndex !== null && (
