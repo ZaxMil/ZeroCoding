@@ -265,8 +265,7 @@ export const SinglePageReader = ({
               </div>
               
               <div className="text-center flex-1">
-                <h1 className="font-bold text-base">Ch. {chapterNumber}</h1>
-                <p className="text-xs text-muted-foreground truncate">{chapterTitle}</p>
+                <h1 className="font-bold text-base truncate">Ch. {chapterNumber} : {chapterTitle}</h1>
               </div>
               
               <div className="flex items-center gap-2">
