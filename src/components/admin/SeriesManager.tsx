@@ -14,6 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AdminFormValidator, FieldValidator } from "./validation/AdminFormValidator";
+import { UnsavedChangesGuard, useUnsavedChanges } from "./validation/UnsavedChangesGuard";
+import { useAdminValidation } from "@/utils/security/AdminSecurityValidator";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -105,6 +108,7 @@ interface SeriesListItem {
 
 export const SeriesManager = () => {
   const { toast } = useToast();
+  const { validateForm, validateFile } = useAdminValidation();
   const [seriesList, setSeriesList] = useState<SeriesListItem[]>([]);
   const [selectedSeries, setSelectedSeries] = useState<string | null>(null);
   const [mangaInfo, setMangaInfo] = useState<MangaInfo | null>(null);
@@ -113,6 +117,21 @@ export const SeriesManager = () => {
   const [newGenre, setNewGenre] = useState("");
   const [newTag, setNewTag] = useState("");
   const [showCreateNew, setShowCreateNew] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [isFormValid, setIsFormValid] = useState(true);
+  
+  // Unsaved changes protection
+  const {
+    hasUnsavedChanges,
+    currentData,
+    updateData,
+    markAsSaved,
+    handleNavigationAttempt,
+    handleSaveAndNavigate,
+    handleDiscardAndNavigate,
+    showGuard,
+    setShowGuard
+  } = useUnsavedChanges(mangaInfo || {});
   const [showCoverModal, setShowCoverModal] = useState(false);
   const [selectedSeriesForCover, setSelectedSeriesForCover] = useState<SeriesListItem | null>(null);
   
@@ -226,26 +245,45 @@ export const SeriesManager = () => {
   };
 
   const handleSave = async () => {
-    if (!mangaInfo) return;
+    if (!mangaInfo || !isFormValid) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix all validation errors before saving.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate form data
+    const validationResult = validateForm('seriesForm', mangaInfo);
+    if (!validationResult.isValid || validationResult.securityAssessment.blocked) {
+      toast({
+        title: "Security Validation Failed",
+        description: "Form contains potentially unsafe content. Please review and try again.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     try {
       setSaving(true);
       
+      // Use sanitized data from validation
       const dataToSave = {
-        title: mangaInfo.title,
-        description: mangaInfo.description,
-        author: mangaInfo.author,
-        artist: mangaInfo.artist,
-        status: mangaInfo.status as 'ongoing' | 'completed' | 'hiatus' | 'cancelled',
+        title: validationResult.sanitizedData.title,
+        description: validationResult.sanitizedData.description,
+        author: validationResult.sanitizedData.author,
+        artist: validationResult.sanitizedData.artist,
+        status: validationResult.sanitizedData.status as 'ongoing' | 'completed' | 'hiatus' | 'cancelled',
         cover_image_url: mangaInfo.cover_image_url,
-        age_rating: mangaInfo.age_rating,
-        language: mangaInfo.language,
-        publication_date: mangaInfo.publication_date || null,
+        age_rating: validationResult.sanitizedData.age_rating,
+        language: validationResult.sanitizedData.language,
+        publication_date: validationResult.sanitizedData.publication_date || null,
         genres: mangaInfo.genres,
         tags: mangaInfo.tags,
-        meta_title: mangaInfo.meta_title,
-        meta_description: mangaInfo.meta_description,
-        meta_keywords: mangaInfo.meta_keywords,
+        meta_title: validationResult.sanitizedData.meta_title,
+        meta_description: validationResult.sanitizedData.meta_description,
+        meta_keywords: validationResult.sanitizedData.meta_keywords,
       };
 
       if (mangaInfo.id) {
@@ -266,15 +304,18 @@ export const SeriesManager = () => {
         setMangaInfo(prev => prev ? { ...prev, id: data.id } : null);
       }
 
+      // Mark as saved for unsaved changes guard
+      markAsSaved(mangaInfo);
+
       toast({
-        title: "Manga saved successfully!",
-        description: "Your manga information has been updated.",
+        title: "Series saved successfully!",
+        description: "Series information has been updated and validated.",
       });
     } catch (error) {
       console.error('Error saving manga info:', error);
       toast({
-        title: "Error saving manga",
-        description: "Failed to save manga information. Please try again.",
+        title: "Error saving series",
+        description: "Failed to save series information. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -284,10 +325,12 @@ export const SeriesManager = () => {
 
   const addGenre = () => {
     if (newGenre && mangaInfo && !mangaInfo.genres.includes(newGenre)) {
-      setMangaInfo(prev => prev ? {
-        ...prev,
-        genres: [...prev.genres, newGenre]
-      } : null);
+      const updatedMangaInfo = {
+        ...mangaInfo,
+        genres: [...mangaInfo.genres, newGenre]
+      };
+      setMangaInfo(updatedMangaInfo);
+      updateData(updatedMangaInfo);
       setNewGenre("");
     }
   };
@@ -303,10 +346,12 @@ export const SeriesManager = () => {
 
   const addTag = () => {
     if (newTag && mangaInfo && !mangaInfo.tags.includes(newTag)) {
-      setMangaInfo(prev => prev ? {
-        ...prev,
-        tags: [...prev.tags, newTag]
-      } : null);
+      const updatedMangaInfo = {
+        ...mangaInfo,
+        tags: [...mangaInfo.tags, newTag]
+      };
+      setMangaInfo(updatedMangaInfo);
+      updateData(updatedMangaInfo);
       setNewTag("");
     }
   };
@@ -683,22 +728,40 @@ export const SeriesManager = () => {
         </Card>
       )}
 
-      {/* Series Editor */}
+          {/* Series Editor */}
       {(selectedSeries || showCreateNew) && mangaInfo && (
         <>
+          {/* Real-time validation */}
+          <AdminFormValidator
+            formType="seriesForm"
+            data={mangaInfo}
+            onValidationChange={(isValid, errors) => {
+              setIsFormValid(isValid);
+              setValidationErrors(errors);
+            }}
+            showSecurityStatus={true}
+            className="mb-4"
+          />
+          
           <div className="flex items-center justify-between">
             <Button 
               variant="outline" 
               onClick={() => {
-                setSelectedSeries(null);
-                setShowCreateNew(false);
-                setMangaInfo(null);
+                handleNavigationAttempt(() => {
+                  setSelectedSeries(null);
+                  setShowCreateNew(false);
+                  setMangaInfo(null);
+                });
               }}
               className="gap-2"
             >
               ← Back to Series List
             </Button>
-            <Button onClick={handleSave} disabled={saving} className="gap-2">
+            <Button 
+              onClick={handleSave} 
+              disabled={saving || !isFormValid} 
+              className="gap-2"
+            >
               <Save className="h-4 w-4" />
               {saving ? "Saving..." : "Save Changes"}
             </Button>
@@ -716,12 +779,32 @@ export const SeriesManager = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="title">Manga Title</Label>
-                  <Input
-                    id="title"
-                    value={mangaInfo.title}
-                    onChange={(e) => setMangaInfo(prev => prev ? { ...prev, title: e.target.value } : null)}
-                    placeholder="Enter series title..."
-                  />
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="title"
+                      value={mangaInfo.title}
+                      onChange={(e) => {
+                        const updatedMangaInfo = { ...mangaInfo, title: e.target.value };
+                        setMangaInfo(updatedMangaInfo);
+                        updateData(updatedMangaInfo);
+                      }}
+                      placeholder="Enter series title..."
+                      className={validationErrors.title ? 'border-red-500' : ''}
+                    />
+                    <FieldValidator
+                      field="title"
+                      value={mangaInfo.title}
+                      rule={{
+                        required: true,
+                        minLength: 1,
+                        maxLength: 200,
+                        sanitize: true
+                      }}
+                    />
+                  </div>
+                  {validationErrors.title && (
+                    <p className="text-sm text-red-600">{validationErrors.title}</p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="status">Status</Label>
@@ -764,12 +847,32 @@ export const SeriesManager = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="author">Author</Label>
-                  <Input
-                    id="author"
-                    value={mangaInfo.author}
-                    onChange={(e) => setMangaInfo(prev => prev ? { ...prev, author: e.target.value } : null)}
-                    placeholder="Author name..."
-                  />
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="author"
+                      value={mangaInfo.author}
+                      onChange={(e) => {
+                        const updatedMangaInfo = { ...mangaInfo, author: e.target.value };
+                        setMangaInfo(updatedMangaInfo);
+                        updateData(updatedMangaInfo);
+                      }}
+                      placeholder="Author name..."
+                      className={validationErrors.author ? 'border-red-500' : ''}
+                    />
+                    <FieldValidator
+                      field="author"
+                      value={mangaInfo.author}
+                      rule={{
+                        required: true,
+                        minLength: 1,
+                        maxLength: 100,
+                        sanitize: true
+                      }}
+                    />
+                  </div>
+                  {validationErrors.author && (
+                    <p className="text-sm text-red-600">{validationErrors.author}</p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="artist">Artist</Label>
@@ -784,13 +887,35 @@ export const SeriesManager = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={mangaInfo.description}
-                  onChange={(e) => setMangaInfo(prev => prev ? { ...prev, description: e.target.value } : null)}
-                  placeholder="Enter series description..."
-                  rows={4}
-                />
+                <div className="relative">
+                  <Textarea
+                    id="description"
+                    value={mangaInfo.description}
+                    onChange={(e) => {
+                      const updatedMangaInfo = { ...mangaInfo, description: e.target.value };
+                      setMangaInfo(updatedMangaInfo);
+                      updateData(updatedMangaInfo);
+                    }}
+                    placeholder="Enter series description..."
+                    rows={4}
+                    className={validationErrors.description ? 'border-red-500' : ''}
+                  />
+                  <div className="absolute top-2 right-2">
+                    <FieldValidator
+                      field="description"
+                      value={mangaInfo.description}
+                      rule={{
+                        required: true,
+                        minLength: 10,
+                        maxLength: 2000,
+                        sanitize: true
+                      }}
+                    />
+                  </div>
+                </div>
+                {validationErrors.description && (
+                  <p className="text-sm text-red-600">{validationErrors.description}</p>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -1022,6 +1147,15 @@ export const SeriesManager = () => {
       </div>
         </>
       )}
+
+      {/* Unsaved Changes Guard */}
+      <UnsavedChangesGuard
+        hasUnsavedChanges={hasUnsavedChanges}
+        onSave={() => handleSaveAndNavigate(handleSave)}
+        onDiscard={handleDiscardAndNavigate}
+        isOpen={showGuard}
+        onClose={() => setShowGuard(false)}
+      />
 
       {/* Delete Confirmation Dialogs */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>

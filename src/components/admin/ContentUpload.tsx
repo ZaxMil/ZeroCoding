@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAdminValidation } from "@/utils/security/AdminSecurityValidator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +28,7 @@ interface UploadStats {
 }
 
 export const ContentUpload = () => {
+  const { validateFile } = useAdminValidation();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showChapterModal, setShowChapterModal] = useState(false);
@@ -42,11 +44,29 @@ export const ContentUpload = () => {
   const handleBulkUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
+    // Validate all files first
+    const validationErrors: string[] = [];
+    Array.from(files).forEach((file, index) => {
+      const validation = validateFile(file);
+      if (!validation.isValid) {
+        validationErrors.push(`File ${index + 1} (${file.name}): ${validation.error}`);
+      }
+    });
+
+    if (validationErrors.length > 0) {
+      toast({
+        title: "File Validation Failed",
+        description: validationErrors.slice(0, 3).join('. ') + (validationErrors.length > 3 ? '...' : ''),
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsUploading(true);
     setUploadProgress(0);
 
     try {
-      // Simulate upload progress
+      // Simulate upload progress with validation
       for (let i = 0; i <= 100; i += 10) {
         setUploadProgress(i);
         await new Promise(resolve => setTimeout(resolve, 200));
@@ -54,7 +74,7 @@ export const ContentUpload = () => {
 
       toast({
         title: "Upload Complete",
-        description: `Successfully uploaded ${files.length} files`,
+        description: `Successfully uploaded ${files.length} validated files`,
       });
     } catch (error: any) {
       toast({

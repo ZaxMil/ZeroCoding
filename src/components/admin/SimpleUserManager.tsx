@@ -9,6 +9,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useToast } from '@/hooks/use-toast';
 import { Search, Shield, Ban, Crown, Coins } from 'lucide-react';
 import { AdminCoinManagerDialog } from '@/components/admin/AdminCoinManagerDialog';
+import { AdminFormValidator, BulkOperationValidator } from './validation/AdminFormValidator';
+import { useAdminValidation } from '@/utils/security/AdminSecurityValidator';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface UserProfile {
   user_id: string;
@@ -24,11 +37,17 @@ interface UserProfile {
 
 export const SimpleUserManager = () => {
   const { toast } = useToast();
+  const { validateForm, validateBulkOperation, checkRolePermission } = useAdminValidation();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('all');
   const [coinDialog, setCoinDialog] = useState<{ open: boolean; user?: UserProfile }>({ open: false });
+  const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
+  const [bulkAction, setBulkAction] = useState<'ban' | 'role_change' | null>(null);
+  const [newRole, setNewRole] = useState<string>('');
+  const [showBulkDialog, setShowBulkDialog] = useState(false);
+  const [userRole] = useState('admin'); // In real app, get from auth context
 
   useEffect(() => {
     loadUsers();
@@ -75,6 +94,16 @@ export const SimpleUserManager = () => {
   };
 
   const updateUserRole = async (userId: string, newRole: 'admin' | 'author' | 'editor' | 'member' | 'user') => {
+    // Validate role permission
+    if (!checkRolePermission(userRole, newRole)) {
+      toast({
+        title: "Permission Denied",
+        description: "You don't have permission to assign this role",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('profiles')
@@ -119,6 +148,66 @@ export const SimpleUserManager = () => {
       toast({
         title: "Error",
         description: "Failed to update ban status",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Bulk operations
+  const toggleUserSelection = (userId: string) => {
+    setSelectedUsers(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(userId)) {
+        newSet.delete(userId);
+      } else {
+        newSet.add(userId);
+      }
+      return newSet;
+    });
+  };
+
+  const handleBulkAction = (action: 'ban' | 'role_change') => {
+    setBulkAction(action);
+    setShowBulkDialog(true);
+  };
+
+  const executeBulkAction = async () => {
+    if (!bulkAction || selectedUsers.size === 0) return;
+
+    try {
+      const userIds = Array.from(selectedUsers);
+      
+      if (bulkAction === 'ban') {
+        const { error } = await supabase
+          .from('profiles')
+          .update({ is_banned: true })
+          .in('user_id', userIds);
+
+        if (error) throw error;
+      } else if (bulkAction === 'role_change' && newRole) {
+        const { error } = await supabase
+          .from('profiles')
+          .update({ role: newRole as any })
+          .in('user_id', userIds);
+
+        if (error) throw error;
+      }
+
+      toast({
+        title: "Success",
+        description: `Bulk ${bulkAction} operation completed successfully`,
+      });
+
+      setSelectedUsers(new Set());
+      setShowBulkDialog(false);
+      setBulkAction(null);
+      setNewRole('');
+      await loadUsers();
+    } catch (error) {
+      console.error('Error in bulk operation:', error);
+      toast({
+        title: "Error",
+        description: "Failed to complete bulk operation",
         variant: "destructive",
       });
     }
