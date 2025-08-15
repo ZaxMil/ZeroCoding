@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { useMangaData, useReadingProgress, useBookmarks } from '@/hooks/useMangaData';
 import { useSeriesChapters } from '@/hooks/useSeriesChapters';
 import { useChapterPages } from '@/hooks/useChapterPages';
+import { useChapterLayout } from '@/hooks/useChapterLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useReadingHistory } from '@/hooks/useReadingHistory';
@@ -36,6 +37,8 @@ import {
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { WebtoonReader } from '@/components/reader/WebtoonReader';
+import { SinglePageReader } from '@/components/reader/SinglePageReader';
+import { DoublePageReader } from '@/components/reader/DoublePageReader';
 import { supabase } from '@/integrations/supabase/client';
 import readerBackground from '@/assets/reader-bg.jpg';
 
@@ -54,6 +57,9 @@ const Reader = () => {
   const { updateProgress } = useReadingProgress(user?.id);
   const { update: updateHistory } = useReadingHistory(user?.id);
   const { markChapterOpened } = useOpenedChapters();
+  
+  // Get reading mode from chapter layout hook
+  const { readingMode } = useChapterLayout();
   
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [showControls, setShowControls] = useState(true);
@@ -292,23 +298,35 @@ const Reader = () => {
   const hasNextChapter = currentChapterIndex < chapters.length - 1;
   const hasPrevChapter = currentChapterIndex > 0;
 
-  // Use WebtoonReader as the default and only reading mode
-  return (
-    <WebtoonReader
-      pages={pages}
-      currentPage={currentPageIndex}
-      onPageChange={setCurrentPageIndex}
-      onNavigateHome={() => navigate('/')}
-      onNavigateChapterList={() => navigate('/chapters')}
-      onPreviousChapter={goToPreviousChapter}
-      onNextChapter={goToNextChapter}
-      hasPreviousChapter={hasPrevChapter}
-      hasNextChapter={hasNextChapter}
-      chapterTitle={chapter.title}
-      chapterNumber={chapter.chapter_number}
-      chapterId={chapterId}
-    />
-  );
+  // Render the appropriate reader based on reading mode
+  const renderReader = () => {
+    const commonProps = {
+      pages,
+      currentPage: currentPageIndex,
+      onPageChange: setCurrentPageIndex,
+      onNavigateHome: () => navigate('/'),
+      onNavigateChapterList: () => navigate('/chapters'),
+      onPreviousChapter: goToPreviousChapter,
+      onNextChapter: goToNextChapter,
+      hasPreviousChapter: hasPrevChapter,
+      hasNextChapter: hasNextChapter,
+      chapterTitle: chapter.title,
+      chapterNumber: chapter.chapter_number,
+      chapterId,
+    };
+
+    switch (readingMode) {
+      case 'single':
+        return <SinglePageReader {...commonProps} />;
+      case 'double':
+        return <DoublePageReader {...commonProps} />;
+      case 'webtoon':
+      default:
+        return <WebtoonReader {...commonProps} />;
+    }
+  };
+
+  return renderReader();
 };
 
 export default Reader;
