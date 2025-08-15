@@ -13,6 +13,7 @@ export const useChapterLayout = () => {
   const [imageGap, setImageGap] = useState(0); // Gap in pixels - 0 for seamless webtoon
   const [imageFit, setImageFit] = useState<ImageFit>('height');
   const [imageScale, setImageScale] = useState(100); // Scale percentage
+  const [preferencesLoaded, setPreferencesLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Clear old preferences and force reset
@@ -31,9 +32,12 @@ export const useChapterLayout = () => {
     }
   }, []);
 
+  // Load preferences immediately without blocking loading state
   useEffect(() => {
-    const loadLayout = async () => {
+    const loadPreferences = () => {
       try {
+        console.log('🔄 Loading reading preferences...');
+        
         // Load from localStorage for all users since database columns don't exist yet
         const savedLayout = localStorage.getItem('chapter-layout');
         const savedReadingMode = localStorage.getItem('reading-mode');
@@ -53,6 +57,8 @@ export const useChapterLayout = () => {
           setReadingMode(savedReadingMode as ReadingMode);
         } else {
           console.log('🔄 Using default reading mode: single');
+          // Explicitly set to single if no saved preference
+          setReadingMode('single');
         }
         
         if (savedImageGap) {
@@ -76,14 +82,34 @@ export const useChapterLayout = () => {
             }
           }
         }
+        
+        setPreferencesLoaded(true);
+        console.log('🔄 Preferences loaded successfully');
       } catch (error) {
-        console.error('Error loading chapter layout:', error);
-      } finally {
+        console.error('Error loading preferences:', error);
+        // Set defaults on error
+        setReadingMode('single');
+        setPreferencesLoaded(true);
+      }
+    };
+
+    loadPreferences();
+  }, []);
+
+  // Separate effect for data loading that doesn't depend on preferences
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        // Any actual data loading logic would go here
+        // Currently just setting loading to false since preferences are separate
+        setLoading(false);
+      } catch (error) {
+        console.error('Error loading data:', error);
         setLoading(false);
       }
     };
 
-    loadLayout();
+    loadData();
   }, [user]);
 
   // Sync preferences across components without reload
@@ -170,6 +196,7 @@ export const useChapterLayout = () => {
     updateImageGap,
     updateImageFit,
     updateImageScale,
-    loading
+    loading,
+    preferencesLoaded
   };
 };

@@ -59,12 +59,12 @@ const Reader = () => {
   const { markChapterOpened } = useOpenedChapters();
   
   // Get reading mode from chapter layout hook
-  const { readingMode } = useChapterLayout();
+  const { readingMode, preferencesLoaded } = useChapterLayout();
   
   // Debug reading mode
   useEffect(() => {
-    console.log('🔄 Current reading mode in Reader:', readingMode);
-  }, [readingMode]);
+    console.log('🔄 Current reading mode in Reader:', readingMode, 'preferencesLoaded:', preferencesLoaded);
+  }, [readingMode, preferencesLoaded]);
   
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [showControls, setShowControls] = useState(true);
@@ -217,6 +217,7 @@ const Reader = () => {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress]);
 
+  // Only show loading for chapter/page data, not preferences
   if (loading || pagesLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-reader-bg">
@@ -320,14 +321,16 @@ const Reader = () => {
       chapterId,
     };
 
+    console.log('🔄 Rendering reader with mode:', readingMode);
+    
     switch (readingMode) {
       case 'single':
-        return <SinglePageReader {...commonProps} />;
+        return <SinglePageReader key="single-reader" {...commonProps} />;
       case 'double':
-        return <DoublePageReader {...commonProps} />;
+        return <DoublePageReader key="double-reader" {...commonProps} />;
       case 'webtoon':
       default:
-        return <WebtoonReader {...commonProps} />;
+        return <WebtoonReader key="webtoon-reader" {...commonProps} />;
     }
   };
 
