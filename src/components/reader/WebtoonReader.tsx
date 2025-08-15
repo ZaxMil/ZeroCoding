@@ -22,7 +22,7 @@ import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation';
 import { useKeyboardSettings } from '@/hooks/useKeyboardSettings';
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
 import { PreloadableImage } from './PreloadableImage';
-import { ResumeIndicator } from '@/components/reading/ResumeIndicator';
+
 import { ChapterProgressBar } from '@/components/reading/ChapterProgressBar';
 import { KeyboardShortcutsHelp } from './KeyboardShortcutsHelp';
 import { KeyboardVisualFeedback } from './KeyboardVisualFeedback';
@@ -621,20 +621,6 @@ export const WebtoonReader = ({
         </div>
       </Card>
 
-      {/* Resume Indicator */}
-      {currentChapterProgress && currentChapterProgress.currentPage > 0 && !suppressAutoScroll.current && <div className="fixed top-20 left-4 right-4 z-40 max-w-md mx-auto">
-          <ResumeIndicator progress={currentChapterProgress} chapterTitle={chapterTitle} onResume={() => {
-        if (currentChapterProgress.resumePosition) {
-          onPageChange(currentChapterProgress.resumePosition.page);
-          setTimeout(() => {
-            window.scrollTo({
-              top: currentChapterProgress.resumePosition!.scroll,
-              behavior: 'smooth'
-            });
-          }, 100);
-        }
-      }} />
-        </div>}
 
       {/* Webtoon Pages Container - Seamless vertical flow */}
       <div className="pt-0 sm:pt-0 pb-0 sm:pb-0 overflow-x-hidden">

@@ -176,12 +176,22 @@ export const DoublePageReader = ({
     }
   }, [currentPage, pages]);
 
-  const handlePageClick = (side: 'left' | 'right') => {
-    // In manga reading, clicking left page goes to next spread, right page goes to previous
-    if (side === 'left') {
-      goToNextPage();
+  const handleContainerClick = (e: React.MouseEvent) => {
+    // Don't navigate if we're panning or zoomed in
+    if (currentZoom > 100 || isPanning) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const containerWidth = rect.width;
+    const leftThird = containerWidth / 3;
+    const rightThird = containerWidth * 2 / 3;
+    
+    if (clickX < leftThird) {
+      goToPreviousPage(); // In manga, left side goes to previous
+    } else if (clickX > rightThird) {
+      goToNextPage(); // In manga, right side goes to next
     } else {
-      goToPreviousPage();
+      setShowControls(!showControls);
     }
   };
 
@@ -322,7 +332,7 @@ export const DoublePageReader = ({
       <div 
         ref={containerRef}
         className="relative w-full h-screen flex items-center justify-center pt-16"
-        onClick={() => setShowControls(!showControls)}
+        onClick={handleContainerClick}
       >
         {/* Double Page Container - Simple Layout */}
         <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center">
@@ -335,7 +345,7 @@ export const DoublePageReader = ({
                   alt={`Page ${rightPageIndex + 1}`}
                   className="w-full h-full object-contain select-none"
                   style={getImageStyles()}
-                  onClick={() => handlePageClick('right')}
+                  onClick={(e) => e.stopPropagation()}
                   onMouseDown={handleMouseDown}
                   onMouseMove={handleMouseMove}
                   onMouseUp={handleMouseUp}
@@ -360,7 +370,7 @@ export const DoublePageReader = ({
                   alt={`Page ${leftPageIndex + 1}`}
                   className="w-full h-full object-contain select-none"
                   style={getImageStyles()}
-                  onClick={() => handlePageClick('left')}
+                  onClick={(e) => e.stopPropagation()}
                   onMouseDown={handleMouseDown}
                   onMouseMove={handleMouseMove}
                   onMouseUp={handleMouseUp}

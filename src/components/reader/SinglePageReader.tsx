@@ -141,15 +141,22 @@ export const SinglePageReader = ({
     }
   };
 
-  const handleImageClick = (e: React.MouseEvent) => {
+  const handleContainerClick = (e: React.MouseEvent) => {
+    // Don't navigate if we're panning or zoomed in
+    if (currentZoom > 100 || isPanning) return;
+    
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
-    const centerX = rect.width / 2;
+    const containerWidth = rect.width;
+    const leftThird = containerWidth / 3;
+    const rightThird = containerWidth * 2 / 3;
     
-    if (clickX < centerX) {
+    if (clickX < leftThird) {
       goToPreviousPage();
-    } else {
+    } else if (clickX > rightThird) {
       goToNextPage();
+    } else {
+      setShowControls(!showControls);
     }
   };
 
@@ -289,7 +296,7 @@ export const SinglePageReader = ({
       <div 
         ref={containerRef}
         className="relative w-full h-screen flex items-center justify-center pt-16"
-        onClick={() => setShowControls(!showControls)}
+        onClick={handleContainerClick}
       >
         {/* Simple Page Container */}
         <div className="relative w-full h-full max-w-6xl max-h-[90vh] flex items-center justify-center">
@@ -299,7 +306,7 @@ export const SinglePageReader = ({
             alt={`Page ${currentPage + 1}`}
             className="max-w-full max-h-full object-contain select-none"
             style={getImageStyles()}
-            onClick={handleImageClick}
+            onClick={(e) => e.stopPropagation()}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
