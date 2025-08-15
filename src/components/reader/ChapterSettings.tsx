@@ -72,11 +72,10 @@ export const ChapterSettings = ({ isOpen, onClose, metrics }: ChapterSettingsPro
         <div className="text-sm text-muted-foreground">Loading settings...</div>
       ) : (
         <Tabs defaultValue="reading" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="reading">Reading</TabsTrigger>
-            <TabsTrigger value="preload">Preload</TabsTrigger>
-            <TabsTrigger value="progress">Progress</TabsTrigger>
-            <TabsTrigger value="keyboard">Keyboard</TabsTrigger>
+            <TabsTrigger value="performance">Performance</TabsTrigger>
+            <TabsTrigger value="keyboard">Controls</TabsTrigger>
           </TabsList>
           
           <TabsContent value="reading" className="space-y-4 mt-4">
@@ -149,11 +148,8 @@ export const ChapterSettings = ({ isOpen, onClose, metrics }: ChapterSettingsPro
             )}
           </TabsContent>
 
-          <TabsContent value="preload" className="mt-4">
+          <TabsContent value="performance" className="mt-4 space-y-4">
             <PreloadSettings metrics={metrics} />
-          </TabsContent>
-
-          <TabsContent value="progress" className="mt-4">
             <ProgressTrackingSettings userId={user?.id} />
           </TabsContent>
 

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, Home, List, SkipBack, SkipForward, Settings, ZoomIn, ZoomOut, RotateCcw, User, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home, List, SkipBack, SkipForward, Settings, ZoomIn, ZoomOut, RotateCcw, User, Maximize2, RefreshCw } from 'lucide-react';
 import { useChapterLayout } from '@/hooks/useChapterLayout';
 import { ReaderControls } from './ReaderControls';
 import { useAuth } from '@/contexts/AuthContext';
@@ -39,8 +39,7 @@ export const SinglePageReader = ({
   const { user, userProfile } = useAuth();
   const [showControls, setShowControls] = useState(true);
   const [controlsOpen, setControlsOpen] = useState(false);
-  const [isFlipping, setIsFlipping] = useState(false);
-  const [flipDirection, setFlipDirection] = useState<'next' | 'prev'>('next');
+  const [isPreloading, setIsPreloading] = useState(false);
   const [currentZoom, setCurrentZoom] = useState(100);
   const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
@@ -93,40 +92,24 @@ export const SinglePageReader = ({
   }, [showControls, currentZoom]);
 
   const goToNextPage = useCallback(() => {
-    if (isFlipping) return;
-    
     if (currentPage < pages.length - 1) {
-      setFlipDirection('next');
-      setIsFlipping(true);
-      
-      setTimeout(() => {
-        onPageChange(currentPage + 1);
-        setIsFlipping(false);
-        resetZoom();
-      }, 300);
+      onPageChange(currentPage + 1);
+      resetZoom();
     } else if (hasNextChapter) {
       onNextChapter();
     }
     setShowControls(true);
-  }, [currentPage, pages.length, hasNextChapter, onPageChange, onNextChapter, isFlipping]);
+  }, [currentPage, pages.length, hasNextChapter, onPageChange, onNextChapter]);
 
   const goToPreviousPage = useCallback(() => {
-    if (isFlipping) return;
-    
     if (currentPage > 0) {
-      setFlipDirection('prev');
-      setIsFlipping(true);
-      
-      setTimeout(() => {
-        onPageChange(currentPage - 1);
-        setIsFlipping(false);
-        resetZoom();
-      }, 300);
+      onPageChange(currentPage - 1);
+      resetZoom();
     } else if (hasPreviousChapter) {
       onPreviousChapter();
     }
     setShowControls(true);
-  }, [currentPage, hasPreviousChapter, onPageChange, onPreviousChapter, isFlipping]);
+  }, [currentPage, hasPreviousChapter, onPageChange, onPreviousChapter]);
 
   const zoomIn = () => setCurrentZoom(prev => Math.min(300, prev + 25));
   const zoomOut = () => setCurrentZoom(prev => Math.max(25, prev - 25));
@@ -140,6 +123,21 @@ export const SinglePageReader = ({
       document.documentElement.requestFullscreen?.();
     } else {
       document.exitFullscreen?.();
+    }
+  };
+
+  const reloadChapter = async () => {
+    setIsPreloading(true);
+    try {
+      // Force reload all images by updating their src with cache busting
+      const imageElements = document.querySelectorAll('img');
+      imageElements.forEach((img, index) => {
+        if (img.src.includes('page')) {
+          img.src = `${img.src}?t=${Date.now()}`;
+        }
+      });
+    } finally {
+      setIsPreloading(false);
     }
   };
 
@@ -223,7 +221,7 @@ export const SinglePageReader = ({
       maxWidth,
       maxHeight,
       cursor: currentZoom > 100 ? (isPanning ? 'grabbing' : 'grab') : 'pointer',
-      transition: isFlipping ? 'none' : 'transform 0.2s ease-out'
+      transition: 'transform 0.2s ease-out'
     };
   };
 
@@ -244,6 +242,15 @@ export const SinglePageReader = ({
                 <Button variant="ghost" size="sm" onClick={onNavigateChapterList}>
                   <List className="h-4 w-4 mr-2" />
                   Chapters
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={reloadChapter}
+                  disabled={isPreloading}
+                >
+                  <RefreshCw className={`h-4 w-4 mr-2 ${isPreloading ? 'animate-spin' : ''}`} />
+                  Reload
                 </Button>
               </div>
               
@@ -284,29 +291,21 @@ export const SinglePageReader = ({
         className="relative w-full h-screen flex items-center justify-center pt-16"
         onClick={() => setShowControls(!showControls)}
       >
-        {/* Page Container with Flip Animation */}
-        <div className="relative w-full h-full max-w-6xl max-h-[90vh] perspective-1000">
-          <div 
-            className={`
-              relative w-full h-full transition-transform duration-300 transform-style-preserve-3d
-              ${isFlipping && flipDirection === 'next' ? 'rotate-y-180' : ''}
-              ${isFlipping && flipDirection === 'prev' ? 'rotate-y-neg-180' : ''}
-            `}
-          >
-            <img
-              ref={imageRef}
-              src={pages[currentPage]}
-              alt={`Page ${currentPage + 1}`}
-              className="w-full h-full object-contain select-none"
-              style={getImageStyles()}
-              onClick={handleImageClick}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              draggable={false}
-            />
-          </div>
+        {/* Simple Page Container */}
+        <div className="relative w-full h-full max-w-6xl max-h-[90vh] flex items-center justify-center">
+          <img
+            ref={imageRef}
+            src={pages[currentPage]}
+            alt={`Page ${currentPage + 1}`}
+            className="max-w-full max-h-full object-contain select-none"
+            style={getImageStyles()}
+            onClick={handleImageClick}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            draggable={false}
+          />
         </div>
 
         {/* Navigation Arrows */}

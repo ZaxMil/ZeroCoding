@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ChevronLeft, ChevronRight, Home, List, Settings, BookOpen, User, LogOut, Shield, Edit, Crown, Clock, ShoppingCart } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home, List, Settings, BookOpen, User, LogOut, Shield, Edit, Crown, Clock, ShoppingCart, RotateCcw, MessageCircle, X } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ChapterSettings } from './ChapterSettings';
 import { Badge } from '@/components/ui/badge';
@@ -71,6 +71,7 @@ export const WebtoonReader = ({
   });
   const [hasAccess, setHasAccess] = useState(true);
   const [showComments, setShowComments] = useState(false);
+  const [isPreloading, setIsPreloading] = useState(false);
   const [signedUrls, setSignedUrls] = useState<Record<number, string>>({});
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -404,19 +405,54 @@ export const WebtoonReader = ({
     }
   }, [seriesSlug, chapterNumber, user]);
 
-  // Lazy-load comments: load after user scrolls at least half a viewport
+  // Auto-show comments when user reaches the end
   useEffect(() => {
     const onScroll = () => {
-      if (window.scrollY > window.innerHeight * 0.5) {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      if (scrollPosition >= documentHeight - 100) {
         setShowComments(true);
         window.removeEventListener('scroll', onScroll);
       }
     };
-    window.addEventListener('scroll', onScroll, {
-      passive: true
-    });
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+  
+  // Chapter reload function
+  const reloadChapter = async () => {
+    setIsPreloading(true);
+    try {
+      // Clear existing signed URLs
+      setSignedUrls({});
+      
+      // Preload all pages with signed URLs
+      if (chapterId) {
+        const supportsWebP = () => {
+          try {
+            return document.createElement('canvas').toDataURL('image/webp').indexOf('webp') > -1;
+          } catch {
+            return false;
+          }
+        };
+        const format = supportsWebP() ? 'webp' : 'jpeg';
+        
+        for (let i = 0; i < pages.length; i++) {
+          try {
+            const signedUrl = await getSignedPageUrl(chapterId, i, 300, format);
+            if (signedUrl) {
+              setSignedUrls(prev => ({ ...prev, [i]: signedUrl }));
+            }
+          } catch (error) {
+            console.warn(`Failed to preload page ${i}:`, error);
+          }
+        }
+      }
+    } finally {
+      setIsPreloading(false);
+    }
+  };
   const progressPercentage = (currentPage + 1) / pages.length * 100;
   return <div className="min-h-screen bg-background">
       {/* Header */}
@@ -431,6 +467,16 @@ export const WebtoonReader = ({
               <Button variant="ghost" size="sm" onClick={onNavigateChapterList} className="px-2 sm:px-3">
                 <List className="h-4 w-4 sm:mr-2" />
                 <span className="hidden sm:inline">Chapters</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={reloadChapter}
+                disabled={isPreloading}
+                className="px-2 sm:px-3"
+              >
+                <RotateCcw className={`h-4 w-4 sm:mr-2 ${isPreloading ? 'animate-spin' : ''}`} />
+                <span className="hidden sm:inline">Reload</span>
               </Button>
             </div>
             
@@ -692,28 +738,41 @@ export const WebtoonReader = ({
         </div>
       </Card>
 
-      {/* Comments Section - Full screen overlay when active */}
-      {showComments && chapterId && <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm">
-          <div className="h-full flex flex-col">
-            <div className="max-w-4xl mx-auto p-4 flex-shrink-0">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold">Chapter Comments</h2>
-                <Button variant="outline" size="sm" onClick={() => setShowComments(false)}>
-                  Close
-                </Button>
-              </div>
+      {/* Comments Section - Inline at bottom */}
+      <div className={`w-full max-w-4xl mx-auto mt-8 px-4 ${boxedWidth ? 'max-w-3xl' : 'max-w-none'}`}>
+        {showComments && chapterId && (
+          <Card className="p-6 bg-card/95 backdrop-blur-sm border-border/50">
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-2">Chapter Comments</h3>
+              <p className="text-sm text-muted-foreground">
+                Share your thoughts about Chapter {chapterNumber}
+              </p>
             </div>
-            <div className="flex-1 min-h-0">
-              <div className="max-w-4xl mx-auto px-4 pb-4 h-full">
-                <EnhancedUnifiedCommentSystem targetType="chapter" targetId={chapterId} targetTitle={chapterTitle} showRating={true} />
-              </div>
-            </div>
-          </div>
-        </div>}
-
-      {/* Comments Toggle - Add floating button for comments */}
-      <div className="fixed bottom-20 right-4 z-40">
+            <EnhancedUnifiedCommentSystem 
+              targetType="chapter" 
+              targetId={chapterId} 
+              targetTitle={chapterTitle} 
+              showRating={true} 
+            />
+          </Card>
+        )}
         
+        {/* Show comments button if not visible yet */}
+        {!showComments && (
+          <div className="text-center py-8">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowComments(true)}
+              className="px-8"
+            >
+              <MessageCircle className="h-4 w-4 mr-2" />
+              Show Comments
+            </Button>
+          </div>
+        )}
+        
+        {/* Bottom spacing */}
+        <div className="h-20" />
       </div>
 
       {/* Floating Settings Button with Circular Progress */}

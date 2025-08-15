@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, Home, List, SkipBack, SkipForward, Settings, ZoomIn, ZoomOut, RotateCcw, User, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home, List, SkipBack, SkipForward, Settings, ZoomIn, ZoomOut, RotateCcw, User, Maximize2, RefreshCw } from 'lucide-react';
 import { useChapterLayout } from '@/hooks/useChapterLayout';
 import { ReaderControls } from './ReaderControls';
 import { useAuth } from '@/contexts/AuthContext';
@@ -39,8 +39,8 @@ export const DoublePageReader = ({
   const { user, userProfile } = useAuth();
   const [showControls, setShowControls] = useState(true);
   const [controlsOpen, setControlsOpen] = useState(false);
-  const [isFlipping, setIsFlipping] = useState(false);
-  const [flipDirection, setFlipDirection] = useState<'next' | 'prev'>('next');
+  const [isPreloading, setIsPreloading] = useState(false);
+  const [loadingPages, setLoadingPages] = useState<Record<number, boolean>>({});
   const [currentZoom, setCurrentZoom] = useState(100);
   const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
@@ -107,44 +107,28 @@ export const DoublePageReader = ({
   }, [showControls, currentZoom]);
 
   const goToNextPage = useCallback(() => {
-    if (isFlipping) return;
-    
     const nextPage = currentPage + 2; // Skip 2 pages in double page mode
     
     if (nextPage < pages.length) {
-      setFlipDirection('next');
-      setIsFlipping(true);
-      
-      setTimeout(() => {
-        onPageChange(nextPage);
-        setIsFlipping(false);
-        resetZoom();
-      }, 400);
+      onPageChange(nextPage);
+      resetZoom();
     } else if (hasNextChapter) {
       onNextChapter();
     }
     setShowControls(true);
-  }, [currentPage, pages.length, hasNextChapter, onPageChange, onNextChapter, isFlipping]);
+  }, [currentPage, pages.length, hasNextChapter, onPageChange, onNextChapter]);
 
   const goToPreviousPage = useCallback(() => {
-    if (isFlipping) return;
-    
     const prevPage = Math.max(0, currentPage - 2); // Go back 2 pages in double page mode
     
     if (prevPage >= 0) {
-      setFlipDirection('prev');
-      setIsFlipping(true);
-      
-      setTimeout(() => {
-        onPageChange(prevPage);
-        setIsFlipping(false);
-        resetZoom();
-      }, 400);
+      onPageChange(prevPage);
+      resetZoom();
     } else if (hasPreviousChapter) {
       onPreviousChapter();
     }
     setShowControls(true);
-  }, [currentPage, hasPreviousChapter, onPageChange, onPreviousChapter, isFlipping]);
+  }, [currentPage, hasPreviousChapter, onPageChange, onPreviousChapter]);
 
   const zoomIn = () => setCurrentZoom(prev => Math.min(300, prev + 25));
   const zoomOut = () => setCurrentZoom(prev => Math.max(25, prev - 25));
@@ -160,6 +144,37 @@ export const DoublePageReader = ({
       document.exitFullscreen?.();
     }
   };
+
+  const reloadChapter = async () => {
+    setIsPreloading(true);
+    try {
+      // Force reload all images by updating their src with cache busting
+      const imageElements = document.querySelectorAll('img');
+      imageElements.forEach((img, index) => {
+        if (img.src.includes('page')) {
+          img.src = `${img.src}?t=${Date.now()}`;
+        }
+      });
+    } finally {
+      setIsPreloading(false);
+    }
+  };
+
+  // Preload next double page spread
+  useEffect(() => {
+    const { rightPageIndex, leftPageIndex } = getCurrentPages();
+    const nextRightIndex = rightPageIndex + 2;
+    const nextLeftIndex = leftPageIndex !== null ? leftPageIndex + 2 : null;
+    
+    if (nextRightIndex < pages.length) {
+      const img = new Image();
+      img.src = pages[nextRightIndex];
+    }
+    if (nextLeftIndex !== null && nextLeftIndex < pages.length) {
+      const img = new Image();
+      img.src = pages[nextLeftIndex];
+    }
+  }, [currentPage, pages]);
 
   const handlePageClick = (side: 'left' | 'right') => {
     // In manga reading, clicking left page goes to next spread, right page goes to previous
@@ -238,7 +253,7 @@ export const DoublePageReader = ({
       maxWidth,
       maxHeight,
       cursor: currentZoom > 100 ? (isPanning ? 'grabbing' : 'grab') : 'pointer',
-      transition: isFlipping ? 'none' : 'transform 0.2s ease-out'
+      transition: 'transform 0.2s ease-out'
     };
   };
 
@@ -260,6 +275,15 @@ export const DoublePageReader = ({
                 <Button variant="ghost" size="sm" onClick={onNavigateChapterList}>
                   <List className="h-4 w-4 mr-2" />
                   Chapters
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={reloadChapter}
+                  disabled={isPreloading}
+                >
+                  <RefreshCw className={`h-4 w-4 mr-2 ${isPreloading ? 'animate-spin' : ''}`} />
+                  Reload
                 </Button>
               </div>
               
@@ -300,51 +324,57 @@ export const DoublePageReader = ({
         className="relative w-full h-screen flex items-center justify-center pt-16"
         onClick={() => setShowControls(!showControls)}
       >
-        {/* Double Page Container with Flip Animation */}
-        <div className="relative w-full h-full max-w-7xl max-h-[90vh] perspective-1000">
-          <div 
-            className={`
-              relative w-full h-full transition-transform duration-400 transform-style-preserve-3d
-              ${isFlipping && flipDirection === 'next' ? 'rotate-y-180' : ''}
-              ${isFlipping && flipDirection === 'prev' ? 'rotate-y-neg-180' : ''}
-            `}
-          >
-            <div className="flex w-full h-full gap-1">
-              {/* Right Page (First in manga reading order) */}
-              <div className="flex-1 h-full relative">
-                {rightPage && (
-                  <img
-                    src={rightPage}
-                    alt={`Page ${rightPageIndex + 1}`}
-                    className="w-full h-full object-contain select-none"
-                    style={getImageStyles()}
-                    onClick={() => handlePageClick('right')}
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                    draggable={false}
-                  />
-                )}
-              </div>
+        {/* Double Page Container - Simple Layout */}
+        <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center">
+          <div className="flex w-full h-full gap-1">
+            {/* Right Page (First in manga reading order) */}
+            <div className="flex-1 h-full relative">
+              {rightPage && (
+                <img
+                  src={rightPage}
+                  alt={`Page ${rightPageIndex + 1}`}
+                  className="w-full h-full object-contain select-none"
+                  style={getImageStyles()}
+                  onClick={() => handlePageClick('right')}
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                  draggable={false}
+                  onLoad={() => setLoadingPages(prev => ({ ...prev, [rightPageIndex]: false }))}
+                  onLoadStart={() => setLoadingPages(prev => ({ ...prev, [rightPageIndex]: true }))}
+                />
+              )}
+              {loadingPages[rightPageIndex] && (
+                <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              )}
+            </div>
 
-              {/* Left Page (Second in manga reading order) */}
-              <div className="flex-1 h-full relative">
-                {leftPage && (
-                  <img
-                    src={leftPage}
-                    alt={`Page ${leftPageIndex! + 1}`}
-                    className="w-full h-full object-contain select-none"
-                    style={getImageStyles()}
-                    onClick={() => handlePageClick('left')}
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                    draggable={false}
-                  />
-                )}
-              </div>
+            {/* Left Page (Second in manga reading order) */}
+            <div className="flex-1 h-full relative">
+              {leftPage && leftPageIndex !== null && (
+                <img
+                  src={leftPage}
+                  alt={`Page ${leftPageIndex + 1}`}
+                  className="w-full h-full object-contain select-none"
+                  style={getImageStyles()}
+                  onClick={() => handlePageClick('left')}
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                  draggable={false}
+                  onLoad={() => setLoadingPages(prev => ({ ...prev, [leftPageIndex]: false }))}
+                  onLoadStart={() => setLoadingPages(prev => ({ ...prev, [leftPageIndex]: true }))}
+                />
+              )}
+              {leftPageIndex !== null && loadingPages[leftPageIndex] && (
+                <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              )}
             </div>
           </div>
         </div>
