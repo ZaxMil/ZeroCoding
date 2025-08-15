@@ -75,7 +75,7 @@ export const useChapterLayout = () => {
         if (savedImageScale) {
           const scale = parseInt(savedImageScale);
           if (!isNaN(scale)) {
-            const clamped = Math.min(100, Math.max(50, scale));
+            const clamped = Math.min(200, Math.max(50, scale));
             setImageScale(clamped);
             if (clamped !== scale) {
               localStorage.setItem('image-scale', clamped.toString());
@@ -148,7 +148,7 @@ export const useChapterLayout = () => {
   };
 
   const updateImageScale = async (scale: number) => {
-    const clamped = Math.min(100, Math.max(50, scale));
+    const clamped = Math.min(200, Math.max(50, scale));
     setImageScale(clamped);
     await savePreferences({ imageScale: clamped });
   };

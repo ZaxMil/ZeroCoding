@@ -128,8 +128,8 @@ export const SinglePageReader = ({
     setShowControls(true);
   }, [currentPage, hasPreviousChapter, onPageChange, onPreviousChapter, isFlipping]);
 
-  const zoomIn = () => setCurrentZoom(prev => Math.min(200, prev + 25));
-  const zoomOut = () => setCurrentZoom(prev => Math.max(50, prev - 25));
+  const zoomIn = () => setCurrentZoom(prev => Math.min(300, prev + 25));
+  const zoomOut = () => setCurrentZoom(prev => Math.max(25, prev - 25));
   const resetZoom = () => {
     setCurrentZoom(100);
     setPanPosition({ x: 0, y: 0 });
@@ -164,10 +164,17 @@ export const SinglePageReader = ({
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isPanning && currentZoom > 100) {
-      setPanPosition(prev => ({
-        x: prev.x + e.movementX,
-        y: prev.y + e.movementY
-      }));
+      const container = containerRef.current;
+      if (container) {
+        const containerRect = container.getBoundingClientRect();
+        const maxPanX = Math.max(0, (containerRect.width * currentZoom / 100 - containerRect.width) / 2);
+        const maxPanY = Math.max(0, (containerRect.height * currentZoom / 100 - containerRect.height) / 2);
+        
+        setPanPosition(prev => ({
+          x: Math.max(-maxPanX, Math.min(maxPanX, prev.x + e.movementX)),
+          y: Math.max(-maxPanY, Math.min(maxPanY, prev.y + e.movementY))
+        }));
+      }
     }
   };
 
@@ -177,23 +184,44 @@ export const SinglePageReader = ({
     const baseScale = (imageScale / 100) * (currentZoom / 100);
     
     let objectFit: 'contain' | 'cover' | 'fill' | 'scale-down' | 'none' = 'contain';
+    let width = '100%';
+    let height = '100%';
+    let maxWidth = 'none';
+    let maxHeight = 'none';
+    
     switch (imageFit) {
       case 'width':
-        objectFit = 'cover';
+        objectFit = 'none';
+        width = '100%';
+        height = 'auto';
+        maxHeight = '100%';
         break;
       case 'height':
         objectFit = 'contain';
+        width = 'auto';
+        height = '100%';
+        maxWidth = '100%';
         break;
       case 'auto':
         objectFit = 'none';
+        width = 'auto';
+        height = 'auto';
+        maxWidth = '100%';
+        maxHeight = '100%';
         break;
-      default:
+      default: // contain
         objectFit = 'contain';
+        width = '100%';
+        height = '100%';
     }
 
     return {
-      transform: `scale(${baseScale}) translate(${panPosition.x}px, ${panPosition.y}px)`,
+      transform: `translate(${panPosition.x}px, ${panPosition.y}px) scale(${baseScale})`,
       objectFit,
+      width,
+      height,
+      maxWidth,
+      maxHeight,
       cursor: currentZoom > 100 ? (isPanning ? 'grabbing' : 'grab') : 'pointer',
       transition: isFlipping ? 'none' : 'transform 0.2s ease-out'
     };

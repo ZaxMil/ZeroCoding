@@ -246,8 +246,8 @@ export const ReaderControls = ({ isVisible, onToggle }: ReaderControlsProps) => 
               variant="outline"
               onClick={() => {
                 updateReadingMode('single');
-                updateImageGap(4);
-                updateImageFit('contain');
+                updateImageGap(0);
+                updateImageFit('height');
                 updateImageScale(100);
               }}
               className="w-full"
