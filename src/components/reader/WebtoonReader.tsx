@@ -627,8 +627,8 @@ export const WebtoonReader = ({
       </Card>
 
 
-      {/* Webtoon Pages Container - Seamless vertical flow with smooth scrolling */}
-      <div className="pt-0 sm:pt-0 pb-0 sm:pb-0 overflow-x-hidden scroll-smooth">
+      {/* Webtoon Pages Container - Single scrolling area */}
+      <div className="w-full">
         <div className={boxedWidth ? "max-w-4xl mx-auto" : "w-full"}>
           <div style={{
           width: `${imageScale}%`,

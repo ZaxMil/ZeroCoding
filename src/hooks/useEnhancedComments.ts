@@ -170,16 +170,23 @@ export function useEnhancedComments(targetId: string, targetType: CommentType) {
       // Add optimistic comment immediately
       setComments(prevComments => {
         if (formData.parent_id) {
-          // Add as reply to parent comment
-          return prevComments.map(comment => {
-            if (comment.id === formData.parent_id) {
+          // Add as reply to parent comment - recursively search all comments and replies
+          const addReplyToParent = (comments: BaseComment[]): BaseComment[] => {
+            return comments.map(comment => {
+              if (comment.id === formData.parent_id) {
+                return {
+                  ...comment,
+                  replies: [...(comment.replies || []), tempComment]
+                };
+              }
+              // Recursively check replies
               return {
                 ...comment,
-                replies: [...(comment.replies || []), tempComment]
+                replies: addReplyToParent(comment.replies || [])
               };
-            }
-            return comment;
-          });
+            });
+          };
+          return addReplyToParent(prevComments);
         } else {
           // Add as top-level comment
           return [tempComment, ...prevComments];
@@ -199,15 +206,22 @@ export function useEnhancedComments(targetId: string, targetType: CommentType) {
       // Remove optimistic comment on error
       setComments(prevComments => {
         if (formData.parent_id) {
-          return prevComments.map(comment => {
-            if (comment.id === formData.parent_id) {
+          // Recursively remove temp comment from replies
+          const removeTempFromReplies = (comments: BaseComment[]): BaseComment[] => {
+            return comments.map(comment => {
+              if (comment.id === formData.parent_id) {
+                return {
+                  ...comment,
+                  replies: (comment.replies || []).filter(reply => !reply.id.startsWith('temp-'))
+                };
+              }
               return {
                 ...comment,
-                replies: (comment.replies || []).filter(reply => !reply.id.startsWith('temp-'))
+                replies: removeTempFromReplies(comment.replies || [])
               };
-            }
-            return comment;
-          });
+            });
+          };
+          return removeTempFromReplies(prevComments);
         } else {
           return prevComments.filter(comment => !comment.id.startsWith('temp-'));
         }

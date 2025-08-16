@@ -374,10 +374,10 @@ export const ChapterManager = ({ initialSeriesId }: ChapterManagerProps) => {
             />
           </div>
 
-          {/* Chapters Table (desktop) */}
-          <div className="rounded-md border hidden md:block">
+          {/* Chapters Table (desktop) - Fixed height with scroll */}
+          <div className="rounded-md border hidden md:block max-h-[600px] overflow-auto">
             <Table>
-              <TableHeader>
+              <TableHeader className="sticky top-0 bg-background z-10">
                 <TableRow>
                   <TableHead className="w-12">#</TableHead>
                   <TableHead>Chapter</TableHead>
@@ -494,8 +494,8 @@ export const ChapterManager = ({ initialSeriesId }: ChapterManagerProps) => {
             </Table>
           </div>
 
-          {/* Chapters List (mobile) */}
-          <div className="md:hidden space-y-3">
+          {/* Chapters List (mobile) - Fixed height with scroll */}
+          <div className="md:hidden space-y-3 max-h-[600px] overflow-auto">
             {filteredChapters.map((chapter) => (
               <div key={chapter.id} className="p-4 rounded-lg border bg-card/50">
                 <div className="flex items-start justify-between gap-3">
