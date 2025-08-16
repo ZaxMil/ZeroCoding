@@ -154,24 +154,6 @@ export const generateSampleComments = (targetType: 'series' | 'chapter'): Advanc
 export const SampleCommentsNotice: React.FC<{
   onDismiss: () => void;
 }> = ({ onDismiss }) => {
-  return (
-    <div className="mb-4 p-4 bg-primary/5 border border-primary/20 rounded-lg">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-primary" />
-          <p className="text-sm font-medium text-primary">
-            These are sample comments to showcase the new comment system features
-          </p>
-        </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onDismiss}
-          className="text-primary hover:text-primary/80"
-        >
-          ×
-        </Button>
-      </div>
-    </div>
-  );
+  // Don't show the notice in production - auto-dismiss
+  return null;
 };

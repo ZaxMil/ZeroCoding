@@ -383,11 +383,11 @@ export const DoublePageReader = ({
       {/* Main Reader Area */}
       <div 
         ref={containerRef}
-        className="relative w-full h-screen flex items-center justify-center pt-12"
+        className="relative w-full h-screen flex items-center justify-center pt-14 pb-16"
         onClick={handleContainerClick}
       >
         {/* Double Page Container with Flip Animation */}
-        <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center perspective-1000">
+        <div className="relative w-full h-full max-w-7xl flex items-center justify-center perspective-1000">
           <div 
             className={`flex w-full h-full gap-1 transform-style-preserve-3d transition-transform duration-200 ${
               isFlipping && flipDirection === 'next' ? 'animate-[hybridFlipNext_1.2s_cubic-bezier(0.175,0.885,0.32,1.275),hybridPageSeparation_1.2s_ease-out,hybridAmbientGlow_1.2s_ease-in-out]' :

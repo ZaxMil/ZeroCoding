@@ -297,11 +297,11 @@ export const SinglePageReader = ({
       {/* Main Reader Area */}
       <div 
         ref={containerRef}
-        className="relative w-full h-screen flex items-center justify-center pt-12"
+        className="relative w-full h-screen flex items-center justify-center pt-14 pb-16"
         onClick={handleContainerClick}
       >
         {/* Simple Page Container */}
-        <div className="relative w-full h-full max-w-6xl max-h-[90vh] flex items-center justify-center">
+        <div className="relative w-full h-full max-w-6xl flex items-center justify-center">
           <img
             ref={imageRef}
             src={pages[currentPage]}

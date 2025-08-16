@@ -765,13 +765,24 @@ export const WebtoonReader = ({
         </div>
       )}
 
-      {/* Floating Settings Button with Circular Progress */}
+      {/* Floating Settings Button with Enhanced Circular Progress */}
       <div className="fixed bottom-4 right-4 z-50">
-        <div className="relative">
-          <CircularProgress value={progressPercentage} size={44} strokeWidth={3} />
-          <Button variant="secondary" size="icon" className="rounded-full shadow-lg relative z-10" aria-label="Reader settings" onClick={() => setSettingsOpen(!settingsOpen)}>
-            <Settings className="h-6 w-6" />
+        <div className="relative group">
+          <CircularProgress value={progressPercentage} size={48} strokeWidth={3} />
+          <Button 
+            variant="secondary" 
+            size="icon" 
+            className="absolute inset-1 rounded-full shadow-lg hover:scale-105 transition-all duration-200 z-10" 
+            aria-label="Reader settings" 
+            onClick={() => setSettingsOpen(!settingsOpen)}
+          >
+            <Settings className="h-5 w-5" />
           </Button>
+          
+          {/* Enhanced tooltip */}
+          <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-popover text-popover-foreground text-xs rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+            Settings ({Math.round(progressPercentage)}%)
+          </div>
         </div>
       </div>
 

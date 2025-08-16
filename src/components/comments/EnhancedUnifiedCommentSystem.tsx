@@ -51,7 +51,7 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
   const [showSearch, setShowSearch] = useState(false);
   const [showBookmarks, setShowBookmarks] = useState(false);
   const [sortBy, setSortBy] = useState('newest');
-  const [showSampleComments, setShowSampleComments] = useState(true);
+  const [showSampleComments, setShowSampleComments] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [replyTo, setReplyTo] = useState<string | null>(null);
   

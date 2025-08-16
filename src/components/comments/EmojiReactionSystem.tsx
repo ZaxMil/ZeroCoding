@@ -280,8 +280,8 @@ export const EmojiReactionSystem: React.FC<EmojiReactionSystemProps> = ({
           {EMOJI_OPTIONS.map(option => {
           const reaction = reactions[option.emoji];
           const hasReacted = userReactions.has(option.emoji);
-          return <Button key={option.emoji} variant={hasReacted ? "default" : "outline"} size="lg" onClick={() => handleReaction(option.emoji)} disabled={submitting} className={`flex flex-col items-center gap-2 h-auto py-4 px-6 transition-all duration-200 hover:scale-105 ${hasReacted ? 'bg-primary text-primary-foreground border-primary shadow-lg' : 'border-border/50 hover:border-primary/50 hover:bg-primary/10'}`} title={option.description}>
-                <span className="text-3xl">{option.emoji}</span>
+          return <Button key={option.emoji} variant={hasReacted ? "default" : "outline"} size="lg" onClick={() => handleReaction(option.emoji)} disabled={submitting} className={`flex flex-col items-center gap-2 h-auto py-4 px-6 transition-all duration-300 hover:scale-105 ${hasReacted ? 'bg-primary text-primary-foreground border-primary' : 'border-border/50 hover:border-primary/50 hover:bg-primary/10'}`} title={option.description} style={{ filter: hasReacted ? 'drop-shadow(0 4px 12px hsl(var(--primary) / 0.3))' : 'drop-shadow(0 2px 4px hsl(var(--foreground) / 0.1))' }}>
+                <span className="text-3xl transition-all duration-200" style={{ filter: 'drop-shadow(0 2px 4px hsl(var(--foreground) / 0.1))' }}>{option.emoji}</span>
                 <div className="text-center">
                   <div className="text-xs font-medium">{option.label}</div>
                   <div className="text-xs opacity-75">{reaction?.count || 0}</div>
