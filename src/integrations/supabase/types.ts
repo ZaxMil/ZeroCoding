@@ -3763,6 +3763,16 @@ export type Database = {
           validated_at: string
         }[]
       }
+      get_index_usage_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          index_name: string
+          index_scans: number
+          index_size: string
+          table_name: string
+          tuples_read: number
+        }[]
+      }
       get_latest_chapters_feed: {
         Args: { days_back?: number; limit_count?: number }
         Returns: {

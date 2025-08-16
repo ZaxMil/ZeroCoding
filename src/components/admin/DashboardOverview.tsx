@@ -23,6 +23,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { queryOptimizer } from '@/utils/queryOptimizer';
 import { PerformanceMonitor } from './PerformanceMonitor';
+import { IndexPerformanceMonitor } from './IndexPerformanceMonitor';
 
 interface DashboardStats {
   totalChapters: number;
@@ -351,7 +352,10 @@ export const DashboardOverview = () => {
         </TabsContent>
         
         <TabsContent value="performance">
-          <PerformanceMonitor />
+          <div className="space-y-6">
+            <PerformanceMonitor />
+            <IndexPerformanceMonitor />
+          </div>
         </TabsContent>
         
         <TabsContent value="analytics">
