@@ -295,7 +295,21 @@ export const useKeyboardNavigation = ({
       target.closest('[role="textbox"]') ||
       target.closest('.comment-input') ||
       target.closest('.search-input') ||
-      target.closest('[data-disable-shortcuts]');
+      target.closest('[data-disable-shortcuts]') ||
+      // TipTap editor specific detection
+      target.closest('.ProseMirror') ||
+      target.closest('[data-tiptap-editor]') ||
+      target.closest('.tiptap') ||
+      // Comment system containers
+      target.closest('.comment-form') ||
+      target.closest('.comment-composer') ||
+      target.closest('.rich-text-editor') ||
+      // General editor detection
+      target.classList.contains('ProseMirror') ||
+      target.hasAttribute('contenteditable') ||
+      // Check if we're inside any comment editing interface
+      target.closest('[class*="comment"]')?.querySelector('[contenteditable="true"]') ||
+      target.closest('[class*="editor"]')?.querySelector('[contenteditable="true"]');
     
     if (isTypingInInput) {
       return;
