@@ -281,10 +281,23 @@ export const useKeyboardNavigation = ({
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (disabled || !settings.enabled) return;
     
-    // Don't handle keys when typing in inputs
-    if (e.target instanceof HTMLInputElement || 
-        e.target instanceof HTMLTextAreaElement || 
-        (e.target as any)?.contentEditable === 'true') {
+    // Enhanced input detection - disable shortcuts when user is typing
+    const target = e.target as HTMLElement;
+    const isTypingInInput = 
+      target instanceof HTMLInputElement || 
+      target instanceof HTMLTextAreaElement || 
+      target.contentEditable === 'true' ||
+      target.isContentEditable ||
+      target.closest('[contenteditable="true"]') ||
+      target.closest('input') ||
+      target.closest('textarea') ||
+      target.closest('[data-comment-input]') ||
+      target.closest('[role="textbox"]') ||
+      target.closest('.comment-input') ||
+      target.closest('.search-input') ||
+      target.closest('[data-disable-shortcuts]');
+    
+    if (isTypingInInput) {
       return;
     }
 
