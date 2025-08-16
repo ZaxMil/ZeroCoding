@@ -60,7 +60,8 @@ const WordPressCrawler = React.lazy(() => import("./pages/WordPressCrawler").the
 const Monetization = React.lazy(() => import("./pages/Monetization"));
 const AdminMobile = React.lazy(() => import("./pages/AdminMobile"));
 const LazyAdvancedSearch = React.lazy(() => import("./pages/AdvancedSearch"));
-const LazyCoinBundles = React.lazy(() => import("./pages/CoinBundles"));
+// Import CoinBundles directly to avoid lazy loading issues
+import CoinBundles from "./pages/CoinBundles";
 
 const queryClient = new QueryClient();
 
@@ -295,11 +296,7 @@ function AppContent() {
 
           <Route path="/coins/bundles" element={
             <RouteWrapper>
-              <AsyncErrorBoundary componentName="Coin Bundles">
-                <Suspense fallback={<LoadingState message="Loading..." />}>
-                  <LazyCoinBundles />
-                </Suspense>
-              </AsyncErrorBoundary>
+              <CoinBundles />
             </RouteWrapper>
           } />
 

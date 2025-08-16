@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { initializeDatabase } from '@/utils/seedDatabase';
 
 interface DashboardConfig {
   theme: string;
@@ -58,6 +59,55 @@ const iconMap: Record<string, React.ReactNode> = {
   User: <User className="h-5 w-5" />
 };
 
+const getThemeClasses = (theme: string) => {
+  switch (theme) {
+    case 'admin':
+      return 'from-red-500/10 to-red-600/10 border-red-200 dark:border-red-800';
+    case 'uploader':
+      return 'from-blue-500/10 to-blue-600/10 border-blue-200 dark:border-blue-800';
+    case 'seo':
+      return 'from-green-500/10 to-green-600/10 border-green-200 dark:border-green-800';
+    case 'author':
+      return 'from-purple-500/10 to-purple-600/10 border-purple-200 dark:border-purple-800';
+    default:
+      return 'from-gray-500/10 to-gray-600/10 border-gray-200 dark:border-gray-800';
+  }
+};
+
+const getRoleDisplayName = (role: string) => {
+  switch (role) {
+    case 'admin': return 'Administrator';
+    case 'uploader': return 'Content Uploader';
+    case 'seo_manager': return 'SEO Manager';
+    case 'author': return 'Author';
+    default: return 'Member';
+  }
+};
+
+const getMenuItemDescription = (title: string): string => {
+  const descriptions: Record<string, string> = {
+    'Overview': 'Dashboard overview and statistics',
+    'Series Manager': 'Manage and organize series',
+    'Chapter Manager': 'Upload and manage chapters',
+    'User Management': 'Manage users and permissions',
+    'Analytics': 'View detailed analytics',
+    'Settings': 'Configure system settings',
+    'My Uploads': 'View your uploaded content',
+    'Chapter Upload': 'Upload new chapters',
+    'Upload History': 'View upload history',
+    'SEO Dashboard': 'SEO optimization tools',
+    'Content Optimization': 'Optimize content for search',
+    'Meta Management': 'Manage meta tags',
+    'My Series': 'Manage your series',
+    'Chapters': 'Your chapter management',
+    'Profile': 'Manage your profile',
+    'Reading List': 'Your reading list',
+    'Preferences': 'Account preferences'
+  };
+  
+  return descriptions[title] || 'Access this feature';
+};
+
 export const RoleBasedDashboard: React.FC = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
@@ -70,6 +120,9 @@ export const RoleBasedDashboard: React.FC = () => {
 
       try {
         setLoading(true);
+        
+        // Initialize database if needed
+        await initializeDatabase();
         
         const { data, error } = await supabase
           .from('role_dashboards')
@@ -137,38 +190,90 @@ export const RoleBasedDashboard: React.FC = () => {
   }
 
   if (!dashboardData) {
+    // Provide a fallback dashboard for users without specific configurations
+    const fallbackData = {
+      role_name: userProfile?.role || 'member',
+      dashboard_config: { theme: 'member', layout: 'list' },
+      menu_items: [
+        { title: 'Reading List', path: '/library', icon: 'BookOpen' },
+        { title: 'Profile', path: '/profile', icon: 'User' },
+        { title: 'Preferences', path: '/settings', icon: 'Settings' },
+        { title: 'History', path: '/profile?tab=history', icon: 'History' }
+      ],
+      permissions: { can_read: true, can_comment: true, can_rate: true, can_bookmark: true }
+    };
+    
     return (
-      <div className="text-center py-8">
-        <h2 className="text-2xl font-bold mb-4">Dashboard Not Available</h2>
-        <p className="text-muted-foreground">Unable to load dashboard configuration for your role.</p>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">
+              {getRoleDisplayName(fallbackData.role_name)} Dashboard
+            </h1>
+            <p className="text-muted-foreground">
+              Welcome back! Here are your available tools and quick actions.
+            </p>
+          </div>
+          <Badge variant="outline" className="text-sm">
+            {getRoleDisplayName(fallbackData.role_name)}
+          </Badge>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {fallbackData.menu_items.map((item, index) => (
+            <Card 
+              key={index} 
+              className="bg-gradient-to-br from-gray-500/10 to-gray-600/10 border-gray-200 dark:border-gray-800 hover:shadow-lg transition-all duration-200 group cursor-pointer"
+            >
+              <CardContent className="p-6">
+                <Link to={item.path} className="block">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-lg bg-background/80 group-hover:bg-background transition-colors">
+                      {iconMap[item.icon] || <LayoutDashboard className="h-5 w-5" />}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold group-hover:text-primary transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {getMenuItemDescription(item.title)}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Your Permissions</CardTitle>
+            <CardDescription>
+              What you can do with your current role
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(fallbackData.permissions).map(([permission, hasPermission]) => {
+                if (!hasPermission) return null;
+                
+                return (
+                  <Badge 
+                    key={permission} 
+                    variant="secondary"
+                    className="text-xs"
+                  >
+                    {permission.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                  </Badge>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
-
-  const getThemeClasses = (theme: string) => {
-    switch (theme) {
-      case 'admin':
-        return 'from-red-500/10 to-red-600/10 border-red-200 dark:border-red-800';
-      case 'uploader':
-        return 'from-blue-500/10 to-blue-600/10 border-blue-200 dark:border-blue-800';
-      case 'seo':
-        return 'from-green-500/10 to-green-600/10 border-green-200 dark:border-green-800';
-      case 'author':
-        return 'from-purple-500/10 to-purple-600/10 border-purple-200 dark:border-purple-800';
-      default:
-        return 'from-gray-500/10 to-gray-600/10 border-gray-200 dark:border-gray-800';
-    }
-  };
-
-  const getRoleDisplayName = (role: string) => {
-    switch (role) {
-      case 'admin': return 'Administrator';
-      case 'uploader': return 'Content Uploader';
-      case 'seo_manager': return 'SEO Manager';
-      case 'author': return 'Author';
-      default: return 'Member';
-    }
-  };
 
   const themeClasses = getThemeClasses(dashboardData.dashboard_config.theme);
 
@@ -245,28 +350,4 @@ export const RoleBasedDashboard: React.FC = () => {
       </Card>
     </div>
   );
-};
-
-const getMenuItemDescription = (title: string): string => {
-  const descriptions: Record<string, string> = {
-    'Overview': 'Dashboard overview and statistics',
-    'Series Manager': 'Manage and organize series',
-    'Chapter Manager': 'Upload and manage chapters',
-    'User Management': 'Manage users and permissions',
-    'Analytics': 'View detailed analytics',
-    'Settings': 'Configure system settings',
-    'My Uploads': 'View your uploaded content',
-    'Chapter Upload': 'Upload new chapters',
-    'Upload History': 'View upload history',
-    'SEO Dashboard': 'SEO optimization tools',
-    'Content Optimization': 'Optimize content for search',
-    'Meta Management': 'Manage meta tags',
-    'My Series': 'Manage your series',
-    'Chapters': 'Your chapter management',
-    'Profile': 'Manage your profile',
-    'Reading List': 'Your reading list',
-    'Preferences': 'Account preferences'
-  };
-  
-  return descriptions[title] || 'Access this feature';
 };
