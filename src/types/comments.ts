@@ -105,6 +105,22 @@ export interface CommentFormData {
   target_type: CommentType;
 }
 
+export interface CommentNotification {
+  id: string;
+  recipient_id: string;
+  comment_id: string;
+  type: 'reply' | 'like' | 'mention' | 'moderation';
+  created_at: string;
+  read: boolean;
+}
+
+export interface CommentPerformanceMetrics {
+  renderTime: number;
+  loadTime: number;
+  commentCount: number;
+  replyDepth: number;
+}
+
 export interface CommentSortOption {
   value: 'newest' | 'oldest' | 'top' | 'controversial';
   label: string;
@@ -117,6 +133,7 @@ export interface CommentThreadProps {
   showSorting?: boolean;
   enableModeration?: boolean;
   maxDepth?: number;
+  mobileOptimized?: boolean;
 }
 
 export interface CommentItemProps {
