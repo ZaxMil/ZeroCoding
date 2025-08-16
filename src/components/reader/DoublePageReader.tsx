@@ -125,6 +125,7 @@ export const DoublePageReader = ({
           onPageChange(nextPage);
           resetZoom();
         } else if (hasNextChapter) {
+          // Auto-navigate to next chapter when reaching last page
           onNextChapter();
         }
         
@@ -140,6 +141,7 @@ export const DoublePageReader = ({
         onPageChange(nextPage);
         resetZoom();
       } else if (hasNextChapter) {
+        // Auto-navigate to next chapter when reaching last page
         onNextChapter();
       }
     }

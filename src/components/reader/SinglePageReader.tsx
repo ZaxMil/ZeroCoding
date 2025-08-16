@@ -97,10 +97,11 @@ export const SinglePageReader = ({
     if (currentPage < pages.length - 1) {
       onPageChange(currentPage + 1);
       resetZoom();
+      setShowControls(true);
     } else if (hasNextChapter) {
+      // Auto-navigate to next chapter when reaching last page
       onNextChapter();
     }
-    setShowControls(true);
   }, [currentPage, pages.length, hasNextChapter, onPageChange, onNextChapter]);
 
   const goToPreviousPage = useCallback(() => {

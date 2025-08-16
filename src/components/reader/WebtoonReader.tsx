@@ -187,7 +187,8 @@ export const WebtoonReader = ({
     onNextPage: () => {
       if (currentPage < pages.length - 1) {
         onPageChange(currentPage + 1);
-      } else {
+      } else if (hasNextChapter) {
+        // Auto-navigate to next chapter when reaching last page
         onNextChapter();
       }
     },
@@ -217,7 +218,8 @@ export const WebtoonReader = ({
     onSwipeLeft: () => {
       if (currentPage < pages.length - 1) {
         onPageChange(currentPage + 1);
-      } else {
+      } else if (hasNextChapter) {
+        // Auto-navigate to next chapter when reaching last page
         onNextChapter();
       }
     },
@@ -458,7 +460,7 @@ export const WebtoonReader = ({
   const progressPercentage = (currentPage + 1) / pages.length * 100;
   return <div className="min-h-screen bg-background">
       {/* Header */}
-      <Card className="rounded-none border-b bg-background/95 backdrop-blur-sm">
+      <Card className="rounded-none border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
         <div className="w-full px-2 sm:px-4 py-2 sm:py-3">
           <div className="flex items-center justify-between gap-1 sm:gap-2">
             <div className="flex items-center gap-1 sm:gap-4 min-w-0">
@@ -624,8 +626,8 @@ export const WebtoonReader = ({
       </Card>
 
 
-      {/* Webtoon Pages Container - Seamless vertical flow */}
-      <div className="pt-0 sm:pt-0 pb-0 sm:pb-0 overflow-x-hidden">
+      {/* Webtoon Pages Container - Seamless vertical flow with smooth scrolling */}
+      <div className="pt-0 sm:pt-0 pb-0 sm:pb-0 overflow-x-hidden scroll-smooth">
         <div className={boxedWidth ? "max-w-4xl mx-auto" : "w-full"}>
           <div style={{
           width: `${imageScale}%`,
@@ -765,14 +767,14 @@ export const WebtoonReader = ({
         </div>
       )}
 
-      {/* Floating Settings Button with Enhanced Circular Progress */}
-      <div className="fixed bottom-4 right-4 z-50">
+      {/* Floating Settings Button with Enhanced Circular Progress - positioned below fullscreen */}
+      <div className="fixed bottom-4 right-4 z-40">
         <div className="relative group">
           <CircularProgress value={progressPercentage} size={48} strokeWidth={3} />
           <Button 
             variant="secondary" 
             size="icon" 
-            className="absolute inset-1 rounded-full shadow-lg hover:scale-105 transition-all duration-200 z-10" 
+            className="absolute inset-1 rounded-full shadow-lg hover:scale-105 transition-all duration-200 bg-background/90 backdrop-blur-sm" 
             aria-label="Reader settings" 
             onClick={() => setSettingsOpen(!settingsOpen)}
           >

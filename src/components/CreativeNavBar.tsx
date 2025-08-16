@@ -16,6 +16,7 @@ import { useCoinWallet } from '@/hooks/useCoinWallet';
 import { MangaEditModal } from '@/components/admin/MangaEditModal';
 import { BookOpen, Home, User, Settings, Search, Menu, X, Star, Heart, Bookmark, TrendingUp, LogOut, Coins, Crown, Zap, Shield, Edit, HelpCircle, ShoppingCart, Mail, Clock } from 'lucide-react';
 import { getAdminHref } from '@/lib/adminLinks';
+import { NotificationCenter } from '@/components/notifications/NotificationCenter';
 const CreativeNavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -103,6 +104,9 @@ const CreativeNavBar = () => {
             <Button variant="ghost" size="sm" onClick={() => setShowInteractiveSearch(true)} className="h-6 w-6 xs:h-8 xs:w-8 sm:h-9 sm:w-9 p-0 rounded-lg xs:rounded-xl hover:bg-muted/50">
               <Search className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4" />
             </Button>
+            
+            {/* Notification Center */}
+            {user && <NotificationCenter />}
             {currentSeriesId && <AuthorOnly hide>
                 <Button variant="ghost" size="sm" onClick={() => setShowQuickEdit(true)} className="h-6 w-6 xs:h-8 xs:w-8 sm:h-9 sm:w-9 p-0 rounded-lg xs:rounded-xl hover:bg-muted/50" aria-label="Quick Edit" title="Quick Edit">
                   <Edit className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4" />
