@@ -47,6 +47,8 @@ import Feedback from "./pages/Feedback";
 import Community from "./pages/Community";
 import Settings from "./pages/Settings";
 import Chapters from "./pages/Chapters";
+import Library from "./pages/Library";
+import MediaCenter from "./pages/MediaCenter";
 
 // Lazy load heavy components
 const Admin = React.lazy(() => import("./pages/Admin"));
@@ -212,6 +214,18 @@ function AppContent() {
           <Route path="/community" element={
             <RouteWrapper>
               <Community />
+            </RouteWrapper>
+          } />
+
+          <Route path="/library" element={
+            <RouteWrapper>
+              <Library />
+            </RouteWrapper>
+          } />
+
+          <Route path="/media" element={
+            <RouteWrapper>
+              <MediaCenter />
             </RouteWrapper>
           } />
 
