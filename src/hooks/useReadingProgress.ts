@@ -37,7 +37,7 @@ export const useReadingProgress = (chapterId: string) => {
             chapterId: data.chapter_id,
             currentPage: data.current_page,
             totalPages: data.total_pages,
-            progressPercentage: data.progress_percentage,
+            progressPercentage: Math.round((data.current_page / data.total_pages) * 100),
             lastReadAt: data.last_read_at
           });
         }
@@ -72,7 +72,6 @@ export const useReadingProgress = (chapterId: string) => {
           chapter_id: chapterId,
           current_page: currentPage,
           total_pages: totalPages,
-          progress_percentage: progressPercentage,
           last_read_at: newProgress.lastReadAt
         });
 

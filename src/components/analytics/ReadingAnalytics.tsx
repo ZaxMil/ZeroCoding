@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, Clock, Trophy, TrendingUp, Target, Calendar } from 'lucide-react';
-import { useReadingProgress } from '@/hooks/useReadingProgress';
+import { useReadingStats } from '@/hooks/useReadingStats';
 
 interface ReadingGoal {
   id: string;
@@ -53,7 +53,7 @@ const mockAchievements = [
 ];
 
 export function ReadingAnalytics() {
-  const { stats, loading } = useReadingProgress();
+  const { stats, loading } = useReadingStats();
 
   if (loading) {
     return (
