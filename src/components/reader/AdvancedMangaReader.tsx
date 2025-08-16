@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Maximize, Minimize, Bookmark, BookmarkCheck } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize, Minimize, Bookmark, BookmarkCheck, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { EnhancedPreloadableImage } from './EnhancedPreloadableImage';
 import { ReaderSettingsPanel } from './ReaderSettingsPanel';
@@ -34,9 +35,13 @@ export const AdvancedMangaReader = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showControls, setShowControls] = useState(true);
+  const [showFloatingGear, setShowFloatingGear] = useState(false);
+  const [shortkeysEnabled, setShortkeysEnabled] = useState(true);
+  const [shortKeyStatus, setShortKeyStatus] = useState<'enabled' | 'disabled'>('enabled');
   
   const readerRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout>();
+  const floatingGearTimeoutRef = useRef<NodeJS.Timeout>();
 
   // Mock chapter data - replace with actual API call
   useEffect(() => {
@@ -80,35 +85,7 @@ export const AdvancedMangaReader = () => {
     loadChapter();
   }, [chapterId, progress, settings.preloadPages, toast]);
 
-  // Auto-hide controls
-  useEffect(() => {
-    const resetTimeout = () => {
-      if (controlsTimeoutRef.current) {
-        clearTimeout(controlsTimeoutRef.current);
-      }
-      setShowControls(true);
-      controlsTimeoutRef.current = setTimeout(() => {
-        setShowControls(false);
-      }, 3000);
-    };
-
-    const handleMouseMove = () => resetTimeout();
-    const handleTouchStart = () => resetTimeout();
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('touchstart', handleTouchStart);
-    resetTimeout();
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('touchstart', handleTouchStart);
-      if (controlsTimeoutRef.current) {
-        clearTimeout(controlsTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  // Navigation functions
+  // Navigation functions (defined first to be used in effects)
   const goToNextPage = useCallback(() => {
     if (!chapter) return;
     
@@ -153,14 +130,130 @@ export const AdvancedMangaReader = () => {
     updateSetting('zoom', Math.max(settings.zoom - 10, 50));
   }, [settings.zoom, updateSetting]);
 
-  // Gesture controls
+  // Auto-hide controls and floating gear logic
+  useEffect(() => {
+    const resetTimeout = () => {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+      setShowControls(true);
+      controlsTimeoutRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 3000);
+    };
+
+    const handleMouseMove = () => resetTimeout();
+    const handleTouchStart = () => resetTimeout();
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('touchstart', handleTouchStart);
+    resetTimeout();
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('touchstart', handleTouchStart);
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Floating gear visibility logic for continuous reading mode
+  useEffect(() => {
+    if (settings.readingMode !== 'continuous') {
+      setShowFloatingGear(false);
+      return;
+    }
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const shouldShowFloating = scrollTop > 200; // Show when scrolled past navbar
+      
+      if (shouldShowFloating !== showFloatingGear) {
+        setShowFloatingGear(shouldShowFloating);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [settings.readingMode, showFloatingGear]);
+
+  // Shortkey toggle system - Ctrl+Shift+K to toggle
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Check if user is typing in an input field
+      const activeElement = document.activeElement;
+      const isTyping = activeElement && (
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.hasAttribute('contenteditable')
+      );
+
+      // Toggle shortkeys with Ctrl+Shift+K
+      if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+        e.preventDefault();
+        setShortkeysEnabled(!shortkeysEnabled);
+        setShortKeyStatus(shortkeysEnabled ? 'disabled' : 'enabled');
+        
+        // Show status briefly
+        if (floatingGearTimeoutRef.current) {
+          clearTimeout(floatingGearTimeoutRef.current);
+        }
+        floatingGearTimeoutRef.current = setTimeout(() => {
+          setShortKeyStatus(shortkeysEnabled ? 'disabled' : 'enabled');
+        }, 2000);
+        
+        return;
+      }
+
+      // Don't process other shortcuts if disabled or typing
+      if (!shortkeysEnabled || isTyping) return;
+
+      // Existing keyboard controls
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+          e.preventDefault();
+          goToPreviousPage();
+          break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+        case ' ':
+          e.preventDefault();
+          goToNextPage();
+          break;
+        case '=':
+        case '+':
+          e.preventDefault();
+          handleZoomIn();
+          break;
+        case '-':
+          e.preventDefault();
+          handleZoomOut();
+          break;
+        case 'f':
+        case 'F':
+        case 'F11':
+          e.preventDefault();
+          toggleFullscreen();
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [shortkeysEnabled, goToPreviousPage, goToNextPage, handleZoomIn, handleZoomOut, toggleFullscreen]);
+
+  // Gesture controls - only when shortcuts are enabled
   useGestureControls({
     onNextPage: goToNextPage,
     onPreviousPage: goToPreviousPage,
     onZoomIn: handleZoomIn,
     onZoomOut: handleZoomOut,
     onToggleFullscreen: toggleFullscreen,
-    enabled: settings.gesturesEnabled
+    enabled: settings.gesturesEnabled && shortkeysEnabled
   });
 
   // Apply brightness filter
@@ -250,6 +343,35 @@ export const AdvancedMangaReader = () => {
           <Progress value={progressPercentage} className="h-2" />
         </div>
       </div>
+
+      {/* Floating Gear Icon - Only in continuous mode and when away from navbar */}
+      {showFloatingGear && settings.readingMode === 'continuous' && !showControls && (
+        <div className="fixed bottom-6 right-6 z-50 animate-fade-in">
+          <ReaderSettingsPanel 
+            trigger={
+              <Button
+                variant="outline"
+                size="icon"
+                className="shadow-lg bg-background/80 backdrop-blur-sm hover:bg-background/90"
+              >
+                <Settings className="h-4 w-4" />
+              </Button>
+            }
+          />
+        </div>
+      )}
+
+      {/* Shortkey Status Indicator */}
+      {shortKeyStatus && (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in">
+          <Badge 
+            variant={shortkeysEnabled ? "default" : "destructive"}
+            className="shadow-lg bg-background/90 backdrop-blur-sm"
+          >
+            Shortcuts: {shortkeysEnabled ? 'Enabled' : 'Disabled'} (Ctrl+Shift+K)
+          </Badge>
+        </div>
+      )}
 
       {/* Reader Content */}
       <div className="pt-24 pb-16">

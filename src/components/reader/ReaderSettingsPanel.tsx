@@ -15,15 +15,21 @@ import {
 } from '@/components/ui/sheet';
 import { useReaderSettings } from '@/hooks/useReaderSettings';
 
-export const ReaderSettingsPanel = () => {
+interface ReaderSettingsPanelProps {
+  trigger?: React.ReactNode;
+}
+
+export const ReaderSettingsPanel = ({ trigger }: ReaderSettingsPanelProps) => {
   const { settings, updateSetting, resetSettings } = useReaderSettings();
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="fixed top-4 right-4 z-50">
-          <Settings className="h-4 w-4" />
-        </Button>
+        {trigger || (
+          <Button variant="outline" size="icon" className="fixed top-4 right-4 z-50">
+            <Settings className="h-4 w-4" />
+          </Button>
+        )}
       </SheetTrigger>
       <SheetContent className="w-[400px] sm:w-[540px]">
         <SheetHeader>
