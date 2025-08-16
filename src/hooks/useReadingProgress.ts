@@ -1,182 +1,91 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ReadingProgress {
-  series_id: string;
-  chapter_number: number;
-  page_number: number;
-  progress_percentage: number;
-  last_read_at: string;
-  reading_time: number; // in minutes
+  chapterId: string;
+  currentPage: number;
+  totalPages: number;
+  progressPercentage: number;
+  lastReadAt: string;
 }
 
-interface ReadingStats {
-  total_series: number;
-  total_chapters_read: number;
-  total_reading_time: number;
-  favorite_genre: string;
-  reading_streak: number;
-  chapters_this_week: number;
-  pages_this_week: number;
-}
-
-export function useReadingProgress() {
+export const useReadingProgress = (chapterId: string) => {
   const { user } = useAuth();
-  const [progress, setProgress] = useState<Map<string, ReadingProgress>>(new Map());
-  const [stats, setStats] = useState<ReadingStats | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState<ReadingProgress | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load progress from localStorage (in real app, this would be Supabase)
+  // Load reading progress
   useEffect(() => {
-    if (!user) {
-      setProgress(new Map());
-      setStats(null);
-      setLoading(false);
-      return;
-    }
+    if (!user || !chapterId) return;
 
     const loadProgress = async () => {
       try {
-        // Mock loading from localStorage
-        const stored = localStorage.getItem(`reading_progress_${user.id}`);
-        const progressData = stored ? JSON.parse(stored) : {};
-        
-        const progressMap = new Map();
-        Object.entries(progressData).forEach(([seriesId, data]) => {
-          progressMap.set(seriesId, data);
-        });
-        
-        setProgress(progressMap);
-        
-        // Calculate stats
-        const mockStats: ReadingStats = {
-          total_series: progressMap.size,
-          total_chapters_read: Array.from(progressMap.values()).reduce((sum, p: any) => sum + p.chapter_number, 0),
-          total_reading_time: Array.from(progressMap.values()).reduce((sum, p: any) => sum + (p.reading_time || 0), 0),
-          favorite_genre: 'Action',
-          reading_streak: 7,
-          chapters_this_week: 12,
-          pages_this_week: 456
-        };
-        
-        setStats(mockStats);
+        const { data, error } = await supabase
+          .from('reading_progress')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('chapter_id', chapterId)
+          .single();
+
+        if (error && error.code !== 'PGRST116') {
+          throw error;
+        }
+
+        if (data) {
+          setProgress({
+            chapterId: data.chapter_id,
+            currentPage: data.current_page,
+            totalPages: data.total_pages,
+            progressPercentage: data.progress_percentage,
+            lastReadAt: data.last_read_at
+          });
+        }
       } catch (error) {
         console.error('Failed to load reading progress:', error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     loadProgress();
-  }, [user]);
+  }, [user, chapterId]);
 
-  const updateProgress = async (
-    seriesId: string, 
-    chapterNumber: number, 
-    pageNumber: number,
-    totalPages: number
-  ) => {
-    if (!user) return;
+  // Update reading progress
+  const updateProgress = useCallback(async (currentPage: number, totalPages: number) => {
+    if (!user || !chapterId) return;
 
-    const progressPercentage = totalPages > 0 ? (pageNumber / totalPages) * 100 : 0;
-    
+    const progressPercentage = Math.round((currentPage / totalPages) * 100);
     const newProgress: ReadingProgress = {
-      series_id: seriesId,
-      chapter_number: chapterNumber,
-      page_number: pageNumber,
-      progress_percentage: progressPercentage,
-      last_read_at: new Date().toISOString(),
-      reading_time: progress.get(seriesId)?.reading_time || 0
+      chapterId,
+      currentPage,
+      totalPages,
+      progressPercentage,
+      lastReadAt: new Date().toISOString()
     };
 
-    // Update local state
-    const newProgressMap = new Map(progress);
-    newProgressMap.set(seriesId, newProgress);
-    setProgress(newProgressMap);
-
-    // Save to localStorage (in real app, this would be Supabase)
     try {
-      const progressData: Record<string, ReadingProgress> = {};
-      newProgressMap.forEach((value, key) => {
-        progressData[key] = value;
-      });
-      
-      localStorage.setItem(`reading_progress_${user.id}`, JSON.stringify(progressData));
+      const { error } = await supabase
+        .from('reading_progress')
+        .upsert({
+          user_id: user.id,
+          chapter_id: chapterId,
+          current_page: currentPage,
+          total_pages: totalPages,
+          progress_percentage: progressPercentage,
+          last_read_at: newProgress.lastReadAt
+        });
+
+      if (error) throw error;
+      setProgress(newProgress);
     } catch (error) {
-      console.error('Failed to save reading progress:', error);
+      console.error('Failed to update reading progress:', error);
     }
-  };
-
-  const markChapterComplete = async (seriesId: string, chapterNumber: number, readingTime: number = 0) => {
-    if (!user) return;
-
-    const existingProgress = progress.get(seriesId);
-    const newProgress: ReadingProgress = {
-      series_id: seriesId,
-      chapter_number: chapterNumber,
-      page_number: 0, // Reset for next chapter
-      progress_percentage: 100,
-      last_read_at: new Date().toISOString(),
-      reading_time: (existingProgress?.reading_time || 0) + readingTime
-    };
-
-    const newProgressMap = new Map(progress);
-    newProgressMap.set(seriesId, newProgress);
-    setProgress(newProgressMap);
-
-    // Save to localStorage
-    try {
-      const progressData: Record<string, ReadingProgress> = {};
-      newProgressMap.forEach((value, key) => {
-        progressData[key] = value;
-      });
-      
-      localStorage.setItem(`reading_progress_${user.id}`, JSON.stringify(progressData));
-    } catch (error) {
-      console.error('Failed to save reading progress:', error);
-    }
-  };
-
-  const getSeriesProgress = (seriesId: string): ReadingProgress | null => {
-    return progress.get(seriesId) || null;
-  };
-
-  const getReadingStats = (): ReadingStats | null => {
-    return stats;
-  };
-
-  const resetProgress = async (seriesId: string) => {
-    if (!user) return;
-
-    const newProgressMap = new Map(progress);
-    newProgressMap.delete(seriesId);
-    setProgress(newProgressMap);
-
-    // Save to localStorage
-    try {
-      const progressData: Record<string, ReadingProgress> = {};
-      newProgressMap.forEach((value, key) => {
-        progressData[key] = value;
-      });
-      
-      localStorage.setItem(`reading_progress_${user.id}`, JSON.stringify(progressData));
-    } catch (error) {
-      console.error('Failed to reset reading progress:', error);
-    }
-  };
-
-  const getAllProgress = (): ReadingProgress[] => {
-    return Array.from(progress.values());
-  };
+  }, [user, chapterId]);
 
   return {
-    progress: getAllProgress(),
-    stats,
-    loading,
-    updateProgress,
-    markChapterComplete,
-    getSeriesProgress,
-    getReadingStats,
-    resetProgress
+    progress,
+    isLoading,
+    updateProgress
   };
-}
+};
