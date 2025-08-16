@@ -385,7 +385,7 @@ export const DoublePageReader = ({
       {/* Main Reader Area */}
       <div 
         ref={containerRef}
-        className="relative w-full h-screen flex items-center justify-center pt-14 pb-16"
+        className="relative w-full h-screen flex items-center justify-center"
         onClick={handleContainerClick}
       >
         {/* Double Page Container with Flip Animation */}

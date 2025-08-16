@@ -264,6 +264,32 @@ export function useAdvancedComments(targetId: string, targetType: CommentType) {
       // Process mentions
       await processMentions(commentId, formData.content);
 
+      // Optimistic update - add comment immediately to UI
+      const optimisticComment: AdvancedComment = {
+        id: `temp-${Date.now()}`,
+        content: formData.content,
+        user_id: user.id,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        user: {
+          id: user.id,
+          email: user.email,
+          user_metadata: { name: 'You' }
+        },
+        user_like: false,
+        like_count: 0,
+        parent_id: formData.parent_id || null,
+        replies: [],
+        attachments: [],
+        reactions: [],
+        mentions: [],
+        is_bookmarked: false,
+        status: 'active'
+      };
+
+      // Add to comments immediately
+      setComments(prev => [optimisticComment, ...prev]);
+      
       toast.success('Comment posted successfully!');
       await fetchComments();
       return true;

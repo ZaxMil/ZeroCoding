@@ -74,9 +74,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
+    // Preserve scroll position during auth state changes
+    let savedScrollPosition = 0;
+    
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        // Save scroll position before auth state change
+        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+          savedScrollPosition = window.scrollY;
+        }
+        
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -91,6 +99,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
         
         setIsLoading(false);
+        
+        // Restore scroll position after auth state change
+        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+          setTimeout(() => {
+            window.scrollTo(0, savedScrollPosition);
+          }, 100);
+        }
       }
     );
 

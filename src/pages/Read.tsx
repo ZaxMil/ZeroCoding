@@ -133,7 +133,7 @@ const Read = () => {
             // Use a more descriptive title based on the UUID pattern
             const fallbackTitle = seriesSlug === '411b335d-8475-46b4-8e18-1d4964d450b5' 
               ? 'Immortal Sword Saint' 
-              : 'Unknown Series';
+              : 'Manga Series';
             currentSeries = {
               id: seriesSlug,
               title: fallbackTitle,
