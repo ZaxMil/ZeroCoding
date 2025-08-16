@@ -50,6 +50,7 @@ import Chapters from "./pages/Chapters";
 import Library from "./pages/Library";
 import MediaCenter from "./pages/MediaCenter";
 import SupabaseSetup from "./pages/SupabaseSetup";
+import Auth from "./pages/Auth";
 
 // Lazy load heavy components
 const Admin = React.lazy(() => import("./pages/Admin"));
@@ -353,6 +354,11 @@ function AppContent() {
           {/* Special routes */}
           <Route path="/setup" element={<Setup />} />
           <Route path="/supabase-setup" element={<SupabaseSetup />} />
+          <Route path="/auth" element={
+            <RouteWrapper enableLayout={false}>
+              <Auth />
+            </RouteWrapper>
+          } />
 
           {/* 404 fallback */}
           <Route path="*" element={
