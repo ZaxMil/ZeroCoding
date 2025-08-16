@@ -130,7 +130,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
             onError={handleError}
             loading={priority ? 'eager' : loading}
             decoding="async"
-            fetchPriority={priority ? 'high' : 'auto'}
+            {...(priority ? { fetchPriority: 'high' as const } : { fetchPriority: 'auto' as const })}
             width={finalWidth}
             height={finalHeight}
             srcSet={createImageSrcSet(currentSrc)}
@@ -143,7 +143,21 @@ const LazyImage: React.FC<LazyImageProps> = ({
   return <div ref={containerRef} className="relative">
       {isLoading && (placeholder || defaultPlaceholder)}
       
-      {isVisible && <img ref={imgRef} src={currentSrc} alt={alt} className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} onLoad={handleLoad} onError={handleError} loading={priority ? 'eager' : loading} decoding="async" fetchPriority={priority ? 'high' : 'auto'} width={finalWidth} height={finalHeight} srcSet={createImageSrcSet(currentSrc)} sizes={sizes || getResponsiveSizes('card')} />}
+      {isVisible && <img 
+        ref={imgRef} 
+        src={currentSrc} 
+        alt={alt} 
+        className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} 
+        onLoad={handleLoad} 
+        onError={handleError} 
+        loading={priority ? 'eager' : loading} 
+        decoding="async" 
+        {...(priority ? { fetchPriority: 'high' as const } : { fetchPriority: 'auto' as const })}
+        width={finalWidth} 
+        height={finalHeight} 
+        srcSet={createImageSrcSet(currentSrc)} 
+        sizes={sizes || getResponsiveSizes('card')} 
+      />}
     </div>;
 };
 export default LazyImage;
