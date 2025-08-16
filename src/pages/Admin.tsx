@@ -55,6 +55,7 @@ import { OrganizedDeveloperTools } from '@/components/admin/OrganizedDeveloperTo
 import { ImprovedDataResetPanel } from '@/components/admin/ImprovedDataResetPanel';
 import { CloudflarePanel } from '@/components/admin/CloudflarePanel';
 import WatermarkSettings from '@/pages/admin/WatermarkSettings';
+import MediaCenter from './MediaCenter';
 
 const Admin = () => {
   return (
@@ -113,6 +114,7 @@ const Admin = () => {
 
               {/* 6. Security & Monitoring */}
               <Route path="security/watermark-settings" element={<WatermarkSettings />} />
+              <Route path="media-center" element={<MediaCenter />} />
 
               {/* Fallback for unknown routes */}
               <Route path="*" element={<ModernDashboardOverview />} />
