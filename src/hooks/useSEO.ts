@@ -50,12 +50,15 @@ interface PageSEORule {
 export const useSEO = () => {
   const location = useLocation();
   const [seoSettings, setSEOSettings] = useState<SEOSettings>({
-    siteTitle: 'Manga Reader',
-    siteDescription: 'Professional manga reading platform with premium features',
+    siteTitle: 'Manga Reader Pro',
+    siteDescription: 'Premium manga reading platform with advanced features, coin system, and community engagement',
     siteUrl: window.location.origin,
     defaultImage: '/kodelex-favicon.png',
     allowIndexing: true,
-    robotsDirectives: ['index', 'follow']
+    robotsDirectives: ['index', 'follow'],
+    twitterHandle: 'mangareader',
+    googleSiteVerification: '',
+    facebookAppId: ''
   });
   
   const [currentMetadata, setCurrentMetadata] = useState<SEOMetadata>({});
