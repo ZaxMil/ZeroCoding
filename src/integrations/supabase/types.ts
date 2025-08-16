@@ -2289,6 +2289,33 @@ export type Database = {
         }
         Relationships: []
       }
+      security_audit_logs: {
+        Row: {
+          created_at: string | null
+          event_data: Json | null
+          event_type: string
+          id: string
+          severity: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          severity?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          severity?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       seo_settings: {
         Row: {
           canonical_url: string | null
@@ -3714,6 +3741,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      get_comment_author_safe: {
+        Args: { target_user_id: string }
+        Returns: {
+          display_name: string
+          profile_picture_url: string
+          username: string
+        }[]
+      }
       get_daily_active_users: {
         Args: { target_date?: string }
         Returns: number
@@ -3769,6 +3804,18 @@ export type Database = {
           content_type: string
           unique_users: number
           view_count: number
+        }[]
+      }
+      get_public_user_profile: {
+        Args: { target_user_id: string }
+        Returns: {
+          bio: string
+          display_name: string
+          id: string
+          profile_picture_url: string
+          role: string
+          user_id: string
+          username: string
         }[]
       }
       get_series_chapter_listings: {

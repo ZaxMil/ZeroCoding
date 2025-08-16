@@ -21,7 +21,8 @@ import { useAdvancedReadingProgress } from '@/hooks/useAdvancedReadingProgress';
 import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation';
 import { useKeyboardSettings } from '@/hooks/useKeyboardSettings';
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
-import { PreloadableImage } from './PreloadableImage';
+import { EnhancedPreloadableImage } from './EnhancedPreloadableImage';
+import { ReaderPerformanceOptimizer } from './ReaderPerformanceOptimizer';
 
 import { ChapterProgressBar } from '@/components/reading/ChapterProgressBar';
 import { KeyboardShortcutsHelp } from './KeyboardShortcutsHelp';
@@ -636,45 +637,56 @@ export const WebtoonReader = ({
             {pages.map((page, index) => <div key={index} ref={el => pageRefs.current[index] = el} className="w-full block" style={{
             marginBottom: `${imageGap}px`
           }}>
-                <PreloadableImage src={signedUrls[index] || (typeof page === 'string' ? page : '')} alt={`Page ${index + 1}`} pageIndex={index} hasAccess={hasAccess} priority={index <= currentPage + 2 ? 'high' : 'low'} className="block mx-auto" style={{
-              width: imageFit === 'auto' ? 'auto' : '100%',
-              height: readingMode === 'webtoon' ? 'auto' : imageFit === 'height' ? '100vh' : 'auto',
-              maxWidth: boxedWidth ? '100%' : '100vw',
-              objectFit: readingMode === 'webtoon' ? 'contain' : getObjectFit(imageFit),
-              display: 'block'
-            }} onLoad={() => {
-              console.log(`Page ${index + 1} loaded successfully ${isPreloaded(signedUrls[index] || page) ? '(preloaded)' : ''}`);
-            }} onError={async e => {
-              const target = e.currentTarget as HTMLImageElement;
-              console.error(`Failed to load page ${index + 1}:`, page);
+                <EnhancedPreloadableImage 
+                  src={signedUrls[index] || (typeof page === 'string' ? page : '')} 
+                  alt={`Page ${index + 1}`} 
+                  pageIndex={index} 
+                  hasAccess={hasAccess} 
+                  priority={index <= currentPage + 2 ? 'high' : 'low'} 
+                  enableBlankSpaceRemoval={true}
+                  className="block mx-auto" 
+                  style={{
+                    width: imageFit === 'auto' ? 'auto' : '100%',
+                    height: readingMode === 'webtoon' ? 'auto' : imageFit === 'height' ? '100vh' : 'auto',
+                    maxWidth: boxedWidth ? '100%' : '100vw',
+                    objectFit: readingMode === 'webtoon' ? 'contain' : getObjectFit(imageFit),
+                    display: 'block'
+                  }} 
+                  onLoad={() => {
+                    console.log(`Page ${index + 1} loaded successfully ${isPreloaded(signedUrls[index] || page) ? '(preloaded)' : ''}`);
+                  }} 
+                  onError={async e => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    console.error(`Failed to load page ${index + 1}:`, page);
 
-              // Try to refresh signed URL on error (likely expired) with same format
-              if (chapterId && signedUrls[index]) {
-                try {
-                  const supportsWebP = () => {
-                    try {
-                      return document.createElement('canvas').toDataURL('image/webp').indexOf('webp') > -1;
-                    } catch {
-                      return false;
+                    // Try to refresh signed URL on error (likely expired) with same format
+                    if (chapterId && signedUrls[index]) {
+                      try {
+                        const supportsWebP = () => {
+                          try {
+                            return document.createElement('canvas').toDataURL('image/webp').indexOf('webp') > -1;
+                          } catch {
+                            return false;
+                          }
+                        };
+                        const format = supportsWebP() ? 'webp' : 'jpeg';
+                        const freshUrl = await getSignedPageUrl(chapterId, index, 120, format);
+                        if (freshUrl && freshUrl !== signedUrls[index]) {
+                          setSignedUrls(prev => ({
+                            ...prev,
+                            [index]: freshUrl
+                          }));
+                          target.src = freshUrl;
+                          return;
+                        }
+                      } catch (error) {
+                        console.warn(`Failed to refresh signed URL for page ${index + 1}:`, error);
+                      }
                     }
-                  };
-                  const format = supportsWebP() ? 'webp' : 'jpeg';
-                  const freshUrl = await getSignedPageUrl(chapterId, index, 120, format);
-                  if (freshUrl && freshUrl !== signedUrls[index]) {
-                    setSignedUrls(prev => ({
-                      ...prev,
-                      [index]: freshUrl
-                    }));
-                    target.src = freshUrl;
-                    return;
-                  }
-                } catch (error) {
-                  console.warn(`Failed to refresh signed URL for page ${index + 1}:`, error);
-                }
-              }
-              target.src = '/placeholder.svg';
-              target.style.opacity = '0.7';
-            }} />
+                    target.src = '/placeholder.svg';
+                    target.style.opacity = '0.7';
+                  }} 
+                />
               </div>)}
           </div>
         </div>
