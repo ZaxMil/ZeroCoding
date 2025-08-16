@@ -124,10 +124,10 @@ export interface CommentItemProps {
   targetType: CommentType;
   depth?: number;
   maxDepth?: number;
-  onReply?: (parentId: string) => void;
-  onEdit?: (comment: BaseComment) => void;
-  onDelete?: (commentId: string) => void;
-  onPin?: (commentId: string) => void;
+  onReply?: (parentId: string, content: string) => Promise<boolean>;
+  onEdit?: (comment: BaseComment) => Promise<boolean>;
+  onDelete?: (commentId: string) => Promise<boolean>;
+  onPin?: (commentId: string) => Promise<boolean>;
   onModerate?: (commentId: string, action: string) => void;
   showModerationActions?: boolean;
 }

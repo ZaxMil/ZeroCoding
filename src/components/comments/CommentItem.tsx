@@ -44,31 +44,39 @@ export function CommentItem({
   const displayName = comment.profile?.display_name || comment.user?.user_metadata?.name || 'Anonymous User';
   const avatarUrl = comment.profile?.avatar_url || comment.user?.user_metadata?.avatar_url;
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     if (onEdit) {
-      onEdit({ ...comment, content: editContent });
-      setIsEditing(false);
+      const success = await onEdit({ ...comment, content: editContent });
+      if (success) {
+        setIsEditing(false);
+      }
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (onDelete) {
-      onDelete(comment.id);
-      setShowDeleteDialog(false);
+      const success = await onDelete(comment.id);
+      if (success) {
+        setShowDeleteDialog(false);
+      }
     }
   };
 
-  const handleReply = () => {
+  const handleReply = async () => {
+    if (!replyContent.trim()) return;
+    
     if (onReply) {
-      onReply(comment.id);
-      setShowReplyForm(false);
-      setReplyContent('');
+      const success = await onReply(comment.id, replyContent.trim());
+      if (success) {
+        setShowReplyForm(false);
+        setReplyContent('');
+      }
     }
   };
 
-  const handlePin = () => {
+  const handlePin = async () => {
     if (onPin) {
-      onPin(comment.id);
+      await onPin(comment.id);
     }
   };
 

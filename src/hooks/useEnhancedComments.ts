@@ -140,15 +140,79 @@ export function useEnhancedComments(targetId: string, targetType: CommentType) {
         commentData.series_id = formData.target_id;
       }
 
+      // Optimistic update for immediate display
+      const tempComment: BaseComment = {
+        id: `temp-${Date.now()}`,
+        user_id: user.id,
+        content: formData.content,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        parent_id: formData.parent_id || null,
+        like_count: 0,
+        status: 'active',
+        user: {
+          id: user.id,
+          email: user.email,
+          user_metadata: {
+            name: user.user_metadata?.name || user.email?.split('@')[0] || 'User'
+          }
+        },
+        profile: {
+          user_id: user.id,
+          display_name: user.user_metadata?.name || user.email?.split('@')[0] || 'User',
+          role: 'member' as const,
+          created_at: new Date().toISOString()
+        },
+        replies: [],
+        user_like: false
+      };
+
+      // Add optimistic comment immediately
+      setComments(prevComments => {
+        if (formData.parent_id) {
+          // Add as reply to parent comment
+          return prevComments.map(comment => {
+            if (comment.id === formData.parent_id) {
+              return {
+                ...comment,
+                replies: [...(comment.replies || []), tempComment]
+              };
+            }
+            return comment;
+          });
+        } else {
+          // Add as top-level comment
+          return [tempComment, ...prevComments];
+        }
+      });
+
       const { error } = await supabase.from(tableName as any).insert([commentData]);
       if (error) throw error;
 
-      toast.success('Comment posted successfully!');
-      await fetchComments();
+      toast.success(formData.parent_id ? 'Reply posted successfully!' : 'Comment posted successfully!');
+      await fetchComments(); // Refresh to get real data
       return true;
     } catch (error) {
       console.error('Error submitting comment:', error);
-      toast.error('Failed to post comment');
+      toast.error(formData.parent_id ? 'Failed to post reply' : 'Failed to post comment');
+      
+      // Remove optimistic comment on error
+      setComments(prevComments => {
+        if (formData.parent_id) {
+          return prevComments.map(comment => {
+            if (comment.id === formData.parent_id) {
+              return {
+                ...comment,
+                replies: (comment.replies || []).filter(reply => !reply.id.startsWith('temp-'))
+              };
+            }
+            return comment;
+          });
+        } else {
+          return prevComments.filter(comment => !comment.id.startsWith('temp-'));
+        }
+      });
+      
       return false;
     } finally {
       setSubmitting(false);

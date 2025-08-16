@@ -49,9 +49,17 @@ export function CommentThread({
     }
   };
 
-  const handleReply = async (parentId: string) => {
-    // This would be implemented with a reply form
-    console.log('Reply to:', parentId);
+  const handleReply = async (parentId: string, content: string) => {
+    if (!content.trim()) return false;
+
+    const success = await submitComment({
+      content: content.trim(),
+      parent_id: parentId,
+      target_id: targetId,
+      target_type: targetType
+    });
+
+    return success;
   };
 
   const handleEdit = async (comment: any) => {
