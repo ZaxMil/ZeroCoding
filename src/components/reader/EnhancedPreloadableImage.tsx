@@ -216,6 +216,7 @@ export const EnhancedPreloadableImage = ({
         onLoad={handleImageLoad}
         onError={handleImageError}
         loading={priority === 'high' ? 'eager' : 'lazy'}
+        crossOrigin="anonymous"
         className={cn(
           "transition-opacity duration-300",
           isLoading && "opacity-0",
