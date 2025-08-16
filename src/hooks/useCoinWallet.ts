@@ -102,8 +102,10 @@ export const useCoinWallet = () => {
         amount: tx.amount,
         transaction_type: tx.type as 'purchase' | 'spend' | 'refund' | 'reward',
         description: tx.description || tx.context,
-        chapter_id: tx.reference_id,
-        created_at: tx.created_at
+        reference_id: tx.reference_id,
+        status: 'completed' as const,
+        created_at: tx.created_at,
+        updated_at: tx.created_at
       }));
       
       setTransactions(mappedTransactions);
