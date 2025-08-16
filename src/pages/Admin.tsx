@@ -50,6 +50,9 @@ import DatabaseExporter from '@/utils/DatabaseExporter';
 import { SystemChangelog } from '@/components/admin/SystemChangelog';
 import { ChangelogManager } from '@/components/admin/ChangelogManager';
 import { DataResetPanel } from '@/components/admin/DataResetPanel';
+import { ErrorMonitoringDashboard } from '@/components/admin/ErrorMonitoringDashboard';
+import { OrganizedDeveloperTools } from '@/components/admin/OrganizedDeveloperTools';
+import { ImprovedDataResetPanel } from '@/components/admin/ImprovedDataResetPanel';
 import { CloudflarePanel } from '@/components/admin/CloudflarePanel';
 import WatermarkSettings from '@/pages/admin/WatermarkSettings';
 
@@ -100,11 +103,12 @@ const Admin = () => {
               <Route path="production-readiness" element={<ProductionReadinessPanel />} />
 
               {/* 5. Dev Tools & Maintenance */}
-              <Route path="developer-tools" element={<DeveloperToolsPanel />} />
+              <Route path="developer-tools" element={<OrganizedDeveloperTools />} />
+              <Route path="error-monitoring" element={<ErrorMonitoringDashboard />} />
               <Route path="export" element={<DatabaseExporter />} />
               <Route path="changelog" element={<SystemChangelog />} />
               <Route path="changelog-manager" element={<ChangelogManager />} />
-              <Route path="data-reset" element={<DataResetPanel />} />
+              <Route path="data-reset" element={<ImprovedDataResetPanel />} />
               <Route path="cloudflare" element={<CloudflarePanel />} />
 
               {/* 6. Security & Monitoring */}
