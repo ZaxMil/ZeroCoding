@@ -5,8 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { AlertTriangle, CheckCircle, XCircle, Eye, Ban } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Eye, Ban, BarChart3, Settings, Users } from 'lucide-react';
 import { toast } from 'sonner';
+import { CommentAnalytics } from '../admin/CommentAnalytics';
+import { BulkModerationTools } from '../admin/BulkModerationTools';
+import { CommentContentManagement } from '../admin/CommentContentManagement';
 
 interface ReportedComment {
   id: string;
@@ -124,8 +127,22 @@ export const ModerationDashboard: React.FC = () => {
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
-          <TabsTrigger value="pending">Pending Review</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="pending" className="flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4" />
+            Pending Review
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4" />
+            Analytics
+          </TabsTrigger>
+          <TabsTrigger value="bulk" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            Bulk Tools
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            Settings
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="pending" className="space-y-4">
@@ -195,14 +212,15 @@ export const ModerationDashboard: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="analytics">
-          <Card>
-            <CardHeader>
-              <CardTitle>Moderation Analytics</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Analytics dashboard coming soon...</p>
-            </CardContent>
-          </Card>
+          <CommentAnalytics />
+        </TabsContent>
+
+        <TabsContent value="bulk">
+          <BulkModerationTools />
+        </TabsContent>
+
+        <TabsContent value="settings">
+          <CommentContentManagement />
         </TabsContent>
       </Tabs>
     </div>
