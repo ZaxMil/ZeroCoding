@@ -25,7 +25,7 @@ import { ThemeAwareComments } from './enhanced/ThemeAwareComments';
 import { MobileOptimizedComments } from './enhanced/MobileOptimizedComments';
 import { generateSampleComments, SampleCommentsNotice } from './enhanced/RealSampleComments';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
 
 interface EnhancedUnifiedCommentSystemProps {
   targetType: 'series' | 'chapter';
@@ -47,6 +47,7 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
   className = ""
 }) => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [newComment, setNewComment] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [showBookmarks, setShowBookmarks] = useState(false);
@@ -126,12 +127,12 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
       const { error } = await supabase.from(tableName as any).insert([commentData]);
       if (error) throw error;
 
-      toast.success('Comment posted successfully!');
+      toast({ title: "Success", description: "Comment posted successfully!" });
       // Refresh comments after successful submission
       window.location.reload();
     } catch (error) {
       console.error('Failed to submit guest comment:', error);
-      toast.error('Failed to post comment');
+      toast({ title: "Error", description: "Failed to post comment", variant: "destructive" });
     }
   };
 
@@ -179,12 +180,12 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
 
       if (error) throw error;
       
-      toast.success('Comment liked!');
+      toast({ title: "Success", description: "Comment liked!" });
       // Instead of reloading, we could trigger a refresh of comments
       // This is a temporary solution - ideally we'd update local state
     } catch (error) {
       console.error('Error liking comment:', error);
-      toast.error('Failed to like comment');
+      toast({ title: "Error", description: "Failed to like comment", variant: "destructive" });
     }
   };
 
@@ -195,16 +196,27 @@ export const EnhancedUnifiedCommentSystem: React.FC<EnhancedUnifiedCommentSystem
     }
     // Store the parent ID for the reply
     setReplyTo(parentId);
+    
+    // Show visual feedback
+    toast({ 
+      title: "Reply Mode Active", 
+      description: "Your next comment will be posted as a reply.",
+    });
+    
     // Scroll to comment input
-    const commentInput = document.querySelector('[data-comment-input]');
-    if (commentInput) {
-      commentInput.scrollIntoView({ behavior: 'smooth' });
-      // Focus the input if it's a textarea or input element
-      const input = commentInput.querySelector('textarea, input');
-      if (input) {
-        (input as HTMLElement).focus();
+    setTimeout(() => {
+      const commentInput = document.querySelector('[data-comment-input]');
+      if (commentInput) {
+        commentInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Focus the input after scroll
+        setTimeout(() => {
+          const input = commentInput.querySelector('textarea, input');
+          if (input) {
+            (input as HTMLElement).focus();
+          }
+        }, 300);
       }
-    }
+    }, 100);
   };
 
   return (

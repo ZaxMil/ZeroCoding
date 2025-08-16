@@ -32,6 +32,8 @@ import {
 import { cn } from '@/lib/utils';
 import { AdvancedComment } from '@/hooks/useAdvancedComments';
 import { QuickReactionBar } from './QuickReactionBar';
+import { UserHoverCard } from './advanced/UserHoverCard';
+import { CommentReportSystem } from './CommentReportSystem';
 
 interface ModernCommentItemProps {
   comment: AdvancedComment;
@@ -180,25 +182,31 @@ export const ModernCommentItem: React.FC<ModernCommentItemProps> = ({
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <Avatar className={cn(
-              'h-10 w-10 ring-2 ring-transparent transition-all',
-              'hover:ring-primary/20',
-              isGuest && 'ring-muted-foreground/20'
-            )}>
-              <AvatarImage src={comment.user?.user_metadata?.avatar_url} />
-              <AvatarFallback className={cn(
-                'text-sm font-medium',
-                isGuest ? 'bg-muted text-muted-foreground' : 'bg-primary/10 text-primary'
+            {/* Avatar with User Hover Card */}
+            <UserHoverCard userId={comment.user_id || comment.id}>
+              <Avatar className={cn(
+                'h-10 w-10 ring-2 ring-transparent transition-all cursor-pointer',
+                'hover:ring-primary/20',
+                isGuest && 'ring-muted-foreground/20'
               )}>
-                {getUserDisplayName().slice(0, 2).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+                <AvatarImage src={comment.user?.user_metadata?.avatar_url} />
+                <AvatarFallback className={cn(
+                  'text-sm font-medium',
+                  isGuest ? 'bg-muted text-muted-foreground' : 'bg-primary/10 text-primary'
+                )}>
+                  {getUserDisplayName().slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </UserHoverCard>
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-1">
-                <span className="font-semibold text-foreground hover:text-primary cursor-pointer transition-colors">
-                  {getUserDisplayName()}
-                </span>
+                {/* Username with User Hover Card */}
+                <UserHoverCard userId={comment.user_id || comment.id}>
+                  <span className="font-semibold text-foreground hover:text-primary cursor-pointer transition-colors">
+                    {getUserDisplayName()}
+                  </span>
+                </UserHoverCard>
 
                 {isGuest && (
                   <Badge variant="outline" className="text-xs">
@@ -308,10 +316,15 @@ export const ModernCommentItem: React.FC<ModernCommentItemProps> = ({
               )}
 
               {!isOwner && (
-                <DropdownMenuItem onClick={() => onReport?.(comment.id, 'inappropriate')}>
-                  <Flag className="h-4 w-4 mr-2" />
-                  Report
-                </DropdownMenuItem>
+                <CommentReportSystem 
+                  commentId={comment.id} 
+                  commentAuthor={getUserDisplayName()}
+                >
+                  <DropdownMenuItem>
+                    <Flag className="h-4 w-4 mr-2" />
+                    Report
+                  </DropdownMenuItem>
+                </CommentReportSystem>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
