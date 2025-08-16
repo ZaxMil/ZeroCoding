@@ -397,7 +397,7 @@ export const SinglePageReader = ({
         variant="outline"
         size="sm"
         onClick={() => setSettingsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 bg-background/95 backdrop-blur-sm border-border/50 hover:bg-accent h-8 w-8 p-0"
+        className="fixed top-4 right-4 z-50 bg-background/95 backdrop-blur-sm border-border/50 hover:bg-accent h-8 w-8 p-0"
       >
         <Settings className="h-3 w-3" />
       </Button>
