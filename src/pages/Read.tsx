@@ -13,7 +13,6 @@ import { useChapterLayout } from '@/hooks/useChapterLayout';
 import { useOpenedChapters } from '@/hooks/useOpenedChapters';
 import { EnhancedSEOHelmet } from '@/components/EnhancedSEOHelmet';
 import { EnhancedUnifiedCommentSystem } from '@/components/comments/EnhancedUnifiedCommentSystem';
-import CreativeNavBar from '@/components/CreativeNavBar';
 
 interface Chapter {
   id: string;
@@ -437,7 +436,6 @@ const Read = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <CreativeNavBar />
       <EnhancedSEOHelmet
         title={`${series.title} - Chapter ${chapter.chapter_number}: ${chapter.title}`}
         description={`Read ${series.title} Chapter ${chapter.chapter_number} online. ${chapter.title}`}
