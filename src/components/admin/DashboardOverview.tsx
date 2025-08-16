@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PayPalSecretsChecker from './PayPalSecretsChecker';
 import PremiumFeaturesStatus from './PremiumFeaturesStatus';
 import { 
@@ -14,10 +15,14 @@ import {
   TrendingUp, 
   Clock,
   MessageSquare,
-  Activity
+  Activity,
+  BarChart,
+  Database
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { queryOptimizer } from '@/utils/queryOptimizer';
+import { PerformanceMonitor } from './PerformanceMonitor';
 
 interface DashboardStats {
   totalChapters: number;
@@ -64,22 +69,15 @@ export const DashboardOverview = () => {
     try {
       setLoading(true);
 
-      // Load basic stats
-      const [chaptersResult, usersResult, bookmarksResult, commentsResult] = await Promise.all([
-        supabase.from('chapters').select('id, view_count'), // Show all chapters including locked
-        supabase.from('profiles').select('id'),
-        supabase.from('bookmarks').select('id'),
-        supabase.from('comments').select('id'),
-      ]);
-
-      const totalViews = chaptersResult.data?.reduce((sum, chapter) => sum + (chapter.view_count || 0), 0) || 0;
-
+      // Use optimized query optimizer for better performance
+      const stats = await queryOptimizer.getDashboardStats();
+      
       setStats({
-        totalChapters: chaptersResult.data?.length || 0,
-        totalUsers: usersResult.data?.length || 0,
-        totalViews,
-        totalBookmarks: bookmarksResult.data?.length || 0,
-        totalComments: commentsResult.data?.length || 0,
+        totalChapters: stats.totalChapters,
+        totalUsers: stats.totalUsers,
+        totalViews: stats.totalViews,
+        totalBookmarks: stats.totalBookmarks,
+        totalComments: stats.totalComments
       });
 
       // Load top chapters
@@ -178,11 +176,32 @@ export const DashboardOverview = () => {
 
   return (
     <div className="space-y-6">
-      {/* Critical System Status */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <PayPalSecretsChecker />
-        <PremiumFeaturesStatus />
-      </div>
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="overview">Dashboard Overview</TabsTrigger>
+          <TabsTrigger value="performance">Performance Monitor</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="overview" className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">Dashboard Overview</h1>
+              <p className="text-muted-foreground">
+                Welcome back! Here's what's happening with your platform.
+              </p>
+            </div>
+            <Button onClick={loadDashboardData} disabled={loading} variant="outline">
+              {loading ? 'Loading...' : 'Refresh Data'}
+            </Button>
+          </div>
+
+          {/* Critical System Status */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <PayPalSecretsChecker />
+            <PremiumFeaturesStatus />
+          </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -329,6 +348,31 @@ export const DashboardOverview = () => {
           </CardContent>
         </Card>
       </div>
+        </TabsContent>
+        
+        <TabsContent value="performance">
+          <PerformanceMonitor />
+        </TabsContent>
+        
+        <TabsContent value="analytics">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart className="h-5 w-5" />
+                Advanced Analytics
+              </CardTitle>
+              <CardDescription>
+                Detailed analytics and insights (Coming Soon)
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Advanced analytics dashboard will be available in the next update.
+              </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
