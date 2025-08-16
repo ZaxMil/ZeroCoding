@@ -28,6 +28,13 @@ const Layout = ({ children }: LayoutProps) => {
     location = { pathname: window.location.pathname } as any;
   }
   
+  // Hide layout components for reading pages
+  const isReadingPage = location.pathname.startsWith('/read/');
+  
+  if (isReadingPage) {
+    return <>{children}</>;
+  }
+  
   const { user, isAdmin, signOut, isLoading } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authTab, setAuthTab] = useState<'login' | 'signup'>('login');
