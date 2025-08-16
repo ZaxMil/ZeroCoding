@@ -9,9 +9,15 @@ interface UserProfile {
   display_name: string;
   bio: string;
   email: string;
-  role: string;
+  role: 'user' | 'admin' | 'author' | 'editor' | 'member' | 'uploader' | 'seo_manager';
   is_banned: boolean;
   is_profile_public: boolean;
+  created_at: string;
+  updated_at: string;
+  avatar_image_url?: string;
+  banner_image_url?: string;
+  activity_score?: number;
+  chapter_layout_preference?: number;
 }
 
 interface AuthContextType {

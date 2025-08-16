@@ -45,7 +45,7 @@ export const UserMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={profile?.avatar_url} alt={profile?.display_name || user.email} />
+            <AvatarImage src={profile?.avatar_image_url} alt={profile?.display_name || user.email} />
             <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
         </Button>

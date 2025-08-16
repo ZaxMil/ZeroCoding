@@ -10,21 +10,23 @@ interface UserProfile {
   display_name: string;
   bio: string;
   email: string;
-  role: string;
+  role: 'user' | 'admin' | 'author' | 'editor' | 'member' | 'uploader' | 'seo_manager';
   is_banned: boolean;
   is_profile_public: boolean;
   created_at: string;
   updated_at: string;
+  avatar_image_url?: string;
+  banner_image_url?: string;
+  activity_score?: number;
+  chapter_layout_preference?: number;
 }
 
 interface Bookmark {
   id: string;
   user_id: string;
-  series_id: string;
   chapter_id: string;
   page_number: number;
-  bookmark_name: string;
-  notes: string;
+  note?: string;
   created_at: string;
 }
 
@@ -139,7 +141,7 @@ export const useUserBookmarks = () => {
     }
   };
 
-  const addBookmark = async (seriesId: string, chapterId: string, pageNumber: number, bookmarkName: string, notes?: string) => {
+  const addBookmark = async (chapterId: string, pageNumber: number, note?: string) => {
     if (!user) return;
 
     try {
@@ -147,11 +149,9 @@ export const useUserBookmarks = () => {
         .from('bookmarks')
         .insert({
           user_id: user.id,
-          series_id: seriesId,
           chapter_id: chapterId,
           page_number: pageNumber,
-          bookmark_name: bookmarkName,
-          notes
+          note
         })
         .select()
         .single();
@@ -161,7 +161,7 @@ export const useUserBookmarks = () => {
       setBookmarks(prev => [data, ...prev]);
       toast({
         title: "Bookmark added",
-        description: `"${bookmarkName}" has been saved`,
+        description: "Bookmark has been saved",
       });
     } catch (error) {
       console.error('Error adding bookmark:', error);
