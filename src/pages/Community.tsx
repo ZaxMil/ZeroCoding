@@ -1,8 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Users, MessageCircle, Heart, Trophy, Calendar, ArrowRight, ExternalLink } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Users, MessageCircle, Heart, Trophy, Calendar, ArrowRight, ExternalLink, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { CommunityMessaging } from '@/components/community/CommunityMessaging';
 
 const CommunityPage = () => {
   const communityStats = [
@@ -167,71 +169,88 @@ const CommunityPage = () => {
             </Card>
           </div>
 
-          {/* Forum Categories */}
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Forum Categories</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {forumCategories.map((category) => (
-                <Card key={category.title} className="hover:shadow-lg transition-shadow cursor-pointer">
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full ${category.color}`} />
-                      <CardTitle className="text-lg">{category.title}</CardTitle>
-                    </div>
-                    <CardDescription>{category.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>{category.topics} topics</span>
-                      <span>{category.posts} posts</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
+          {/* Community Content Tabs */}
+          <Tabs defaultValue="forums" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="forums">Forums & Discussions</TabsTrigger>
+              <TabsTrigger value="messaging">Community Messages</TabsTrigger>
+              <TabsTrigger value="events">Events & Activities</TabsTrigger>
+            </TabsList>
 
-          {/* Discord Channels Preview */}
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Popular Discord Channels</h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              {discordChannels.map((channel) => (
-                <Card key={channel.name}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium">#{channel.name}</div>
-                        <div className="text-sm text-muted-foreground">{channel.description}</div>
-                      </div>
-                      <Badge variant="secondary">{channel.members} members</Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
+            <TabsContent value="forums" className="space-y-6">
+              {/* Forum Categories */}
+              <div>
+                <h2 className="text-2xl font-bold mb-6">Forum Categories</h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {forumCategories.map((category) => (
+                    <Card key={category.title} className="hover:shadow-lg transition-shadow cursor-pointer">
+                      <CardHeader>
+                        <div className="flex items-center gap-3">
+                          <div className={`w-4 h-4 rounded-full ${category.color}`} />
+                          <CardTitle className="text-lg">{category.title}</CardTitle>
+                        </div>
+                        <CardDescription>{category.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>{category.topics} topics</span>
+                          <span>{category.posts} posts</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
 
-          {/* Upcoming Events */}
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Upcoming Events</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {upcomingEvents.map((event) => (
-                <Card key={event.title}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <Badge variant="outline">{event.type}</Badge>
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                    <CardTitle className="text-lg">{event.title}</CardTitle>
-                    <CardDescription>{event.date}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">{event.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
+              {/* Discord Channels Preview */}
+              <div>
+                <h2 className="text-2xl font-bold mb-6">Popular Discord Channels</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {discordChannels.map((channel) => (
+                    <Card key={channel.name}>
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="font-medium">#{channel.name}</div>
+                            <div className="text-sm text-muted-foreground">{channel.description}</div>
+                          </div>
+                          <Badge variant="secondary">{channel.members} members</Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="messaging" className="space-y-6">
+              <CommunityMessaging />
+            </TabsContent>
+
+            <TabsContent value="events" className="space-y-6">
+              {/* Upcoming Events */}
+              <div>
+                <h2 className="text-2xl font-bold mb-6">Upcoming Events</h2>
+                <div className="grid md:grid-cols-3 gap-6">
+                  {upcomingEvents.map((event) => (
+                    <Card key={event.title}>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <Badge variant="outline">{event.type}</Badge>
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <CardTitle className="text-lg">{event.title}</CardTitle>
+                        <CardDescription>{event.date}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">{event.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
 
           {/* Community Guidelines */}
           <Card>

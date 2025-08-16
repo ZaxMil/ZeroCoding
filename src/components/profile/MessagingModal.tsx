@@ -67,8 +67,25 @@ export const MessagingModal: React.FC<MessagingModalProps> = ({
 
     try {
       setLoading(true);
-      // Simplified approach - will be replaced with proper RPC function
-      setMessages([]);
+      // Create a mock conversation for demonstration
+      // In production, this would connect to real messaging tables
+      const mockMessages: Message[] = [
+        {
+          id: '1',
+          sender_id: recipientId,
+          receiver_id: user.id,
+          content: `Hello! Thanks for connecting. How are you enjoying the manga series on our platform?`,
+          created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+          is_read: true,
+          sender_profile: {
+            username: recipientProfile?.username || 'user',
+            display_name: recipientProfile?.display_name || 'User',
+            profile_picture_url: recipientProfile?.profile_picture_url || ''
+          }
+        }
+      ];
+      
+      setMessages(mockMessages);
     } catch (error) {
       console.error('Error loading messages:', error);
       toast({
@@ -84,7 +101,8 @@ export const MessagingModal: React.FC<MessagingModalProps> = ({
   const markMessagesAsRead = async () => {
     if (!user || !recipientId) return;
 
-    // Simplified - will be implemented with proper database functions
+    // Mock functionality - mark messages as read
+    console.log('Marking messages as read for:', recipientId);
   };
 
   const sendMessage = async () => {
@@ -92,13 +110,24 @@ export const MessagingModal: React.FC<MessagingModalProps> = ({
 
     try {
       setSending(true);
-      // Simplified - will be implemented with proper database functions
-      const error = null;
+      // Mock send message functionality
+      const newMockMessage: Message = {
+        id: `mock-${Date.now()}`,
+        sender_id: user.id,
+        receiver_id: recipientId,
+        content: newMessage.trim(),
+        created_at: new Date().toISOString(),
+        is_read: false,
+        sender_profile: {
+          username: user.email?.split('@')[0] || 'you',
+          display_name: user.user_metadata?.name || user.email?.split('@')[0] || 'You',
+          profile_picture_url: user.user_metadata?.avatar_url || ''
+        }
+      };
 
-      if (error) throw error;
+      setMessages(prev => [...prev, newMockMessage]);
 
       setNewMessage('');
-      await loadMessages();
       
       toast({
         title: "Message sent",
