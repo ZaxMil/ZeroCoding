@@ -2,8 +2,8 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = "https://eslcxgomsaizesekdvcc.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzbGN4Z29tc2FpemVzZWtkdmNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzODQ4ODAsImV4cCI6MjA2ODk2MDg4MH0.1MeKBV8__kEK06kOlj9VlNnLwtm9BWJfOv_dLlnNRnM";
+const SUPABASE_URL = "https://1manga.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IjFtYW5nYSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzUzMzg0ODgwLCJleHAiOjIwNjg5NjA4ODB9.example-key-for-1manga-project";
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
