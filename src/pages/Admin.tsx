@@ -54,6 +54,9 @@ import { ErrorMonitoringDashboard } from '@/components/admin/ErrorMonitoringDash
 import { OrganizedDeveloperTools } from '@/components/admin/OrganizedDeveloperTools';
 import { ImprovedDataResetPanel } from '@/components/admin/ImprovedDataResetPanel';
 import { CloudflarePanel } from '@/components/admin/CloudflarePanel';
+import { DatabasePerformancePanel } from '@/components/admin/DatabasePerformancePanel';
+import { DatabaseBackupPanel } from '@/components/admin/DatabaseBackupPanel';
+import { EnhancedSeedingPanel } from '@/components/admin/EnhancedSeedingPanel';
 import WatermarkSettings from '@/pages/admin/WatermarkSettings';
 import MediaCenter from './MediaCenter';
 
@@ -106,6 +109,9 @@ const Admin = () => {
               {/* 5. Dev Tools & Maintenance */}
               <Route path="developer-tools" element={<OrganizedDeveloperTools />} />
               <Route path="error-monitoring" element={<ErrorMonitoringDashboard />} />
+              <Route path="db-performance" element={<DatabasePerformancePanel />} />
+              <Route path="db-backup" element={<DatabaseBackupPanel />} />
+              <Route path="enhanced-seeding" element={<EnhancedSeedingPanel />} />
               <Route path="export" element={<DatabaseExporter />} />
               <Route path="changelog" element={<SystemChangelog />} />
               <Route path="changelog-manager" element={<ChangelogManager />} />
