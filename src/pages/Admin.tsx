@@ -51,6 +51,7 @@ import { SystemChangelog } from '@/components/admin/SystemChangelog';
 import { ChangelogManager } from '@/components/admin/ChangelogManager';
 import { DataResetPanel } from '@/components/admin/DataResetPanel';
 import { ErrorMonitoringDashboard } from '@/components/admin/ErrorMonitoringDashboard';
+import { ErrorMonitoringPanel } from '@/components/admin/ErrorMonitoringPanel';
 import { OrganizedDeveloperTools } from '@/components/admin/OrganizedDeveloperTools';
 import { ImprovedDataResetPanel } from '@/components/admin/ImprovedDataResetPanel';
 import { CloudflarePanel } from '@/components/admin/CloudflarePanel';
@@ -108,7 +109,7 @@ const Admin = () => {
 
               {/* 5. Dev Tools & Maintenance */}
               <Route path="developer-tools" element={<OrganizedDeveloperTools />} />
-              <Route path="error-monitoring" element={<ErrorMonitoringDashboard />} />
+              <Route path="error-monitoring" element={<ErrorMonitoringPanel />} />
               <Route path="db-performance" element={<DatabasePerformancePanel />} />
               <Route path="db-backup" element={<DatabaseBackupPanel />} />
               <Route path="enhanced-seeding" element={<EnhancedSeedingPanel />} />
