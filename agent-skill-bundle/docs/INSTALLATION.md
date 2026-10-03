@@ -1,6 +1,6 @@
 # Bundle installation
 
-The Bundle lives inside the private `ZAX-MILLION/Coding` repository under `agent-skill-bundle/`.
+The Bundle lives inside the private `ZaxMil/Coding` repository under `agent-skill-bundle/`.
 
 ## One-time machine setup
 
@@ -9,13 +9,13 @@ Authenticate GitHub CLI once with `gh auth login`. The bootstrap uses a **sparse
 Windows PowerShell:
 
 ```powershell
-gh api repos/ZAX-MILLION/Coding/contents/agent-skill-bundle/install/bootstrap.ps1 -H "Accept: application/vnd.github.raw+json" | iex
+gh api repos/ZaxMil/Coding/contents/agent-skill-bundle/install/bootstrap.ps1 -H "Accept: application/vnd.github.raw+json" | iex
 ```
 
 macOS / Linux / Git Bash:
 
 ```bash
-gh api repos/ZAX-MILLION/Coding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
+gh api repos/ZaxMil/Coding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
 ```
 
 After bootstrap:
