@@ -1,0 +1,42 @@
+name: Agent Skill Bundle CI
+on:
+  pull_request:
+    paths:
+      - "agent-skill-bundle/**"
+      - ".github/workflows/agent-bundle-ci.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "agent-skill-bundle/**"
+      - ".github/workflows/agent-bundle-ci.yml"
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: agent-skill-bundle
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Syntax
+        run: |
+          python3 -m py_compile scripts/bundle_manager.py scripts/agent_init.py
+          bash -n install/bootstrap.sh tests/bundle-installation.sh tests/agent-project-bootstrap.sh
+      - name: Legacy repository references
+        run: |
+          if grep -RIn --exclude-dir=.git "ZAX-MILLION/agent-skill-bundle" .; then
+            echo "Legacy repository reference found."
+            exit 1
+          fi
+      - name: Public content gate
+        run: python3 scripts/public_repo_gate.py .
+      - name: Source boundaries
+        run: python3 tests/verify-source-boundaries.py
+      - name: Machine and project bootstrap
+        run: |
+          bash tests/bundle-installation.sh
+          bash tests/agent-project-bootstrap.sh
+      - name: Full and on-demand install regression
+        run: bash tests/on-demand-install.sh
