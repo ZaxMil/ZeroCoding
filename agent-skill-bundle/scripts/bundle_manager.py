@@ -75,7 +75,7 @@ def write_config(repo,bundle,commit):
     CONFIG.parent.mkdir(parents=True,exist_ok=True)
     CONFIG.write_text(json.dumps({
         "manager":MANAGER,
-        "repository":"ZAX-MILLION/Coding",
+        "repository":"ZaxMil/Coding",
         "repository_root":str(repo),
         "bundle_root":str(bundle),
         "bundle_commit":commit,
