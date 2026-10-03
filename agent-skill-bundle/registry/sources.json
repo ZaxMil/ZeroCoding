@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "bundle": "ZAX-MILLION/Coding/agent-skill-bundle",
+  "bundle": "ZaxMil/Coding/agent-skill-bundle",
   "policy": {
     "upstream_is_source_of_truth": true,
     "preserve_upstream_files": true,
@@ -246,8 +246,8 @@
     {
       "id": "zax-custom",
       "name": "ZAX custom skills",
-      "repository": "ZAX-MILLION/Coding",
-      "url": "https://github.com/ZAX-MILLION/Coding/tree/main/agent-skill-bundle",
+      "repository": "ZaxMil/Coding",
+      "url": "https://github.com/ZaxMil/Coding/tree/main/agent-skill-bundle",
       "default_branch": "main",
       "categories": [
         "security",

@@ -5,6 +5,7 @@ import argparse, json, shutil, subprocess
 from pathlib import Path
 
 MANAGER = "coding-agent-bundle"
+REPO_URL = "https://github.com/ZaxMil/Coding.git"
 REPO_ROOT = Path.home() / ".agent-tools" / "Coding"
 BUNDLE_SUBDIR = Path("agent-skill-bundle")
 CONFIG = Path.home() / ".agent-tools" / "bundle.json"
@@ -75,7 +76,7 @@ def write_config(repo,bundle,commit):
     CONFIG.parent.mkdir(parents=True,exist_ok=True)
     CONFIG.write_text(json.dumps({
         "manager":MANAGER,
-        "repository":"ZAX-MILLION/Coding",
+        "repository":"ZaxMil/Coding",
         "repository_root":str(repo),
         "bundle_root":str(bundle),
         "bundle_commit":commit,
@@ -104,6 +105,7 @@ def update(repo,force=False):
     dirty=run(["git","-C",str(repo),"status","--porcelain"],check=False)
     if dirty.returncode or dirty.stdout.strip():
         raise BundleError("checkout has local changes; refusing automatic update")
+    run(["git","-C",str(repo),"remote","set-url","origin",REPO_URL])
     run(["git","-C",str(repo),"pull","--ff-only","origin","main"])
     install(repo,force)
     print("Bundle update complete.")

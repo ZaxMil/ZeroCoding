@@ -26,7 +26,7 @@ jobs:
           bash -n install/bootstrap.sh tests/bundle-installation.sh tests/agent-project-bootstrap.sh
       - name: Legacy repository references
         run: |
-          if grep -RIn --exclude-dir=.git "ZAX-MILLION/agent-skill-bundle" .; then
+          if grep -RInE --exclude-dir=.git "ZAX-MILLION/(agent-skill-bundle|Coding)" .; then
             echo "Legacy repository reference found."
             exit 1
           fi
