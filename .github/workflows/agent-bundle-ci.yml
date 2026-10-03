@@ -24,6 +24,12 @@ jobs:
         run: |
           python3 -m py_compile scripts/bundle_manager.py scripts/agent_init.py
           bash -n install/bootstrap.sh tests/bundle-installation.sh tests/agent-project-bootstrap.sh
+      - name: Legacy repository references
+        run: |
+          if grep -RIn --exclude-dir=.git "ZAX-MILLION/agent-skill-bundle" .; then
+            echo "Legacy repository reference found."
+            exit 1
+          fi
       - name: Public content gate
         run: python3 scripts/public_repo_gate.py .
       - name: Source boundaries
