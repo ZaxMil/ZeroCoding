@@ -8,7 +8,7 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 
 > Original authors retain credit. Skills, supporting files, license notices, and reviewed source revisions stay traceable. Host adapters are separate from upstream copies.
 
-[Project Core one-command projects](#dev-max-one-command-project-bootstrap) · [Quick start](#quick-start-strict-on-demand) · [What's included](#whats-included) · [External tools](#skills-are-not-software) · [Security](SECURITY.md) · [Upstream credits](CREDITS.md) · [Source review](docs/REVIEW_2026-09-27.md)
+[Installation](docs/INSTALLATION.md) · [Quick start](#quick-start-strict-on-demand) · [What's included](#whats-included) · [External tools](#skills-are-not-software) · [Security](SECURITY.md) · [Upstream credits](CREDITS.md) · [Source review](docs/REVIEW_2026-09-27.md)
 
 ## At a glance
 
@@ -20,35 +20,33 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 | **3 primary hosts** | Antigravity IDE, Codex, and Claude Code, using the same portable skill content. |
 | **Explicit setup only** | The installer copies selected skill directories when you run it; it does not register an MCP service, activate cloud accounts, install external executables, or read credentials. |
 
-## Project Core: one-command project bootstrap
+## Machine install + project init
 
-For ADMIN's Antigravity workflow, this repository now also contains a **project-local Project Core profile**. It does not change the reviewed 188-skill vault count and does not preload the full vault.
+The Bundle now lives inside the private `ZAX-MILLION/Coding` repository under `agent-skill-bundle/`.
 
-Install the command once:
+Authenticate GitHub CLI once, then run the one-time machine bootstrap:
 
 **Windows PowerShell**
 
 ```powershell
-irm https://raw.githubusercontent.com/ZAX-MILLION/agent-skill-bundle/main/install-agent-init.ps1 | iex
+gh api repos/ZAX-MILLION/Coding/contents/agent-skill-bundle/install/bootstrap.ps1 -H "Accept: application/vnd.github.raw+json" | iex
 ```
 
 **macOS / Linux / Git Bash**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ZAX-MILLION/agent-skill-bundle/main/install-agent-init.sh | bash
+gh api repos/ZAX-MILLION/Coding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
 ```
 
-Then at the start of any project, run:
+The bootstrap creates a sparse checkout containing only this Bundle, installs the two global Antigravity bootstrap skills, and exposes `bundle-install`, `bundle-update`, `bundle-status`, `bundle-remove`, and `agent-init`.
+
+For every new project:
 
 ```text
 agent-init
 ```
 
-It installs **10 project-local core skills** under `.agents/skills/`, adds a marked Project Core block to `AGENTS.md` without deleting existing project rules, and keeps the complete source vault outside the project for specialist retrieval on demand.
-
-Core profile: `i-have-adhd`, `skill-retrieval-routing`, `credit-usage-helper`, `ponytail`, `graft`, `graphify`, `secure-by-default-development`, `verification-before-completion`, `task-to-pr`, and `test`.
-
-The Project Core-only helper skills live under `profiles/project-core/`; they are not counted as additional reviewed vault entries. See [Project Core project bootstrap](docs/DEV_MAX_PROJECT_BOOTSTRAP.md).
+That installs the 10 project-local core skills under `.agents/skills/`, preserves existing project rules, and leaves specialist skills in the external vault for on-demand use. See [INSTALLATION.md](docs/INSTALLATION.md).
 
 ### Why strict on-demand?
 
@@ -63,8 +61,8 @@ This keeps discovery focused. It does **not** mean that all 186 skill bodies are
 **These commands are for the machine running the coding agent.** Review [`SECURITY.md`](SECURITY.md) and [the cross-host setup guide](adapters/multi-host/README.md) before installation. On Windows, use an appropriate Bash environment and check your actual user-profile and host skill paths.
 
 ```bash
-git clone https://github.com/ZAX-MILLION/agent-skill-bundle.git
-cd agent-skill-bundle
+git clone --filter=blob:none --no-checkout https://github.com/ZAX-MILLION/Coding.git
+cd Coding/agent-skill-bundle
 
 # Run the offline packaging, integrity, and on-demand installer tests.
 bash tests/on-demand-install.sh
