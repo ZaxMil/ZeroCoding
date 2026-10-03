@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-REPO="ZAX-MILLION/Coding"
+REPO="ZaxMil/Coding"
 ROOT="${AGENT_BUNDLE_REPO_ROOT:-$HOME/.agent-tools/Coding}"
 BUNDLE="$ROOT/agent-skill-bundle"
 BIN="${AGENT_BUNDLE_BIN_DIR:-$HOME/.local/bin}"
