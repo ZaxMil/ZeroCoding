@@ -48,41 +48,25 @@ def find_project(explicit: str | None) -> Path:
 
 
 def default_checkout() -> Path:
-    root = Path(os.environ.get("AGENT_INIT_HOME", str(Path.home() / ".agent-tools"))).expanduser()
-    return root / "agent-skill-bundle"
+    config = Path.home() / ".agent-tools" / "bundle.json"
+    if config.is_file():
+        try:
+            data = json.loads(config.read_text(encoding="utf-8"))
+            candidate = data.get("bundle_root")
+            if candidate:
+                return Path(candidate).expanduser().resolve()
+        except (OSError, ValueError, TypeError):
+            pass
+    return (Path.home() / ".agent-tools" / "Coding" / "agent-skill-bundle").resolve()
 
 
 def ensure_checkout(source_arg: str | None, no_update: bool, ref: str) -> Path:
-    if source_arg:
-        source = Path(source_arg).expanduser().resolve()
-        if not (source / "profiles" / "project-core" / "profile.json").is_file():
-            raise BootstrapError(f"not a Project Core bundle checkout: {source}")
-        return source
-
-    source = default_checkout()
-    source.parent.mkdir(parents=True, exist_ok=True)
-
-    if not source.exists():
-        run(["git", "clone", "--depth", "1", "--branch", ref, REPO_URL, str(source)])
-        return source
-
-    if not (source / ".git").is_dir():
-        raise BootstrapError(f"Project Core source path exists but is not a Git checkout: {source}")
-
-    if no_update:
-        return source
-
-    dirty = run(["git", "-C", str(source), "status", "--porcelain"], check=False)
-    if dirty.returncode != 0:
-        raise BootstrapError(f"cannot inspect bundle checkout: {source}")
-
-    if dirty.stdout.strip():
-        print(f"NOTE: bundle checkout has local changes; using it without updating: {source}")
-        return source
-
-    pull = run(["git", "-C", str(source), "pull", "--ff-only", "origin", ref], check=False)
-    if pull.returncode != 0:
-        print("NOTE: bundle update was unavailable; using the existing reviewed checkout.")
+    source = Path(source_arg).expanduser().resolve() if source_arg else default_checkout()
+    if not (source / "profiles" / "project-core" / "profile.json").is_file():
+        raise BootstrapError(
+            f"bundle source not found: {source}\n"
+            "Run bundle-install first, or pass --source <bundle-path>."
+        )
     return source
 
 
