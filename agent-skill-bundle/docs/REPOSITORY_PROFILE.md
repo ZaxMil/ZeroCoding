@@ -14,4 +14,4 @@ These topics describe compatibility and optional workflows, not a promise that a
 
 ## Manual GitHub step if no authorized metadata-edit action is available
 
-On the [repository homepage](https://github.com/ZAX-MILLION/agent-skill-bundle), use the **About** section's gear icon, paste the description above, optionally select the topics, and save. This is a repository-metadata change, not a modification to the skill checkout or workstation.
+On the [repository homepage](https://github.com/ZAX-MILLION/Coding/tree/main/agent-skill-bundle), use the **About** section's gear icon, paste the description above, optionally select the topics, and save. This is a repository-metadata change, not a modification to the skill checkout or workstation.
