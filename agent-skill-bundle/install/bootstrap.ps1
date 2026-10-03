@@ -1,5 +1,5 @@
 $ErrorActionPreference = "Stop"
-$Repo = "ZAX-MILLION/Coding"
+$Repo = "ZaxMil/Coding"
 $Root = if ($env:AGENT_BUNDLE_REPO_ROOT) { $env:AGENT_BUNDLE_REPO_ROOT } else { Join-Path $env:USERPROFILE ".agent-tools\Coding" }
 $Bundle = Join-Path $Root "agent-skill-bundle"
 $Bin = if ($env:AGENT_BUNDLE_BIN_DIR) { $env:AGENT_BUNDLE_BIN_DIR } else { Join-Path $env:USERPROFILE ".agent-tools\bin" }
