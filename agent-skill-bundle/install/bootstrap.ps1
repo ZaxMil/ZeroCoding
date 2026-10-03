@@ -16,6 +16,7 @@ if (Test-Path (Join-Path $Root ".git")) {
     if ($Dirty) {
         Write-Warning "Existing checkout has local changes; preserving it without update: $Root"
     } else {
+        & git -C $Root remote set-url origin "https://github.com/ZaxMil/Coding.git"
         & git -C $Root sparse-checkout init --cone *> $null
         & git -C $Root sparse-checkout set agent-skill-bundle
         & git -C $Root checkout main
