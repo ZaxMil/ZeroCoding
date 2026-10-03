@@ -17,7 +17,6 @@ import subprocess
 import sys
 from typing import Any
 
-REPO_URL = "https://github.com/ZAX-MILLION/agent-skill-bundle.git"
 DEFAULT_REF = "main"
 MANAGER = "agent-project-bootstrap"
 BEGIN = "<!-- AGENT_INIT:BEGIN -->"
