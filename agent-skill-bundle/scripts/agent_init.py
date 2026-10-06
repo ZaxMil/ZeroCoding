@@ -204,6 +204,8 @@ def managed_rules(source: Path, profile: dict[str, Any]) -> str:
 
 def update_agents(project: Path, block: str, filename: str = "AGENTS.md") -> None:
     path = project / filename
+    if path.is_symlink():
+        raise BootstrapError(f"refusing to write through symlink: {path}")
     current = path.read_text(encoding="utf-8") if path.exists() else ""
     has_begin, has_end = BEGIN in current, END in current
     if has_begin != has_end:
@@ -227,6 +229,8 @@ def write_manifest(
     host: str, roots: list[Path],
 ) -> None:
     agents = project / ".agents"
+    if agents.is_symlink():
+        raise BootstrapError(f"refusing symlink project metadata directory: {agents}")
     agents.mkdir(parents=True, exist_ok=True)
     payload = {
         "manager": MANAGER,
@@ -241,10 +245,22 @@ def write_manifest(
         "core_skills": [entry["name"] for entry in profile["core_skills"]],
         "specialist_search": f'python "{source / "scripts" / "skill_doctor.py"}" search "<keywords>"',
     }
-    (agents / "agent-init.json").write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    dest = agents / "agent-init.json"
+    if dest.is_symlink():
+        raise BootstrapError(f"refusing symlink manifest: {dest}")
+    if dest.exists():
+        try:
+            existing = json.loads(dest.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            existing = {}
+        if existing.get("manager") != MANAGER:
+            raise BootstrapError(f"refusing to replace unowned manifest: {dest}")
+    dest.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def remove_managed_block(path: Path) -> None:
+    if path.is_symlink():
+        raise BootstrapError(f"refusing to write through symlink: {path}")
     if not path.exists():
         return
     current = path.read_text(encoding="utf-8")
@@ -325,6 +341,39 @@ def status(project: Path, profile: dict[str, Any], host: str) -> int:
     return 0 if not missing and not unmanaged and manifest_ok and rules_ok and claude_ok else 1
 
 
+def preflight(project: Path, roots: list[Path], profile: dict[str, Any], host: str, force: bool) -> None:
+    for parent in (project / ".agents", project / ".claude"):
+        if parent.is_symlink():
+            raise BootstrapError(f"refusing symlink project directory: {parent}")
+    for root in roots:
+        if root.is_symlink():
+            raise BootstrapError(f"refusing symlink skill root: {root}")
+        for entry in profile["core_skills"]:
+            destination = root / entry["name"]
+            if destination.is_symlink():
+                raise BootstrapError(f"refusing symlink skill: {destination}")
+            if destination.exists() and not is_managed(destination, entry["source"]) and not force:
+                raise BootstrapError(f"refusing to replace existing unmarked skill: {destination}")
+    for filename in ("AGENTS.md", "CLAUDE.md") if host in ("claude", "all") else ("AGENTS.md",):
+        path = project / filename
+        if path.is_symlink():
+            raise BootstrapError(f"refusing symlink rules: {path}")
+        if path.is_file():
+            content = path.read_text(encoding="utf-8")
+            if (BEGIN in content) != (END in content):
+                raise BootstrapError(f"incomplete managed block in {path}; refusing changes")
+    manifest = project / ".agents" / "agent-init.json"
+    if manifest.is_symlink():
+        raise BootstrapError(f"refusing symlink manifest: {manifest}")
+    if manifest.exists():
+        try:
+            current = json.loads(manifest.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            current = {}
+        if current.get("manager") != MANAGER:
+            raise BootstrapError(f"refusing to replace unowned manifest: {manifest}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Install the Project Core profile for Antigravity, Codex, Claude, or all three.")
     parser.add_argument("--project", help="Project directory; defaults to Git root or current directory.")
@@ -349,6 +398,7 @@ def main() -> int:
         return 0
 
     roots = target_skill_roots(project, args.host)
+    preflight(project, roots, profile, args.host, args.force)
     head = git_head(source)
     for skills_root in roots:
         skills_root.mkdir(parents=True, exist_ok=True)
