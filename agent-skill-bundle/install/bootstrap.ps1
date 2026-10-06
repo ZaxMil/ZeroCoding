@@ -50,6 +50,7 @@ Write-Wrapper "bundle-update" $Manager "update"
 Write-Wrapper "bundle-status" $Manager "status"
 Write-Wrapper "bundle-remove" $Manager "remove"
 Write-Wrapper "agent-init" $AgentInit
+Write-Wrapper "agent-setup" $AgentInit "--host all"
 
 $UserPath = [Environment]::GetEnvironmentVariable("Path","User")
 $Parts = @()
@@ -60,5 +61,18 @@ if ($Parts -notcontains $Bin) {
 if (($env:Path -split ";") -notcontains $Bin) { $env:Path = "$Bin;$env:Path" }
 
 if ($Py -eq "py") { & py -3 $Manager install --repo-root $Root } else { & python $Manager install --repo-root $Root }
+# Prepare the explicitly selected project only; preserve unrelated workspaces.
+if ($env:AGENT_BUNDLE_PROJECT_ROOT) {
+    if ($Py -eq "py") {
+        & py -3 $AgentInit --source $Bundle --project $env:AGENT_BUNDLE_PROJECT_ROOT --host all
+        if ($LASTEXITCODE -ne 0) { throw "Project setup failed." }
+        & py -3 $AgentInit --source $Bundle --project $env:AGENT_BUNDLE_PROJECT_ROOT --host all --status
+    } else {
+        & python $AgentInit --source $Bundle --project $env:AGENT_BUNDLE_PROJECT_ROOT --host all
+        if ($LASTEXITCODE -ne 0) { throw "Project setup failed." }
+        & python $AgentInit --source $Bundle --project $env:AGENT_BUNDLE_PROJECT_ROOT --host all --status
+    }
+    if ($LASTEXITCODE -ne 0) { throw "Project setup verification failed." }
+}
 Write-Host "Commands installed in: $Bin"
-Write-Host "Ready: run agent-init inside any project."
+Write-Host "Ready: run agent-setup inside any project (or agent-init for host-specific setup)."
