@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
-$Repo = "ZaxMil/Coding"
-$Root = if ($env:AGENT_BUNDLE_REPO_ROOT) { $env:AGENT_BUNDLE_REPO_ROOT } else { Join-Path $env:USERPROFILE ".agent-tools\Coding" }
+$Repo = "ZaxMil/ZeroCoding"
+$Root = if ($env:AGENT_BUNDLE_REPO_ROOT) { $env:AGENT_BUNDLE_REPO_ROOT } else { Join-Path $env:USERPROFILE ".agent-tools\ZeroCoding" }
 $Bundle = Join-Path $Root "agent-skill-bundle"
 $Bin = if ($env:AGENT_BUNDLE_BIN_DIR) { $env:AGENT_BUNDLE_BIN_DIR } else { Join-Path $env:USERPROFILE ".agent-tools\bin" }
 
@@ -16,7 +16,7 @@ if (Test-Path (Join-Path $Root ".git")) {
     if ($Dirty) {
         Write-Warning "Existing checkout has local changes; preserving it without update: $Root"
     } else {
-        & git -C $Root remote set-url origin "https://github.com/ZaxMil/Coding.git"
+        & git -C $Root remote set-url origin "https://github.com/ZaxMil/ZeroCoding.git"
         & git -C $Root sparse-checkout init --cone *> $null
         & git -C $Root sparse-checkout set agent-skill-bundle
         & git -C $Root checkout main
