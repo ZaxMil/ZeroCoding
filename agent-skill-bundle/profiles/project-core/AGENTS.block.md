@@ -4,8 +4,8 @@
 - ADMIN is the project owner, not the programmer. Explain technical decisions in plain language and keep routine answers concise.
 - Start with the result or exact action. For complex work, keep visible steps small and practical.
 - Treat the current project code/configuration as the source of truth. Inspect before editing and preserve working configuration.
-- Keep the Project Core core skills available from `.agents/skills/`. Retrieve specialist skills only when the task clearly needs them; never preload the full vault into active context.
-- The complete reviewed vault is stored outside the project and is referenced by `.agents/agent-init.json`. Use `skill-retrieval-routing` for on-demand discovery.
+- Keep the Project Core skills available from `.agents/skills/` (or Claude project's `.claude/skills/`). Retrieve specialist skills only when the task clearly needs them; never preload the full vault into active context.
+- The complete reviewed vault is stored outside the project and is referenced by `.agents/agent-init.json`. Read its `project_detection.detected_stacks` and `specialist_search_queries`, then use `skill-retrieval-routing` for task-specific discovery. External gateway skills are not locally installed by default.
 - For application/API/auth/database/infrastructure/deploy/config/dependency work, apply `secure-by-default-development`.
 - Before claiming work is complete, apply `verification-before-completion` and report observed evidence.
 - Use `credit-usage-helper` to avoid broad scans, repeated reads, speculative refactors, or loading skills "just in case".
