@@ -20,6 +20,12 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 | **3 primary hosts** | Antigravity IDE, Codex, and Claude Code, using the same portable skill content. |
 | **Explicit setup only** | The installer copies selected locally bundled skill directories when you run it; gateway-only packs are installed directly from their canonical upstream source and are never mirrored here. |
 
+## Give any coding AI this repository
+
+Use the top-level **[AI_SETUP.md](../AI_SETUP.md)** as the universal entrypoint. An agent with an authorized local terminal and access to this private repo can bootstrap the machine and prepare the current project for Antigravity, Codex and Claude Code in one run. Projects are detected from their files (React, Node, Python, Godot, WordPress, Flutter and more); application dependencies are not installed or changed. The setup uses the existing 10 Project Core skills per project host root; external skill packs stay upstream and on demand.
+
+**Every subsequent project:** run `agent-setup` in its root, or `agent-init --host all`. Verify with `agent-init --host all --status`.
+
 ## Machine install + project init
 
 The Bundle now lives inside the private `ZaxMil/ZeroCoding` repository under `agent-skill-bundle/`.
@@ -43,8 +49,10 @@ The bootstrap creates a sparse checkout containing only this Bundle, installs th
 For every new project:
 
 ```text
-agent-init
+agent-setup
 ```
+
+`agent-init --host antigravity` keeps the original Antigravity-only option; `agent-init --host all` configures both `.agents/skills` and `.claude/skills` for universal project setup.
 
 That installs the 10 project-local core skills under `.agents/skills/`, preserves existing project rules, and leaves specialist skills in the external vault for on-demand use. See [INSTALLATION.md](docs/INSTALLATION.md).
 
@@ -62,7 +70,7 @@ This keeps discovery focused. It does **not** mean that all 186 skill bodies are
 
 ```bash
 git clone --filter=blob:none --no-checkout https://github.com/ZaxMil/ZeroCoding.git
-cd Coding/agent-skill-bundle
+cd ZeroCoding/agent-skill-bundle
 
 # Run the offline packaging, integrity, and on-demand installer tests.
 bash tests/on-demand-install.sh
@@ -92,7 +100,7 @@ python3 scripts/skill_doctor.py search "character references"
 python3 scripts/skill_doctor.py doctor --json
 \`\`\`
 
-This local fallback finds only reviewed source-vault names/descriptions. **Real automatic host discovery still requires configuring and testing Skill Retrieval MCP separately** in each agent. The doctor reports \`Setup Required\`, \`Missing Dependencies\`, or \`Unverified\` rather than claiming third-party scripts or providers work without an actual test.
+This local fallback finds reviewed source-vault names/descriptions plus registered external gateway metadata (for example Emil Kowalski), without downloading skill bodies. **Real automatic host discovery still requires configuring and testing Skill Retrieval MCP separately** in each agent. The doctor reports \`Setup Required\`, \`Missing Dependencies\`, or \`Unverified\` rather than claiming third-party scripts or providers work without an actual test.
 
 For Shuohao, the existing router remains in the bundle; all six original full packages (including scripts, references, examples and binary assets) are pinned in [the complete-package manifest](registry/shuohao-packages.json). After separately obtaining/reviewing the canonical upstream checkout, you can explicitly **dry-run** and stage just one package into a private external vault without executing scripts, configuring MCP, or adding more native startup skills. See [discovery, statuses and opt-in staging](docs/SKILL_DISCOVERY_AND_STATUS.md).
 
