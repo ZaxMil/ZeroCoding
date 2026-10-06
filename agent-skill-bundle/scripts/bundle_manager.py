@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Machine-level manager for the Coding-hosted Agent Skill Bundle."""
+"""Machine-level manager for the ZeroCoding Agent Skill Gateway."""
 from __future__ import annotations
 import argparse, json, shutil, subprocess
 from pathlib import Path
 
 MANAGER = "coding-agent-bundle"
-REPO_URL = "https://github.com/ZaxMil/Coding.git"
-REPO_ROOT = Path.home() / ".agent-tools" / "Coding"
+REPO_URL = "https://github.com/ZaxMil/ZeroCoding.git"
+REPO_ROOT = Path.home() / ".agent-tools" / "ZeroCoding"
 BUNDLE_SUBDIR = Path("agent-skill-bundle")
 CONFIG = Path.home() / ".agent-tools" / "bundle.json"
 GLOBAL_ROOT = Path.home() / ".gemini" / "config" / "skills"
@@ -76,7 +76,7 @@ def write_config(repo,bundle,commit):
     CONFIG.parent.mkdir(parents=True,exist_ok=True)
     CONFIG.write_text(json.dumps({
         "manager":MANAGER,
-        "repository":"ZaxMil/Coding",
+        "repository":"ZaxMil/ZeroCoding",
         "repository_root":str(repo),
         "bundle_root":str(bundle),
         "bundle_commit":commit,
@@ -101,7 +101,7 @@ def install(repo,force=False):
 
 def update(repo,force=False):
     if not (repo/".git").is_dir():
-        raise BundleError(f"managed Coding checkout not found: {repo}")
+        raise BundleError(f"managed ZeroCoding checkout not found: {repo}")
     dirty=run(["git","-C",str(repo),"status","--porcelain"],check=False)
     if dirty.returncode or dirty.stdout.strip():
         raise BundleError("checkout has local changes; refusing automatic update")
