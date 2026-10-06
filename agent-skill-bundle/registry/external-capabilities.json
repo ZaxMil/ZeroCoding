@@ -150,6 +150,20 @@
       "mcp_config_changed": false,
       "credentials_in_bundle": false,
       "note": "ECC has its own installation state and host-specific feature parity. Antigravity workspace adapter copies .agents rules/workflows/skills/agents, which conflicts with blanket native installs; use standalone evaluation and review before enabling. Nine selected portable bodies with metadata-only source index is not a security audit."
+    },
+    {
+      "name": "Emil Kowalski Skills",
+      "repository": "emilkowalski/skills",
+      "checked_commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+      "upstream_license": "MIT",
+      "relationship": "canonical_external_skill_pack_gateway",
+      "canonical_skill_count": 14,
+      "code_redistributed": false,
+      "skills_copied": 0,
+      "installation_in_bundle": false,
+      "credentials_in_bundle": false,
+      "install_command": "npx skills@latest add emilkowalski/skills",
+      "note": "ZeroCoding is a gateway only for this pack. Skill bodies remain owned and maintained in the canonical upstream repository."
     }
   ]
 }

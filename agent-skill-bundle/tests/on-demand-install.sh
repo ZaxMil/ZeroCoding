@@ -30,6 +30,13 @@ python3 "$root/tests/verify-third-wave.py" "$root" "$tmp/full"
 python3 "$root/tests/verify-ecc.py" "$root" "$tmp/full"
 python3 "$root/tests/verify-skillsmp-expansion.py" "$root" "$tmp/full"
 
+# Metadata-only external gateway discovery must resolve to canonical upstream install,
+# without adding the third-party skill body to the local bundle.
+python3 "$root/scripts/skill_doctor.py" search "break-ui" --limit 20 > "$tmp/emil-gateway.txt"
+grep -F "external:emilkowalski/skills:break-ui" "$tmp/emil-gateway.txt" >/dev/null
+grep -F "install: npx skills@latest add emilkowalski/skills" "$tmp/emil-gateway.txt" >/dev/null
+[ ! -e "$root/design/break-ui" ]
+
 # Integrity: complete copied upstream files must remain byte-identical to reviewed blobs.
 python3 - "$root" "$tmp/full" <<'PY'
 import json, pathlib, subprocess, sys

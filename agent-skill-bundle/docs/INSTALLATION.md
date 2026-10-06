@@ -1,21 +1,21 @@
 # Bundle installation
 
-The Bundle lives inside the private `ZaxMil/Coding` repository under `agent-skill-bundle/`.
+The Bundle lives inside the private `ZaxMil/ZeroCoding` repository under `agent-skill-bundle/`.
 
 ## One-time machine setup
 
-Authenticate GitHub CLI once with `gh auth login`. The bootstrap uses a **sparse checkout**, so it checks out only the Bundle and not unrelated Coding project files.
+Authenticate GitHub CLI once with `gh auth login`. The bootstrap uses a **sparse checkout**, so it checks out only the Bundle and not unrelated ZeroCoding project files.
 
 Windows PowerShell:
 
 ```powershell
-gh api repos/ZaxMil/Coding/contents/agent-skill-bundle/install/bootstrap.ps1 -H "Accept: application/vnd.github.raw+json" | iex
+gh api repos/ZaxMil/ZeroCoding/contents/agent-skill-bundle/install/bootstrap.ps1 -H "Accept: application/vnd.github.raw+json" | iex
 ```
 
 macOS / Linux / Git Bash:
 
 ```bash
-gh api repos/ZaxMil/Coding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
+gh api repos/ZaxMil/ZeroCoding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
 ```
 
 After bootstrap:

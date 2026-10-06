@@ -98,12 +98,37 @@ def skill_catalog(vault):
     return result
 
 
+def external_skill_catalog():
+    """Metadata-only external skills. No external SKILL.md body is stored here."""
+    manifests = (ROOT / "registry/vendor-emilkowalski.json",)
+    result = []
+    for manifest_path in manifests:
+        if not manifest_path.is_file():
+            continue
+        data = json.loads(manifest_path.read_text(encoding="utf-8"))
+        for item in data.get("skills", []):
+            result.append({
+                "name": item["name"],
+                "source": f"external:{data['source_repository']}:{item['name']}",
+                "description": item.get("description", ""),
+                "path": item.get("source_path", ""),
+                "external": True,
+                "repository": data["source_repository"],
+                "install_command": data["install_command"],
+            })
+    return result
+
+
 def search(args):
-    rows = skill_catalog(args.vault.resolve())
+    local_rows = skill_catalog(args.vault.resolve())
+    external_rows = external_skill_catalog()
+    rows = local_rows + external_rows
     if args.command == "list":
         for entry in rows:
             print(f"{entry['source']}\t{entry['description'][:140]}")
-        print(f"Total: {len(rows)}", file=sys.stderr)
+            if entry.get("external"):
+                print(f"  gateway install: {entry['install_command']}")
+        print(f"Local: {len(local_rows)}; external gateway entries: {len(external_rows)}", file=sys.stderr)
         return
     words = re.findall(r"[a-z0-9][a-z0-9-]*", " ".join(args.query).lower())
     if not words:
@@ -116,9 +141,12 @@ def search(args):
         if score:
             ranked.append((score, row["source"], row))
     for _, _, item in sorted(ranked, key=lambda v: (-v[0], v[1]))[:args.limit]:
-        print(f"{item['source']}\t{item['description'][:180]}\n  {item['path']}")
+        if item.get("external"):
+            print(f"{item['source']}\t{item['description'][:180]}\n  upstream: https://github.com/{item['repository']}/{item['path']}\n  install: {item['install_command']}\n  note: metadata-only gateway; skill body is not bundled")
+        else:
+            print(f"{item['source']}\t{item['description'][:180]}\n  {item['path']}")
     if not ranked:
-        print("No matching local skill description; no external search was performed.")
+        print("No matching local or registered external gateway skill description.")
 
 
 def run_git_head(source):

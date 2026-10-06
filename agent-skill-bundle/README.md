@@ -6,7 +6,7 @@
 
 A source-preserving collection of reusable AI agent workflows for **Google Antigravity, OpenAI Codex, Claude Code**, and other file-based Agent Skills hosts. Find the skill you need without loading the entire collection into the agent's native startup discovery.
 
-> Original authors retain credit. Skills, supporting files, license notices, and reviewed source revisions stay traceable. Host adapters are separate from upstream copies.
+> Original authors retain credit. Skills, supporting files, license notices, and reviewed source revisions stay traceable. Host adapters are separate from upstream copies. For gateway-only packs, ZeroCoding stores metadata and installation routing only; the canonical upstream repository remains the only skill source.
 
 [Installation](docs/INSTALLATION.md) · [Quick start](#quick-start-strict-on-demand) · [What's included](#whats-included) · [External tools](#skills-are-not-software) · [Security](SECURITY.md) · [Upstream credits](CREDITS.md) · [Source review](docs/REVIEW_2026-09-27.md)
 
@@ -18,24 +18,24 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 | **2** native bootstraps | `i-have-adhd` and `skill-retrieval-routing` in strict on-demand mode. |
 | **186** on-demand entries | Remain in the source checkout; local Skill Retrieval MCP must be configured separately for searchable access. |
 | **3 primary hosts** | Antigravity IDE, Codex, and Claude Code, using the same portable skill content. |
-| **Explicit setup only** | The installer copies selected skill directories when you run it; it does not register an MCP service, activate cloud accounts, install external executables, or read credentials. |
+| **Explicit setup only** | The installer copies selected locally bundled skill directories when you run it; gateway-only packs are installed directly from their canonical upstream source and are never mirrored here. |
 
 ## Machine install + project init
 
-The Bundle now lives inside the private `ZaxMil/Coding` repository under `agent-skill-bundle/`.
+The Bundle now lives inside the private `ZaxMil/ZeroCoding` repository under `agent-skill-bundle/`.
 
 Authenticate GitHub CLI once, then run the one-time machine bootstrap:
 
 **Windows PowerShell**
 
 ```powershell
-gh api repos/ZaxMil/Coding/contents/agent-skill-bundle/install/bootstrap.ps1 -H "Accept: application/vnd.github.raw+json" | iex
+gh api repos/ZaxMil/ZeroCoding/contents/agent-skill-bundle/install/bootstrap.ps1 -H "Accept: application/vnd.github.raw+json" | iex
 ```
 
 **macOS / Linux / Git Bash**
 
 ```bash
-gh api repos/ZaxMil/Coding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
+gh api repos/ZaxMil/ZeroCoding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
 ```
 
 The bootstrap creates a sparse checkout containing only this Bundle, installs the two global Antigravity bootstrap skills, and exposes `bundle-install`, `bundle-update`, `bundle-status`, `bundle-remove`, and `agent-init`.
@@ -61,7 +61,7 @@ This keeps discovery focused. It does **not** mean that all 186 skill bodies are
 **These commands are for the machine running the coding agent.** Review [`SECURITY.md`](SECURITY.md) and [the cross-host setup guide](adapters/multi-host/README.md) before installation. On Windows, use an appropriate Bash environment and check your actual user-profile and host skill paths.
 
 ```bash
-git clone --filter=blob:none --no-checkout https://github.com/ZaxMil/Coding.git
+git clone --filter=blob:none --no-checkout https://github.com/ZaxMil/ZeroCoding.git
 cd Coding/agent-skill-bundle
 
 # Run the offline packaging, integrity, and on-demand installer tests.
@@ -102,7 +102,7 @@ For Shuohao, the existing router remains in the bundle; all six original full pa
 | Area | Highlights |
 |---|---|
 | **Planning & coding** | [Superpowers](https://github.com/obra/superpowers) process workflows, PAUL Plan–Apply–Unify adapter, six Ponytail skills, selected ECC workflows, test-driven development and debugging. |
-| **Design & creative** | Frontend Design, Taste, Image to Code, Awesome Design, design systems, and source-routing guides for OpenMontage and shuohao-skills. |
+| **Design & creative** | Frontend Design, Taste, Image to Code, Awesome Design, design systems, source-routing guides for OpenMontage/shuohao-skills, plus metadata-only gateway discovery for Emil Kowalski's 14 canonical design/animation skills. |
 | **Automation** | All **14 official n8n skill packages**, with original supporting files and license overlays, plus a separate n8n instance-connection guide. |
 | **Productivity & writing** | i-have-adhd as the primary optional communication layer, Humanizer, Caveman writing skill, and a Claude-Mem connection guide. |
 | **Marketing & WordPress** | **50** marketing skill names and WordPress development, testing, and performance workflows. |
@@ -119,6 +119,7 @@ For Shuohao, the existing router remains in the bundle; all six original full pa
 - **zax-editor:** local cross-host router plus package-integrity verifier for the separately obtained 90-file `video-editor-bassam` Arabic talking-head editing runtime. The original runtime is not redistributed because the supplied materials did not establish a general code-redistribution license.
 - **shuohao-skills:** local router to six external original packages. Their scripts, references, and image assets must be kept together if installed separately.
 - **Pixel Agents:** reference-only visual agent-office/VS Code tooling, not an `SKILL.md` package or an upgrade to the model.
+- **Emil Kowalski Skills:** gateway-only integration for the 14 current canonical skills in `emilkowalski/skills`. ZeroCoding contains names, descriptions, source paths, reviewed tree IDs, and the upstream install command only. No Emil `SKILL.md` body is copied here. Install from the author source with `npx skills@latest add emilkowalski/skills`.
 
 The reviewed repositories, licenses, revisions, and distinctions between **original copied skills**, **bundle-authored adapters**, and **external runtimes** are documented in [the source audit](docs/REVIEW_2026-09-27.md), [the registry](registry/README.md), and [credits](CREDITS.md).
 
@@ -145,7 +146,7 @@ Eleven complete, pinned MIT-licensed upstream skill packages and two **original 
 |---|---|
 | Portable `SKILL.md` workflows and bundled supporting files | Install/configure Skill Retrieval MCP for local search |
 | Original local connection guides | Authorize an n8n instance or install a community MCP server |
-| PAUL, OpenMontage, zax-editor, shuohao, Claude-Mem routing guidance | Install the selected framework, app, plugin, or complete external source |
+| PAUL, OpenMontage, zax-editor, shuohao, Claude-Mem routing guidance; Emil Kowalski metadata-only gateway | Install the selected framework, app, plugin, or canonical external skill pack directly from its upstream source |
 | Reviewed ECC subset and metadata index | Install upstream's full native ECC plugin or host integrations, only after duplicate/hook review |
 | Source and license records | Provide any account, provider key, permission, or cloud service separately |
 
