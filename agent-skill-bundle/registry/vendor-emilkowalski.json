@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "source_repository": "emilkowalski/skills",
+  "source_url": "https://github.com/emilkowalski/skills",
+  "checked_commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+  "upstream_license": "MIT",
+  "install_command": "npx skills@latest add emilkowalski/skills",
+  "relationship": "metadata_only_external_gateway",
+  "code_redistributed": false,
+  "skills_copied": 0,
+  "note": "Canonical Emil Kowalski skill bodies stay upstream. ZeroCoding records names, source paths, reviewed tree IDs, descriptions, and the canonical install command only.",
+  "skills": [
+    {
+      "name": "emil-design-eng",
+      "source_path": "skills/emil-design-eng",
+      "tree_sha": "db7a20dc1d8ad26a0307dcb45ebc79fc372f5c69",
+      "description": "Primary design-engineering skill focused on animation decisions and UI design advice."
+    },
+    {
+      "name": "animate",
+      "source_path": "skills/animate",
+      "tree_sha": "a92e36f28d741aee4ff77d1a001300d7e86e07fe",
+      "description": "Build web UI animations with appropriate curves, durations, and properties."
+    },
+    {
+      "name": "animate-expo",
+      "source_path": "skills/animate-expo",
+      "tree_sha": "6874701c790c7e74926ccd0a8716647a81424c85",
+      "description": "React Native and Expo animation guidance including gestures, sheets, haptics, transitions, and native-thread motion."
+    },
+    {
+      "name": "review-animations",
+      "source_path": "skills/review-animations",
+      "tree_sha": "0e0d3cb3e07ca307fe946ccaf57f6c82eb75124a",
+      "description": "Strict review of existing animations against Emil Kowalski's motion rules."
+    },
+    {
+      "name": "improve-animations",
+      "source_path": "skills/improve-animations",
+      "tree_sha": "cf1f7aabac34c08f2cf833f039fa99af2f415183",
+      "description": "Audit animations and produce prioritized self-contained improvement plans."
+    },
+    {
+      "name": "find-animation-opportunities",
+      "source_path": "skills/find-animation-opportunities",
+      "tree_sha": "e6443880f38e33cf78e5d678471eed35e8566763",
+      "description": "Find UI areas that genuinely benefit from motion and identify places that should not animate."
+    },
+    {
+      "name": "animation-vocabulary",
+      "source_path": "skills/animation-vocabulary",
+      "tree_sha": "d49565744427887a1f719de1ceee04d941d4e681",
+      "description": "Use precise animation vocabulary to communicate desired motion to an AI agent."
+    },
+    {
+      "name": "apple-design",
+      "source_path": "skills/apple-design",
+      "tree_sha": "cd509ae729c86487d352e17a26651217a4c25711",
+      "description": "Apple interface and fluid-motion design principles translated into practical web guidance."
+    },
+    {
+      "name": "write-swift",
+      "source_path": "skills/write-swift",
+      "tree_sha": "bdefda3891d347b8a183bdc727e4a1de2be3c82b",
+      "description": "Modern Swift guidance covering value types, Swift 6 concurrency, generics, performance, and Swift Testing."
+    },
+    {
+      "name": "pick-ui-library",
+      "source_path": "skills/pick-ui-library",
+      "tree_sha": "370e19776f0aa2403a2edeed78266bd6a5d78036",
+      "description": "Select trusted UI libraries instead of hand-rolling common components or choosing abandoned packages."
+    },
+    {
+      "name": "prototype",
+      "source_path": "skills/prototype",
+      "tree_sha": "34cd3a303aef0a975fcce3ac906d6b293e600399",
+      "description": "Create multiple UI variants and compare them through a switcher."
+    },
+    {
+      "name": "mobile-native",
+      "source_path": "skills/mobile-native",
+      "tree_sha": "fdad6e6e91d8bbfda7164c7027269a8389dbadcd",
+      "description": "Make web apps feel native on phones by fixing mobile interaction and viewport details."
+    },
+    {
+      "name": "break-ui",
+      "source_path": "skills/break-ui",
+      "tree_sha": "f2a3441d4cf14df060ee363e155502a4818b5f8d",
+      "description": "Stress-test UI with worst-case data, extreme labels, empty states, large counts, and unusual identities."
+    },
+    {
+      "name": "ask-sonner",
+      "source_path": "skills/ask-sonner",
+      "tree_sha": "aeca3dba0eb0415fa5a310cd6823b824fe60323d",
+      "description": "Setup, styling, recipes, and troubleshooting guidance for the Sonner toast library."
+    }
+  ]
+}
