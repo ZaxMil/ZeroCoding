@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-REPO="ZaxMil/Coding"
-ROOT="${AGENT_BUNDLE_REPO_ROOT:-$HOME/.agent-tools/Coding}"
+REPO="ZaxMil/ZeroCoding"
+ROOT="${AGENT_BUNDLE_REPO_ROOT:-$HOME/.agent-tools/ZeroCoding}"
 BUNDLE="$ROOT/agent-skill-bundle"
 BIN="${AGENT_BUNDLE_BIN_DIR:-$HOME/.local/bin}"
 
@@ -13,7 +13,7 @@ if [ -d "$ROOT/.git" ]; then
   if [ -n "$(git -C "$ROOT" status --porcelain)" ]; then
     echo "Existing checkout has local changes; preserving it without update: $ROOT" >&2
   else
-    git -C "$ROOT" remote set-url origin "https://github.com/ZaxMil/Coding.git"
+    git -C "$ROOT" remote set-url origin "https://github.com/ZaxMil/ZeroCoding.git"
     git -C "$ROOT" sparse-checkout init --cone >/dev/null 2>&1 || true
     git -C "$ROOT" sparse-checkout set agent-skill-bundle
     git -C "$ROOT" checkout main
