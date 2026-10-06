@@ -1,5 +1,7 @@
 # Bundle installation
 
+For a reusable agent instruction that can prepare *any existing workspace*, start with [AI_SETUP.md](../../../AI_SETUP.md). It includes host-aware machine/project setup for Windows, macOS and Linux.
+
 The Bundle lives inside the private `ZaxMil/ZeroCoding` repository under `agent-skill-bundle/`.
 
 ## One-time machine setup
@@ -24,22 +26,24 @@ After bootstrap:
 - `bundle-update` fast-forwards the sparse checkout and refreshes managed bootstraps.
 - `bundle-install` reapplies the managed machine profile.
 - `bundle-remove` removes only Bundle-managed global skills/config and preserves the source checkout.
-- `agent-init` initializes the current project.
+- `agent-init` initializes a single host's project skills (Antigravity by default).
+- `agent-setup` initializes the current project for Antigravity, Codex and Claude Code together.
 
 ## Every new project
 
 Run:
 
 ```text
-agent-init
+agent-setup
+agent-init --host all --status
 ```
 
-This installs the 10 project-local core skills under `.agents/skills/`, preserves existing project rules, updates the managed `AGENTS.md` block, and points specialist search at the local on-demand vault.
+This installs 10 project-local core skills in `.agents/skills/` for Antigravity/Codex and `.claude/skills/` for Claude Code, preserves existing rules, appends managed `AGENTS.md` / `CLAUDE.md` blocks, detects the project's stack from existing files, and points specialist search at the local on-demand vault. No project dependencies, cloud accounts, paid integrations, or external gateway skill bodies are installed.
 
 Useful project commands:
 
 ```text
-agent-init --status
+agent-init --host all --status
 agent-init --remove
 ```
 

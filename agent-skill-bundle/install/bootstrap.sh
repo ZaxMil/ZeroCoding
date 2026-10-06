@@ -44,7 +44,13 @@ wrap bundle-update update bundle_manager.py
 wrap bundle-status status bundle_manager.py
 wrap bundle-remove remove bundle_manager.py
 wrap agent-init "" agent_init.py
+wrap agent-setup "--host all" agent_init.py
 python3 "$BUNDLE/scripts/bundle_manager.py" install --repo-root "$ROOT"
+# A target project is opt-in; no unrelated directory is modified by default.
+if [ -n "${AGENT_BUNDLE_PROJECT_ROOT:-}" ]; then
+  python3 "$BUNDLE/scripts/agent_init.py" --source "$BUNDLE" --project "$AGENT_BUNDLE_PROJECT_ROOT" --host all
+  python3 "$BUNDLE/scripts/agent_init.py" --source "$BUNDLE" --project "$AGENT_BUNDLE_PROJECT_ROOT" --host all --status
+fi
 echo "Commands installed in: $BIN"
 case ":$PATH:" in *":$BIN:"*) ;; *) echo "Add $BIN to PATH if needed.";; esac
-echo "Ready: run agent-init inside any project."
+echo "Ready: run agent-setup inside any project (or agent-init for host-specific setup)."
