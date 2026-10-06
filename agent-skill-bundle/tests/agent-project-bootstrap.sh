@@ -66,7 +66,7 @@ grep -q '# Existing Claude rule' "$universal/CLAUDE.md"
 [ "$(grep -c '<!-- AGENT_INIT:BEGIN -->' "$universal/CLAUDE.md")" -eq 1 ]
 grep -q '"react"' "$universal/.agents/agent-init.json"
 grep -q '"typescript"' "$universal/.agents/agent-init.json"
-grep -q '"claude/skills"' "$universal/.agents/agent-init.json"
+grep -q '".claude/skills"' "$universal/.agents/agent-init.json"
 python3 "$root/scripts/agent_init.py" --source "$root" --project "$universal" --host all --no-update >/dev/null
 [ "$(grep -c '<!-- AGENT_INIT:BEGIN -->' "$universal/CLAUDE.md")" -eq 1 ]
 python3 "$root/scripts/agent_init.py" --source "$root" --project "$universal" --no-update --remove >/dev/null
