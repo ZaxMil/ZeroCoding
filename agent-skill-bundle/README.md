@@ -22,20 +22,20 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 
 ## Machine install + project init
 
-The Bundle now lives inside the private `ZaxMil/Coding` repository under `agent-skill-bundle/`.
+The Bundle now lives inside the private `ZaxMil/ZeroCoding` repository under `agent-skill-bundle/`.
 
 Authenticate GitHub CLI once, then run the one-time machine bootstrap:
 
 **Windows PowerShell**
 
 ```powershell
-gh api repos/ZaxMil/Coding/contents/agent-skill-bundle/install/bootstrap.ps1 -H "Accept: application/vnd.github.raw+json" | iex
+gh api repos/ZaxMil/ZeroCoding/contents/agent-skill-bundle/install/bootstrap.ps1 -H "Accept: application/vnd.github.raw+json" | iex
 ```
 
 **macOS / Linux / Git Bash**
 
 ```bash
-gh api repos/ZaxMil/Coding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
+gh api repos/ZaxMil/ZeroCoding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
 ```
 
 The bootstrap creates a sparse checkout containing only this Bundle, installs the two global Antigravity bootstrap skills, and exposes `bundle-install`, `bundle-update`, `bundle-status`, `bundle-remove`, and `agent-init`.
@@ -61,7 +61,7 @@ This keeps discovery focused. It does **not** mean that all 186 skill bodies are
 **These commands are for the machine running the coding agent.** Review [`SECURITY.md`](SECURITY.md) and [the cross-host setup guide](adapters/multi-host/README.md) before installation. On Windows, use an appropriate Bash environment and check your actual user-profile and host skill paths.
 
 ```bash
-git clone --filter=blob:none --no-checkout https://github.com/ZaxMil/Coding.git
+git clone --filter=blob:none --no-checkout https://github.com/ZaxMil/ZeroCoding.git
 cd Coding/agent-skill-bundle
 
 # Run the offline packaging, integrity, and on-demand installer tests.
