@@ -29,6 +29,7 @@ assert len(bootstrap) == 2 and len(skills) - len(bootstrap) == 186
 third = json.loads((repo / "registry/vendor-third-wave.json").read_text())
 ecc = json.loads((repo / "registry/vendor-ecc.json").read_text())
 externals = json.loads((repo / "registry/external-capabilities.json").read_text())
+emil = json.loads((repo / "registry/vendor-emilkowalski.json").read_text())
 by_repo = {e["source"]: e for e in third["source_revisions"]}
 assert len(by_repo) == 7
 assert len(third["pinned_git_blob_sha"]) == 100
@@ -89,6 +90,15 @@ for name in (
 assert external["eternityspring/shuohao-skills"]["skills_copied"] == 0
 assert external["affaan-m/ECC"]["selected_portable_skill_bodies"] == 9
 assert external["n8n-io/skills"]["access_granted"] is False
+assert external["emilkowalski/skills"]["installation_in_bundle"] is False
+assert external["emilkowalski/skills"]["code_redistributed"] is False
+assert external["emilkowalski/skills"]["skills_copied"] == 0
+assert emil["source_repository"] == "emilkowalski/skills"
+assert emil["install_command"] == "npx skills@latest add emilkowalski/skills"
+assert len(emil["skills"]) == 14
+assert emil["code_redistributed"] is False and emil["skills_copied"] == 0
+for item in emil["skills"]:
+    assert not any((repo / category / item["name"] / "SKILL.md").exists() for category in categories), item["name"]
 
 # The installer only permits the two roots when --flat --on-demand is selected.
 installer = (repo / "install.sh").read_text()
@@ -98,5 +108,5 @@ assert '--prune-managed' in installer
 print(
     "PASS: 188 unique skills, 2 native bootstraps, 14 official n8n, "
     "15 Superpowers, 9 selected ECC, 4 local guides, "
-    "7 source pins, and external runtime/credential boundaries"
+    "7 source pins, Emil metadata-only gateway, and external runtime/credential boundaries"
 )
