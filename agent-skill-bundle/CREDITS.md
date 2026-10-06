@@ -100,6 +100,8 @@ These projects are important sources, but they are not falsely presented as auth
 | Rivet Skills | https://github.com/rivet-dev/skills | Current Rivet skill ecosystem; legacy multiplayer paths are no longer present there |
 | Rivet Actors | https://github.com/rivet-dev/actors | Current canonical docs/examples underlying the legacy Rivet-derived multiplayer material |
 
+| Emil Kowalski Skills | https://github.com/emilkowalski/skills | Canonical MIT upstream for 14 design, animation, mobile, Swift, and UI-library skills. ZeroCoding keeps metadata/routing only and does not redistribute Emil's skill bodies. |
+
 ## Local skills
 
 The `security/` category and locally authored `qa/` entries remain bundle-maintained; selected new `qa/` packages are explicitly mapped to Addy Osmani, Petr Kindlmann, or ECC rather than falsely attributed to the bundle. They are not attributed to WordPress, Anthropic, or another upstream merely because they cover the same topic.
