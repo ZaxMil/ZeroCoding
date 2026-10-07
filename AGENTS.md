@@ -9,4 +9,4 @@ When the user supplies this repository as a **skill/setup gateway for a differen
 - Verify real installed files; never claim success based on docs alone.
 - Do not publish, merge, deploy, execute unrelated scripts or alter application dependencies without a separate instruction.
 
-If the actual task is to develop the ZeroCoding manga app, honor its original README/application structure and the user's specific request; this setup gateway does not replace that app.
+If the actual task is to develop or extend the ZeroCoding skill bundle itself, honor its repository structure and the user's specific request.
