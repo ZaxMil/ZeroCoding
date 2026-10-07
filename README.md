@@ -5,6 +5,7 @@
 [![Codex](https://img.shields.io/badge/OpenAI-Codex-412991.svg?style=flat-square&logo=openai)](#)
 [![Cursor / Windsurf](https://img.shields.io/badge/IDE-Cursor%20%7C%20Windsurf-000000.svg?style=flat-square)](#)
 [![Skills](https://img.shields.io/badge/Reviewed_Skills-189-brightgreen.svg?style=flat-square)](#-all-189-skills-by-category)
+[![CI](https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml/badge.svg)](https://github.com/ZaxMil/ZeroCoding/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
 A battle-tested, curated vault of **189 specialized AI agent skills, developer workflows, and universal bootstrap automation** built specifically for **Vibe Coding**.
