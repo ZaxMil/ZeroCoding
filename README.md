@@ -11,6 +11,14 @@ A battle-tested, curated vault of **189 specialized AI agent skills, developer w
 
 Empower your AI assistants (**Google Antigravity, Claude Code, OpenAI Codex, Cursor, Windsurf**) to build, animate, test, and ship production-grade code autonomously without cluttering your context window.
 
+<p align="center">
+  <a href="agent-skill-bundle/docs/media/code-motion-reel-preview.mp4">
+    <img src="agent-skill-bundle/docs/media/code-motion-reel-preview.gif" alt="ZeroCoding 60fps Code Motion Reel Preview" width="360" />
+  </a>
+  <br>
+  <sub>🎬 <b>Live Output Demo:</b> 100% code-crafted 60fps viral motion reel & procedural audio generated autonomously via <code>code-motion-reel</code>. (<a href="agent-skill-bundle/docs/media/code-motion-reel-preview.mp4"><b>Watch Full 60fps HD Video</b></a>)</sub>
+</p>
+
 ---
 
 ## 💡 What is ZeroCoding?
