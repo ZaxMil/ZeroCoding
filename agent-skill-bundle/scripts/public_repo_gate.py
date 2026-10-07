@@ -65,8 +65,10 @@ def main() -> int:
             if private_marker.lower() in data.lower():
                 results.append((rel, "private marker"))
                 break
-        blob_sha = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
-        if approvals.get(rel, {}).get("sha") == blob_sha:
+        data_lf = data.replace(b"\r\n", b"\n")
+        blob_sha = hashlib.sha1(b"blob " + str(len(data_lf)).encode() + b"\0" + data_lf).hexdigest()
+        rel_key = rel.replace("\\", "/").removeprefix("agent-skill-bundle/")
+        if approvals.get(rel, {}).get("sha") == blob_sha or approvals.get(rel_key, {}).get("sha") == blob_sha:
             approved_count += 1
             continue
         for label, pattern in (("private key",PRIVATE_KEY),("service token",TOKEN),("credential URL",CRED_URL)):
