@@ -17,14 +17,14 @@ skills = sorted(
     p for category in categories
     for p in (repo / category).glob("*/SKILL.md")
 )
-assert len(skills) == 193, f"reviewed baseline changed: {len(skills)} != 193"
+assert len(skills) == 205, f"reviewed baseline changed: {len(skills)} != 205"
 names = [p.parent.name for p in skills]
 assert len(names) == len(set(names)), "duplicate native skill names across categories"
 
 # The two deliberately exposed native descriptions are the entire bootstrap.
 bootstrap = {"i-have-adhd", "skill-retrieval-routing"}
 assert bootstrap <= set(names)
-assert len(bootstrap) == 2 and len(skills) - len(bootstrap) == 191
+assert len(bootstrap) == 2 and len(skills) - len(bootstrap) == 203
 
 third = json.loads((repo / "registry/vendor-third-wave.json").read_text())
 ecc = json.loads((repo / "registry/vendor-ecc.json").read_text())
@@ -106,7 +106,7 @@ assert "productivity/i-have-adhd|research/skill-retrieval-routing" in installer
 assert 'if [ "$ON_DEMAND" -eq 1 ] && [ "$count" -ne 2 ]' in installer
 assert '--prune-managed' in installer
 print(
-    "PASS: 193 unique skills, 2 native bootstraps, 14 official n8n, "
+    "PASS: 205 unique skills, 2 native bootstraps, 14 official n8n, "
     "15 Superpowers, 9 selected ECC, 4 local guides, "
     "7 source pins, Emil metadata-only gateway, and external runtime/credential boundaries"
 )

@@ -4,11 +4,11 @@
 [![Claude Code](https://img.shields.io/badge/Anthropic-Claude_Code-D97706.svg?style=flat-square&logo=anthropic)](#)
 [![Codex](https://img.shields.io/badge/OpenAI-Codex-412991.svg?style=flat-square&logo=openai)](#)
 [![Cursor / Windsurf](https://img.shields.io/badge/IDE-Cursor%20%7C%20Windsurf-000000.svg?style=flat-square)](#)
-[![Skills](https://img.shields.io/badge/Reviewed_Skills-193-brightgreen.svg?style=flat-square)](#-all-189-skills-by-category)
+[![Skills](https://img.shields.io/badge/Reviewed_Skills-205-brightgreen.svg?style=flat-square)](#-all-189-skills-by-category)
 [![CI](https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml/badge.svg)](https://github.com/ZaxMil/ZeroCoding/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
-A battle-tested, curated vault of **193 specialized AI agent skills, developer workflows, and universal bootstrap automation** built specifically for **Vibe Coding**.
+A battle-tested, curated vault of **205 specialized AI agent skills, developer workflows, and universal bootstrap automation** built specifically for **Vibe Coding**.
 
 Empower your AI assistants (**Google Antigravity, Claude Code, OpenAI Codex, Cursor, Windsurf**) to build, animate, test, and ship production-grade code autonomously without cluttering your context window.
 
@@ -115,7 +115,7 @@ Here is the exact step-by-step lifecycle of what happens under the hood:
 
 ---
 
-## 📚 All 193 Skills by Category
+## 📚 All 205 Skills by Category
 
 The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). Every skill is a self-contained directory containing `SKILL.md`, plus applicable scripts, templates, and reference guides.
 
@@ -208,18 +208,31 @@ The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). E
 </details>
 
 <details open>
-<summary><b>🔍 Reverse Engineering & App Recon (4 skills)</b></summary>
+<summary><b>🔍 Reverse Engineering & App Replication (14 skills)</b></summary>
 
-- [`leanrea`](agent-skill-bundle/reverse-engineering/leanrea/): Fast CLI reverse engineering for Electron, Mach-O, ELF, PE, Go, Rust, .NET, APK, WASM, and SQLite.
-- [`apk-reverse`](agent-skill-bundle/reverse-engineering/apk-reverse/): Android APK decompilation, smali patching, repackaging, and Frida dynamic instrumentation.
-- [`reverse-engineer-anything`](agent-skill-bundle/reverse-engineering/reverse-engineer-anything/): In-depth binary decompilation and static/runtime reconstruction workflows.
-- [`replica-recon`](agent-skill-bundle/reverse-engineering/replica-recon/): Reconstructs any application into a complete screen inventory, user flow map, and feature matrix for clean-room cloning.
+- **Core Binary & App Reversing**:
+  - [`leanrea`](agent-skill-bundle/reverse-engineering/leanrea/): Fast CLI reverse engineering for Electron, Mach-O, ELF, PE, Go, Rust, .NET, APK, WASM, and SQLite.
+  - [`apk-reverse`](agent-skill-bundle/reverse-engineering/apk-reverse/): Android APK decompilation, smali patching, repackaging, and Frida dynamic instrumentation.
+  - [`reverse-engineer-anything`](agent-skill-bundle/reverse-engineering/reverse-engineer-anything/): In-depth binary decompilation and static/runtime reconstruction workflows.
+- **Replica Clean-Room Application Pipeline (11 skills)**:
+  - [`replica-recon`](agent-skill-bundle/reverse-engineering/replica-recon/): Reconstructs any app into screen inventory, user flows, and feature matrix.
+  - [`replica-architect`](agent-skill-bundle/reverse-engineering/replica-architect/): Plans stack, database schemas, and API routes from recon maps.
+  - [`replica-design`](agent-skill-bundle/reverse-engineering/replica-design/): Rebuilds color palettes, type scales, and component specs without copying original assets.
+  - [`replica-build`](agent-skill-bundle/reverse-engineering/replica-build/): Reconstructs application screens and flows iteratively.
+  - [`replica-backend`](agent-skill-bundle/reverse-engineering/replica-backend/): Auth, database migrations, Stripe payments, and background jobs.
+  - [`replica-test`](agent-skill-bundle/reverse-engineering/replica-test/): End-to-end testing with Playwright and structured bug reports.
+  - [`replica-diff`](agent-skill-bundle/reverse-engineering/replica-diff/): Feature parity matrix scoring and layout comparisons.
+  - [`replica-entrepreneur`](agent-skill-bundle/reverse-engineering/replica-entrepreneur/): Analyzes user complaints from reviews to position and differentiate the clone.
+  - [`replica-brand`](agent-skill-bundle/reverse-engineering/replica-brand/): Original branding, palette generation, and brand-name trademark sweep.
+  - [`replica-launch`](agent-skill-bundle/reverse-engineering/replica-launch/): Landing page copy, pricing strategy, and App Store listings.
+  - [`replica-deploy`](agent-skill-bundle/reverse-engineering/replica-deploy/): Production deployment checklist, domain DNS, and cloud host setup.
 </details>
 
 <details open>
-<summary><b>🛡️ Security & QA (22 skills)</b></summary>
+<summary><b>🛡️ Security & QA (23 skills)</b></summary>
 
-- **Security (7 skills)**:
+- **Security (8 skills)**:
+  - [`security-audit`](agent-skill-bundle/security/security-audit/): Cloudflare security auditing and vulnerability reviews for codebases, APIs, and daemons.
   - [`secure-by-default-development`](agent-skill-bundle/security/secure-by-default-development/): Universal security orchestrator, OWASP Top 10 guardrails, and RLS checks.
   - [`api-security-probing`](agent-skill-bundle/security/api-security-probing/): Adversarial probing for auth bypass, injection, and IDOR.
   - [`web-security-audit`](agent-skill-bundle/security/web-security-audit/): CSP, CORS, HTTPS headers, and client attack surfaces.
@@ -238,8 +251,9 @@ The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). E
 </details>
 
 <details open>
-<summary><b>📝 Productivity & Communication (6 skills)</b></summary>
+<summary><b>📝 Productivity & Communication (7 skills)</b></summary>
 
+- [`roast-me`](agent-skill-bundle/productivity/roast-me/): Hilarious and brutally honest audit of your prompting habits, token waste, and code.
 - [`i-have-adhd`](agent-skill-bundle/productivity/i-have-adhd/): Direct, action-first communication style that eliminates AI filler and long essays.
 - [`caveman`](agent-skill-bundle/productivity/caveman/): Ultra-dense, maximum information density output.
 - [`humanizer`](agent-skill-bundle/productivity/humanizer/): Removes synthetic AI prose patterns and robotic jargon.
