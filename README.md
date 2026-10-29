@@ -4,11 +4,11 @@
 [![Claude Code](https://img.shields.io/badge/Anthropic-Claude_Code-D97706.svg?style=flat-square&logo=anthropic)](#)
 [![Codex](https://img.shields.io/badge/OpenAI-Codex-412991.svg?style=flat-square&logo=openai)](#)
 [![Cursor / Windsurf](https://img.shields.io/badge/IDE-Cursor%20%7C%20Windsurf-000000.svg?style=flat-square)](#)
-[![Skills](https://img.shields.io/badge/Reviewed_Skills-189-brightgreen.svg?style=flat-square)](#-all-189-skills-by-category)
+[![Skills](https://img.shields.io/badge/Reviewed_Skills-193-brightgreen.svg?style=flat-square)](#-all-189-skills-by-category)
 [![CI](https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml/badge.svg)](https://github.com/ZaxMil/ZeroCoding/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
-A battle-tested, curated vault of **189 specialized AI agent skills, developer workflows, and universal bootstrap automation** built specifically for **Vibe Coding**.
+A battle-tested, curated vault of **193 specialized AI agent skills, developer workflows, and universal bootstrap automation** built specifically for **Vibe Coding**.
 
 Empower your AI assistants (**Google Antigravity, Claude Code, OpenAI Codex, Cursor, Windsurf**) to build, animate, test, and ship production-grade code autonomously without cluttering your context window.
 
@@ -115,7 +115,7 @@ Here is the exact step-by-step lifecycle of what happens under the hood:
 
 ---
 
-## 📚 All 189 Skills by Category
+## 📚 All 193 Skills by Category
 
 The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). Every skill is a self-contained directory containing `SKILL.md`, plus applicable scripts, templates, and reference guides.
 
@@ -205,6 +205,15 @@ The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). E
 - [`agent-introspection-debugging`](agent-skill-bundle/process/agent-introspection-debugging/): Diagnoses stuck agent loops and tool failures.
 - [`architecture-decision-records`](agent-skill-bundle/process/architecture-decision-records/): Lightweight ADR documentation.
 - [`iterative-retrieval`](agent-skill-bundle/process/iterative-retrieval/): Multi-stage knowledge retrieval.
+</details>
+
+<details open>
+<summary><b>🔍 Reverse Engineering & App Recon (4 skills)</b></summary>
+
+- [`leanrea`](agent-skill-bundle/reverse-engineering/leanrea/): Fast CLI reverse engineering for Electron, Mach-O, ELF, PE, Go, Rust, .NET, APK, WASM, and SQLite.
+- [`apk-reverse`](agent-skill-bundle/reverse-engineering/apk-reverse/): Android APK decompilation, smali patching, repackaging, and Frida dynamic instrumentation.
+- [`reverse-engineer-anything`](agent-skill-bundle/reverse-engineering/reverse-engineer-anything/): In-depth binary decompilation and static/runtime reconstruction workflows.
+- [`replica-recon`](agent-skill-bundle/reverse-engineering/replica-recon/): Reconstructs any application into a complete screen inventory, user flow map, and feature matrix for clean-room cloning.
 </details>
 
 <details open>

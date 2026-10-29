@@ -2,7 +2,7 @@
 
 ![Animated Agent Skill Bundle reactor — illustration of the earlier 174-skill edition](docs/images/agent-skill-bundle-reactor.gif)
 
-**188 reviewed agent-skill directories. One source vault. Two native bootstrap skills.**
+**192 reviewed agent-skill directories. One source vault. Two native bootstrap skills.**
 
 A source-preserving collection of reusable AI agent workflows for **Google Antigravity, OpenAI Codex, Claude Code**, and other file-based Agent Skills hosts. Find the skill you need without loading the entire collection into the agent's native startup discovery.
 
@@ -14,9 +14,9 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 
 | | |
 |---|---|
-| **188** skill directories | The complete reviewed source vault, including local adapters. |
+| **192** skill directories | The complete reviewed source vault, including local adapters. |
 | **2** native bootstraps | `i-have-adhd` and `skill-retrieval-routing` in strict on-demand mode. |
-| **186** on-demand entries | Remain in the source checkout; local Skill Retrieval MCP must be configured separately for searchable access. |
+| **190** on-demand entries | Remain in the source checkout; local Skill Retrieval MCP must be configured separately for searchable access. |
 | **3 primary hosts** | Antigravity IDE, Codex, and Claude Code, using the same portable skill content. |
 | **Explicit setup only** | The installer copies selected locally bundled skill directories when you run it; gateway-only packs are installed directly from their canonical upstream source and are never mirrored here. |
 

@@ -7,7 +7,7 @@ trap 'rm -rf -- "$tmp"' EXIT
 
 "$root/install.sh" "$tmp/full" --flat >/dev/null
 full="$(find "$tmp/full" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
-[ "$full" -eq 189 ] || { echo "FAIL: expected 189 full skills, got $full" >&2; exit 1; }
+[ "$full" -eq 193 ] || { echo "FAIL: expected 189 full skills, got $full" >&2; exit 1; }
 for skill in graphify graft awesome-design design-taste-frontend image-to-code web-design-guidelines agent-skills; do
   [ -f "$tmp/full/$skill/SKILL.md" ] || { echo "FAIL: missing $skill" >&2; exit 1; }
 done
@@ -115,4 +115,4 @@ printf '%s\n' 'personal data' > "$tmp/full/personal-skill/SKILL.md"
 
 count="$(find "$tmp/full" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
 [ "$count" -eq 3 ] || { echo "FAIL: expected 2 bootstraps and personal skill, got $count" >&2; exit 1; }
-echo "PASS: 189 full packages (53 beyond original 136), two-skill bootstrap, deliberate migration, unmarked user skill preserved."
+echo "PASS: 193 full packages (53 beyond original 136), two-skill bootstrap, deliberate migration, unmarked user skill preserved."

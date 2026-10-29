@@ -14,11 +14,14 @@ import subprocess
 import sys
 import tempfile
 
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CATEGORIES = (
     "design", "security", "process", "multiplayer", "wordpress",
     "marketing", "qa", "operations", "coding", "research",
-    "productivity", "automation", "creative",
+    "productivity", "automation", "creative", "reverse-engineering",
 )
 BOOTSTRAPS = {
     "i-have-adhd": "productivity/i-have-adhd",
@@ -246,8 +249,8 @@ def doctor(args):
     entries = skill_catalog(vault)
     names = [x["name"] for x in entries]
     issues = []
-    if len(entries) != 189:
-        issues.append(f"source vault has {len(entries)} skill directories, expected 189")
+    if len(entries) != 193:
+        issues.append(f"source vault has {len(entries)} skill directories, expected 193")
     if len(names) != len(set(names)):
         issues.append("duplicate local native skill names")
     host = None
