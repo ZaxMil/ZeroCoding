@@ -4,7 +4,7 @@
 [![Claude Code](https://img.shields.io/badge/Anthropic-Claude_Code-D97706.svg?style=flat-square&logo=anthropic)](#)
 [![Codex](https://img.shields.io/badge/OpenAI-Codex-412991.svg?style=flat-square&logo=openai)](#)
 [![Cursor / Windsurf](https://img.shields.io/badge/IDE-Cursor%20%7C%20Windsurf-000000.svg?style=flat-square)](#)
-[![Skills](https://img.shields.io/badge/Reviewed_Skills-205-brightgreen.svg?style=flat-square)](#-all-189-skills-by-category)
+[![Skills](https://img.shields.io/badge/Reviewed_Skills-205-brightgreen.svg?style=flat-square)](#-all-205-skills-by-category)
 [![CI](https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml/badge.svg)](https://github.com/ZaxMil/ZeroCoding/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
@@ -28,7 +28,7 @@ When you **vibe code**, you want your AI to think like a staff engineer, execute
 
 **ZeroCoding delivers this with three core pillars:**
 1. **Action-First Intelligence**: Embedded with `i-have-adhd` communication style for zero fluff, direct solutions, and concrete progress evidence.
-2. **Strict On-Demand Architecture**: Only 2 bootstrap skills run at startup. The remaining 187 specialist workflows load dynamically *only when a specific task requires them*, saving up to 90% of your agent's context window.
+2. **Strict On-Demand Architecture**: Only 2 bootstrap skills run at startup. The remaining 203 specialist workflows load dynamically *only when a specific task requires them*, saving up to 90% of your agent's context window.
 3. **Cross-Host Portability**: Works uniformly across Antigravity IDE/CLI, Claude Code, OpenAI Codex, Cursor, and terminal environments.
 
 ---

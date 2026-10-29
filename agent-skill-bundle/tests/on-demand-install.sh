@@ -7,7 +7,7 @@ trap 'rm -rf -- "$tmp"' EXIT
 
 "$root/install.sh" "$tmp/full" --flat >/dev/null
 full="$(find "$tmp/full" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
-[ "$full" -eq 205 ] || { echo "FAIL: expected 189 full skills, got $full" >&2; exit 1; }
+[ "$full" -eq 205 ] || { echo "FAIL: expected 205 full skills, got $full" >&2; exit 1; }
 for skill in graphify graft awesome-design design-taste-frontend image-to-code web-design-guidelines agent-skills; do
   [ -f "$tmp/full/$skill/SKILL.md" ] || { echo "FAIL: missing $skill" >&2; exit 1; }
 done

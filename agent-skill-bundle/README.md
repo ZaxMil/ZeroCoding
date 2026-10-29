@@ -2,7 +2,7 @@
 
 ![Animated Agent Skill Bundle reactor — illustration of the earlier 174-skill edition](docs/images/agent-skill-bundle-reactor.gif)
 
-**204 reviewed agent-skill directories. One source vault. Two native bootstrap skills.**
+**205 reviewed agent-skill directories. One source vault. Two native bootstrap skills.**
 
 A source-preserving collection of reusable AI agent workflows for **Google Antigravity, OpenAI Codex, Claude Code**, and other file-based Agent Skills hosts. Find the skill you need without loading the entire collection into the agent's native startup discovery.
 
@@ -14,9 +14,9 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 
 | | |
 |---|---|
-| **204** skill directories | The complete reviewed source vault, including local adapters. |
+| **205** skill directories | The complete reviewed source vault, including local adapters. |
 | **2** native bootstraps | `i-have-adhd` and `skill-retrieval-routing` in strict on-demand mode. |
-| **202** on-demand entries | Remain in the source checkout; local Skill Retrieval MCP must be configured separately for searchable access. |
+| **203** on-demand entries | Remain in the source checkout; local Skill Retrieval MCP must be configured separately for searchable access. |
 | **3 primary hosts** | Antigravity IDE, Codex, and Claude Code, using the same portable skill content. |
 | **Explicit setup only** | The installer copies selected locally bundled skill directories when you run it; gateway-only packs are installed directly from their canonical upstream source and are never mirrored here. |
 
@@ -112,9 +112,10 @@ For Shuohao, the existing router remains in the bundle; all six original full pa
 | **Planning & coding** | [Superpowers](https://github.com/obra/superpowers) process workflows, PAUL Plan–Apply–Unify adapter, six Ponytail skills, selected ECC workflows, test-driven development and debugging. |
 | **Design & creative** | Frontend Design, Taste, Image to Code, Awesome Design, design systems, source-routing guides for OpenMontage/shuohao-skills, plus metadata-only gateway discovery for Emil Kowalski's 14 canonical design/animation skills. |
 | **Automation** | All **14 official n8n skill packages**, with original supporting files and license overlays, plus a separate n8n instance-connection guide. |
-| **Productivity & writing** | i-have-adhd as the primary optional communication layer, Humanizer, Caveman writing skill, and a Claude-Mem connection guide. |
+| **Productivity & writing** | i-have-adhd as the primary optional communication layer, Humanizer, Caveman writing skill, Roast-Me prompt auditor, and a Claude-Mem connection guide. |
+| **Reverse engineering & replication** | LeanREA fast CLI reversing, APK decompilation and Frida instrumentation, REA binary decompiler, plus the full 11-stage Replica clean-room app cloner. |
 | **Marketing & WordPress** | **50** marketing skill names and WordPress development, testing, and performance workflows. |
-| **Operations & security** | Shared-VPS/release workflows, secure-by-default development, QA, source provenance, and review-first syncing. |
+| **Operations & security** | Cloudflare security audit suite, shared-VPS/release workflows, secure-by-default development, QA, source provenance, and review-first syncing. |
 | **Research & discovery** | Agent Skills source selection, a reference-only [VoltAgent catalog](research/agent-skills/references/voltagent-catalog.md), and external tool guidance. |
 
 ### Selected integrations and their boundaries
