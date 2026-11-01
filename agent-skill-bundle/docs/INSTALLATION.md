@@ -2,7 +2,7 @@
 
 For a reusable agent instruction that can prepare *any existing workspace*, start with [AI_SETUP.md](../../../AI_SETUP.md). It includes host-aware machine/project setup for Windows, macOS and Linux.
 
-The Bundle lives inside the private `ZaxMil/ZeroCoding` repository under `agent-skill-bundle/`.
+The Bundle lives inside the public `ZaxMil/ZeroCoding` repository under `agent-skill-bundle/`.
 
 ## One-time machine setup
 
