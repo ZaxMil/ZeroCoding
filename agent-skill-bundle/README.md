@@ -22,13 +22,13 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 
 ## Give any coding AI this repository
 
-Use the top-level **[AI_SETUP.md](../AI_SETUP.md)** as the universal entrypoint. An agent with an authorized local terminal and access to this private repo can bootstrap the machine and prepare the current project for Antigravity, Codex and Claude Code in one run. Projects are detected from their files (React, Node, Python, Godot, WordPress, Flutter and more); application dependencies are not installed or changed. The setup uses the existing 10 Project Core skills per project host root; external skill packs stay upstream and on demand.
+Use the top-level **[AI_SETUP.md](../AI_SETUP.md)** as the universal entrypoint. An agent with an authorized local terminal and access to this repository can bootstrap the machine and prepare the current project for Antigravity, Codex and Claude Code in one run. Projects are detected from their files (React, Node, Python, Godot, WordPress, Flutter and more); application dependencies are not installed or changed. The setup uses the existing 10 Project Core skills per project host root; external skill packs stay upstream and on demand.
 
 **Every subsequent project:** run `agent-setup` in its root, or `agent-init --host all`. Verify with `agent-init --host all --status`.
 
 ## Machine install + project init
 
-The Bundle now lives inside the private `ZaxMil/ZeroCoding` repository under `agent-skill-bundle/`.
+The Bundle lives inside the public `ZaxMil/ZeroCoding` repository under `agent-skill-bundle/`.
 
 Authenticate GitHub CLI once, then run the one-time machine bootstrap:
 

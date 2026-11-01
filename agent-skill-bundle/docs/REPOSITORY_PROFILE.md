@@ -1,17 +1,19 @@
-# GitHub repository profile
+# ZeroCoding GitHub repository profile
 
-This file records the intended **GitHub About** text. GitHub does not automatically synchronize repository metadata from README changes.
+These are suggested public-facing repository details. Updating Markdown alone does not change GitHub's About panel.
 
-## About description (copy exactly)
+## About description
 
-174 AI agent skills for Antigravity, Codex & Claude Code. Strict on-demand loading, preserved upstream attribution, and review-first security.
+205 AI-agent skills for beginners and developers. On-demand workflows for Antigravity, Codex and Claude Code — from idea to tested code.
 
 ## Suggested topics
 
-`agent-skills`, `antigravity`, `codex`, `claude-code`, `mcp`, `ai-agents`, `automation`, `on-demand`
+`ai-agents`, `vibe-coding`, `agent-skills`, `antigravity`, `codex`, `claude-code`, `automation`, `developer-tools`
 
-These topics describe compatibility and optional workflows, not a promise that an MCP runtime or coding host is automatically installed. Keep the About description aligned with the [README](../README.md) when the skill count or setup model changes.
+## Suggested website
 
-## Manual GitHub step if no authorized metadata-edit action is available
+Leave blank until a real documentation website or demo is deployed. The repository homepage is already the main entry point.
 
-On the [repository homepage](https://github.com/ZaxMil/Coding/tree/main/agent-skill-bundle), use the **About** section's gear icon, paste the description above, optionally select the topics, and save. This is a repository-metadata change, not a modification to the skill checkout or workstation.
+## How to apply
+
+On [the ZeroCoding repository](https://github.com/ZaxMil/ZeroCoding), open the **About** panel's edit icon, paste the description, add relevant topics, and save. Keep the description aligned with the [top-level README](../../../README.md) when the catalog changes.
