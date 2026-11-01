@@ -1,26 +1,27 @@
 <div align="center">
   <img src=".github/assets/zerocoding-hero.svg" alt="ZeroCoding — give your AI the right skills to turn ideas into working software" width="100%" />
 
-  <br />
+  <p><strong>From “I have an idea” to “I know what to do next.”</strong></p>
+  <p>An organized, reusable collection of <strong>205 AI-agent skills</strong> for building websites, apps, games, automations, designs and more — with a practical way to load only what a task needs.</p>
 
-  **From “I have an idea” to “I know what to do next.”**
-
-  An organized, reusable collection of **205 AI-agent skills** for building websites, apps, games, automations, designs and more — with a practical way to load only what a task needs.
-
-  <br />
-
-  [![Start with an AI agent](https://img.shields.io/badge/START_WITH_YOUR_AI-A8FFAD?style=for-the-badge&labelColor=14212A&color=A8FFAD)](AI_SETUP.md)
-  [![Explore the skills](https://img.shields.io/badge/EXPLORE_205_SKILLS-8B87FF?style=for-the-badge&labelColor=14212A&color=8B87FF)](SKILLS.md)
-  [![How to install](https://img.shields.io/badge/SETUP_GUIDE-3B496A?style=for-the-badge&labelColor=14212A&color=3B496A)](agent-skill-bundle/docs/INSTALLATION.md)
-
-  <br />
-
-  [![CI](https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml/badge.svg)](https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml)
-  [![MIT License](https://img.shields.io/badge/license-MIT-8F9DBA?style=flat-square)](LICENSE)
-  [![Skills](https://img.shields.io/badge/skill_directories-205-86E5C0?style=flat-square)](SKILLS.md)
-  [![GitHub stars](https://img.shields.io/github/stars/ZaxMil/ZeroCoding?style=flat-square&color=9AAAF7)](https://github.com/ZaxMil/ZeroCoding/stargazers)
-
-  [Get started](#-two-ways-to-start) · [How it works](#-how-zerocoding-works) · [See it in action](#-see-a-skill-in-action) · [Browse skills](#-find-your-skill) · [Safety](#-built-for-control-not-magic)
+  <p>
+    <a href="AI_SETUP.md"><img src="https://img.shields.io/badge/START_WITH_YOUR_AI-A8FFAD?style=for-the-badge&amp;labelColor=14212A&amp;color=A8FFAD" alt="Start with your AI" /></a>
+    <a href="SKILLS.md"><img src="https://img.shields.io/badge/EXPLORE_205_SKILLS-8B87FF?style=for-the-badge&amp;labelColor=14212A&amp;color=8B87FF" alt="Explore 205 skills" /></a>
+    <a href="agent-skill-bundle/docs/INSTALLATION.md"><img src="https://img.shields.io/badge/SETUP_GUIDE-3B496A?style=for-the-badge&amp;labelColor=14212A&amp;color=3B496A" alt="Setup guide" /></a>
+  </p>
+  <p>
+    <a href="https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml"><img src="https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml/badge.svg" alt="CI workflow" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8F9DBA?style=flat-square" alt="MIT license" /></a>
+    <a href="SKILLS.md"><img src="https://img.shields.io/badge/skill_directories-205-86E5C0?style=flat-square" alt="205 skills" /></a>
+    <a href="https://github.com/ZaxMil/ZeroCoding/stargazers"><img src="https://img.shields.io/github/stars/ZaxMil/ZeroCoding?style=flat-square&amp;color=9AAAF7" alt="GitHub stars" /></a>
+  </p>
+  <p>
+    <a href="#-two-ways-to-start">Get started</a> ·
+    <a href="#-how-zerocoding-works">How it works</a> ·
+    <a href="#-see-a-skill-in-action">See it in action</a> ·
+    <a href="#-find-your-skill">Browse skills</a> ·
+    <a href="#-built-for-control-not-magic">Safety</a>
+  </p>
 </div>
 
 ---
