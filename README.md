@@ -16,6 +16,7 @@
     <a href="https://github.com/ZaxMil/ZeroCoding/stargazers"><img src="https://img.shields.io/github/stars/ZaxMil/ZeroCoding?style=flat-square&amp;color=9AAAF7" alt="GitHub stars" /></a>
   </p>
   <p>
+    <a href="SHOWCASE.md">Real-world app</a> ·
     <a href="#-two-ways-to-start">Get started</a> ·
     <a href="#-how-zerocoding-works">How it works</a> ·
     <a href="#-see-a-skill-in-action">See it in action</a> ·
@@ -44,6 +45,32 @@ AI can write code. But the result depends on the **workflow it follows**: how it
     </td>
   </tr>
 </table>
+
+## 🏆 Built with ZeroCoding: a real Windows app
+
+<div align="center">
+  <a href="SHOWCASE.md">
+    <img src="https://raw.githubusercontent.com/ZaxMil/fast-downloader/main/ui/Preview%20UI.png" alt="Real FastDownloader Pro application screenshot — built using ZeroCoding" width="780" />
+  </a>
+
+  <p><strong>FastDownloader Pro</strong> — a real Windows download manager developed by the creator using ZeroCoding.</p>
+
+  <p>
+    <a href="SHOWCASE.md"><strong>See the full project story</strong></a>
+    &nbsp; · &nbsp;
+    <a href="https://github.com/ZaxMil/fast-downloader"><strong>Browse the code</strong></a>
+    &nbsp; · &nbsp;
+    <a href="https://github.com/ZaxMil/fast-downloader/releases/tag/v0.1.7"><strong>View the Windows release</strong></a>
+  </p>
+</div>
+
+| Real desktop app | Real browser integration | Real published release |
+| :---: | :---: | :---: |
+| Native Windows code and dashboard | Companion extension and download capture | Version **v0.1.7**, October 29, 2026 |
+
+**Not just a mockup.** You can inspect the [source repository](https://github.com/ZaxMil/fast-downloader), the application's actual UI files, and its release packages. The creator confirms ZeroCoding was used in the AI-assisted development workflow; this is **not** a claim that one skill automatically generated every feature or a benchmark of download speed.
+
+**[Explore the FastDownloader case study →](SHOWCASE.md)**
 
 ## 🚀 Two ways to start
 
