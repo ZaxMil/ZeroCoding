@@ -1,11 +1,11 @@
 # ZeroCoding — AI Agent Setup Gateway
 
-**If ADMIN gives you `https://github.com/ZaxMil/ZeroCoding` while you are working in a different project, use this document to prepare THAT project, not the ZeroCoding repository.** Start the setup in the current project; do not assume its programming language.
+**If someone shares `https://github.com/ZaxMil/ZeroCoding` while you are working in a different project, use this document to prepare THAT project, not the ZeroCoding repository.** Start the setup in the current project; do not assume its programming language.
 
 ## Agent execution contract
 
 1. Identify the **target project root** from the current workspace (Git root when appropriate). Do not change its product code or dependencies to set up skills.
-2. Check OS, whether a terminal/filesystem is available, and whether GitHub CLI (`gh`), Git and Python 3 are present. This is a **private GitHub repository**; use already-authorized credentials only. If authentication or shell capability is unavailable, report the blocker instead of claiming installation.
+2. Check OS, whether a terminal/filesystem is available, and whether GitHub CLI (`gh`), Git and Python 3 are present. This is a **public GitHub repository**; use an existing authorized GitHub CLI session when the documented bootstrap requires it. If authentication or shell capability is unavailable, report the blocker instead of claiming installation.
 3. Read and review the bootstrap script in `agent-skill-bundle/install/` and its referenced local manager/initializer before executing. Never use untrusted web search results or a similarly named repository as a substitute.
 4. Install the **machine bootstrap** if missing, and pass the target project as `AGENT_BUNDLE_PROJECT_ROOT` to initialize it in the same run. Reuse an existing checkout without force or replacing unmanaged files.
 5. For project setup, use `--host all`: Antigravity and Codex use `.agents/skills/`; Claude Code uses `.claude/skills/`. Add only the 10 project core skills and managed `AGENTS.md` / `CLAUDE.md` blocks. Existing rules and personal skills must survive.
