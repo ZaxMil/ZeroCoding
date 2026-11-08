@@ -77,6 +77,16 @@ python3 "$HOME/.agent-tools/ZeroCoding/agent-skill-bundle/scripts/optional_packs
 
 On Windows use `py -3` and `$HOME` in PowerShell. This stages seven pinned skill-source checkouts into the global external vault, while recording Karpathy guidelines, Graphify's separate CLI, and the Agent Skills specification as references. It runs no third-party code. It does not replace the 10 core project skills or modify application code. Read [the optional packs guide](agent-skill-bundle/docs/OPTIONAL_PACKS.md) for specific source and licensing details.
 
+## Smart skill selection for each new request (same chat)
+
+After `agent-setup` / `agent-init --host all`, the project-managed `AGENTS.md` and `CLAUDE.md` sections tell the coding agent to **rerun skill selection for every incoming user request**. It must not reuse a previous task's skill list when the user switches topics within the same conversation.
+
+The local, read-only selector command is recorded in `.agents/agent-init.json` as `skill_router`. It ranks only names and frontmatter descriptions; the agent opens **only** selected skill files. It selects up to four useful skills by default, with zero or fewer skills for simpler tasks. Optional pinned packs are considered only when explicitly staged. Missing external applications are not silently installed.
+
+For existing projects, run `agent-setup` again to refresh ZeroCoding's managed agent-rule block. This preserves unmarked user rules and application code. The assistant can keep task context while **not re-reading old irrelevant skills**; no file-based system can forcibly remove prior text from a model's existing chat history.
+
+Full instructions and examples: [per-request skill routing](agent-skill-bundle/docs/PER_REQUEST_ROUTING.md).
+
 ## What is and is not automatic
 
 - **Automatic once explicitly launched:** project stack detection (markers only), installation of the 10 reviewed project core skill directories, rules and routing configuration, status checks.
