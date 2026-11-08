@@ -33,15 +33,15 @@ RULES = {
         "preferred": ("hallmark", "ui-ux-pro-max", "frontend-design", "web-design-guidelines", "ui-designer", "design-taste-frontend"),
     },
     "motion": {
-        "pattern": r"\b(animation|animate|motion|transition|parallax|microinteraction|video|reel|remotion|cinematic)\b|انيميشن|موشن|فيديو|حرك",
+        "pattern": r"\b(animations?|animate|motion|transitions?|parallax|microinteractions?|videos?|reels?|remotion|cinematic)\b|انيميشن|موشن|فيديو|حرك",
         "preferred": ("animate", "emil-design-eng", "review-animations", "code-motion-reel", "animation-performance", "animation-vocabulary"),
     },
     "debug": {
-        "pattern": r"\b(bug|bugs|debug|fix|broken|crash|error|fail|stuck|not working|issue|regression|troubleshoot)\b|اصلح|مشكله|خطأ|تعطل|مش شغال",
+        "pattern": r"\b(bugs?|debug|broken|crash|errors?|failure|stuck|not working|regression|troubleshoot)\b|اصلح|مشكله|خطأ|تعطل|مش شغال",
         "preferred": ("systematic-debugging", "frontend-silent-failure-debugging", "ai-regression-testing", "debugger"),
     },
     "testing": {
-        "pattern": r"\b(test|tests|testing|qa|quality assurance|verify|validate|e2e|audit|accessibility)\b|اختبار|فحص|راجع",
+        "pattern": r"\b(tests?|testing|qa|quality assurance|verify|validate|e2e|audit|accessibility)\b|اختبار|فحص|راجع",
         "preferred": ("webapp-testing", "web-quality-audit", "ai-regression-testing", "release-readiness", "accessibility"),
     },
     "security": {
