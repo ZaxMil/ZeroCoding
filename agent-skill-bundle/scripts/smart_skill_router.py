@@ -144,8 +144,8 @@ def rank(row: dict, task_tokens: set[str], intent: str) -> float:
         narrow = {
             "godot-gdscript-patterns": {"godot", "gdscript"},
             "game-ready-2d-asset-pipeline": {"2d", "asset", "sprite"},
-            "animate": {"animate", "animation", "motion", "transition"},
-            "code-motion-reel": {"video", "reel", "remotion", "cinematic", "motion"},
+            "animate": {"animate", "animation", "animations", "motion", "transition", "transitions"},
+            "code-motion-reel": {"video", "videos", "reel", "reels", "remotion", "cinematic", "motion"},
             "n8n-workflow-lifecycle-official": {"n8n"},
             "wordpress-security-audit": {"wordpress", "woocommerce"},
             "task-to-pr": {"git", "pr", "github", "pull"},
@@ -201,7 +201,7 @@ def route(task: str, catalog: list[dict], limit: int = DEFAULT_MAX) -> dict:
 
     # A complex single goal may benefit from 2-3 complementary skills, but a
     # simple task gets one (or zero), never a mandatory quota.
-    detailed = len(task_tokens) >= 8 or re.search(
+    detailed = len(task_tokens) >= 6 or re.search(
         r"\b(full|complete|comprehensive|everything|entire|end.to.end|from scratch|all aspects)\b",
         task.lower(),
     )
