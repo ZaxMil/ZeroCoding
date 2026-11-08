@@ -244,6 +244,8 @@ def write_manifest(
         "bundle_commit": head,
         "core_skills": [entry["name"] for entry in profile["core_skills"]],
         "specialist_search": f'python "{source / "scripts" / "skill_doctor.py"}" search "<keywords>"',
+        "skill_router": f'python "{source / "scripts" / "smart_skill_router.py"}" --task "<current user request>" --max-skills 4 --json',
+        "skill_selection_scope": "fresh-per-user-message",
     }
     dest = agents / "agent-init.json"
     if dest.is_symlink():
