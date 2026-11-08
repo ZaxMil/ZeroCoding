@@ -78,6 +78,8 @@ def installed(cache, pack):
             return False
         if call("git", "rev-parse", "HEAD", cwd=folder) != pack["revision"]:
             return False
+        if call("git", "status", "--porcelain", "--untracked-files=no", cwd=folder):
+            return False
         return True
     except (OSError, ValueError, PackError):
         return False
@@ -160,8 +162,9 @@ def remove(cache, pack):
         return
     if not installed(cache, pack):
         raise PackError(f"refusing to remove unrecognized/modified checkout: {folder}")
-    if call("git", "status", "--porcelain", "--untracked-files=no", cwd=folder):
-        raise PackError("refusing to remove checkout with modified tracked files")
+    changes = call("git", "status", "--porcelain", "--untracked-files=all", cwd=folder).splitlines()
+    if any(line[3:] != MARKER for line in changes):
+        raise PackError("refusing to remove checkout containing user changes or extra files")
     shutil.rmtree(folder)
     print(f"REMOVED {pack['id']}")
 
@@ -185,7 +188,10 @@ def main():
     if args.action == "remove" and not (args.pack or args.all):
         raise PackError("removal requires explicit --pack ID or --all")
     selected = [catalog[args.pack]] if args.pack else list(catalog.values())
-    cache = args.cache.expanduser().resolve(strict=False)
+    cache = args.cache.expanduser()
+    if cache.is_symlink():
+        raise PackError("cache symlink refused")
+    cache = cache.absolute()
     if args.action == "list":
         for p in selected:
             print(f"{p['id']}\t{p['mode']}\t{p['repository']}\t{p['description']}")
