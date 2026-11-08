@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "purpose": "Pinned, opt-in canonical upstream source packs. Never executed or installed during ZeroCoding bootstrap.",
+  "packs": [
+    {
+      "id": "karpathy",
+      "repository": "multica-ai/andrej-karpathy-skills",
+      "branch": "main",
+      "revision": "2c606141936f1eeef17fa3043a72095b4765b9c2",
+      "mode": "reference",
+      "skill_root": "skills",
+      "license": "not declared",
+      "description": "Karpathy-inspired coding heuristics. Reference-only until distribution rights are clear; related guidelines already exist in the vault.",
+      "note": "Do not import CLAUDE.md or replace existing project rules."
+    },
+    {
+      "id": "emil",
+      "repository": "emilkowalski/skills",
+      "branch": "main",
+      "revision": "5206a950b715e0cabe7043ea0b2304332b91494e",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "MIT",
+      "description": "Design engineering, motion, interaction and mobile UI skills."
+    },
+    {
+      "id": "graphify",
+      "repository": "Graphify-Labs/graphify",
+      "branch": "v8",
+      "revision": "6c8002eca4acad58db6160eabcb466e61fc35afb",
+      "mode": "runtime",
+      "skill_root": "graphify/skills",
+      "license": "Apache-2.0",
+      "description": "Queryable code knowledge graph; requires the separate graphifyy Python application.",
+      "note": "Official upstream instructions use uv tool install graphifyy, then graphify install. Never install this program as part of a ZeroCoding skills bootstrap."
+    },
+    {
+      "id": "ponytail",
+      "repository": "dietrichgebert/ponytail",
+      "branch": "main",
+      "revision": "96608e078b2d5ea607c5c3b8b5a54d1c1fba6846",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "MIT",
+      "description": "Keep solutions simple, review unnecessary complexity and technical debt. Six older skills already bundled."
+    },
+    {
+      "id": "caveman",
+      "repository": "JuliusBrussee/caveman",
+      "branch": "main",
+      "revision": "1e91f1306d602d4ca23618701b1185575ae1869b",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "mixed (check per component)",
+      "description": "Short, focused agent instructions. Do not load proxy, engine, hooks, or commands.",
+      "note": "Source has license distinctions; this optional source checkout is not a claim that every directory can be redistributed."
+    },
+    {
+      "id": "hallmark",
+      "repository": "nutlope/hallmark",
+      "branch": "main",
+      "revision": "407fa689f4a276f2fd389208d271d0fef08f5058",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "MIT",
+      "description": "Anti-AI-slop interface design and visual review."
+    },
+    {
+      "id": "superpowers",
+      "repository": "obra/superpowers",
+      "branch": "main",
+      "revision": "22f0b463e7a5e579904dd6211a520321035526f7",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "MIT",
+      "description": "Planning, testing, debugging and agentic software-development workflows. Some skills already bundled.",
+      "note": "Only skill source, not upstream plugins, hooks, or command/runtime installation."
+    },
+    {
+      "id": "agentskills",
+      "repository": "agentskills/agentskills",
+      "branch": "main",
+      "revision": "83021e2be457a9b6679148719c1f6074f0ad975e",
+      "mode": "reference",
+      "skill_root": null,
+      "license": "Apache-2.0",
+      "description": "Agent Skills specification and validation tools, not a pack of installable SKILL.md files.",
+      "note": "Use this as the canonical format reference. Installing its Python validator is a separate opt-in."
+    },
+    {
+      "id": "antigravity",
+      "repository": "rmyndharis/antigravity-skills",
+      "branch": "main",
+      "revision": "2ee2cf79b99035fbdabdfe0b1057034195e7571e",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "MIT",
+      "description": "Large specialist library for Google Antigravity and compatible agents.",
+      "note": "Large pack. Store outside projects and use only the relevant specialist."
+    },
+    {
+      "id": "anthropic",
+      "repository": "anthropics/skills",
+      "branch": "main",
+      "revision": "2c5958ecac7cee2b583967a2c4981d0f4a75c579",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "per-skill",
+      "description": "Official Anthropic skill collection. Respect each skill's individual license and support requirements.",
+      "note": "Do not presume the root repository has a blanket redistribution license."
+    }
+  ]
+}
