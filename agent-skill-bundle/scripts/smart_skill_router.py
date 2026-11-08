@@ -142,12 +142,22 @@ def rank(row: dict, task_tokens: set[str], intent: str) -> float:
         # Common core patterns (security, SEO, QA) are good for broad goals;
         # narrow engines/specialties require an actual matching clue.
         narrow = {
+            "hallmark": {"design", "redesign", "visual", "aesthetic", "slop", "generic", "look", "polish"},
             "godot-gdscript-patterns": {"godot", "gdscript"},
-            "game-ready-2d-asset-pipeline": {"2d", "asset", "sprite"},
+            "game-ready-2d-asset-pipeline": {"2d", "asset", "assets", "sprite", "sprites"},
+            "game-economy-designer": {"economy", "coins", "currency", "reward", "rewards", "pricing", "monetization"},
             "animate": {"animate", "animation", "animations", "motion", "transition", "transitions"},
+            "emil-design-eng": {"animate", "animation", "animations", "motion", "design", "redesign"},
             "code-motion-reel": {"video", "videos", "reel", "reels", "remotion", "cinematic", "motion"},
+            "using-n8n-skills-official": {"n8n"},
             "n8n-workflow-lifecycle-official": {"n8n"},
-            "wordpress-security-audit": {"wordpress", "woocommerce"},
+            "n8n-debugging-official": {"n8n"},
+            "wordpress-security": {"security", "secure", "vulnerability", "audit"},
+            "wordpress-security-audit": {"security", "secure", "vulnerability", "audit"},
+            "pdf": {"pdf"},
+            "docx": {"docx", "word"},
+            "pptx": {"pptx", "powerpoint"},
+            "xlsx": {"xlsx", "spreadsheet"},
             "task-to-pr": {"git", "pr", "github", "pull"},
             "seo": {"seo", "indexing", "search", "sitemap"},
         }
