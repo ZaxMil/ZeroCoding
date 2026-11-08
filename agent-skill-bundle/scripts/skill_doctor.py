@@ -120,7 +120,7 @@ def external_skill_catalog():
                 "path": item.get("source_path", ""),
                 "external": True,
                 "repository": data["source_repository"],
-                "install_command": 'python agent-skill-bundle/scripts/optional_packs.py install --pack emil',
+                "install_command": data["install_command"],
             })
     for pack in optional.values():
         cache = DEFAULT_CACHE / pack["id"]
