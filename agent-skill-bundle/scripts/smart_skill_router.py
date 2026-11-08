@@ -137,10 +137,23 @@ def rank(row: dict, task_tokens: set[str], intent: str) -> float:
     name_words = terms(name.replace("-", " "))
     desc_words = terms(row.get("description") or "")
     preferred = rule["preferred"]
-    if name in preferred:
-        # Specific, well-known matching skill > vague keyword coincidence.
-        return 40 - preferred.index(name) * 2.5 + 0.5 * len(task_tokens & desc_words)
     overlap = task_tokens & (name_words | desc_words)
+    if name in preferred:
+        # Common core patterns (security, SEO, QA) are good for broad goals;
+        # narrow engines/specialties require an actual matching clue.
+        narrow = {
+            "godot-gdscript-patterns": {"godot", "gdscript"},
+            "game-ready-2d-asset-pipeline": {"2d", "asset", "sprite"},
+            "animate": {"animate", "animation", "motion", "transition"},
+            "code-motion-reel": {"video", "reel", "remotion", "cinematic", "motion"},
+            "n8n-workflow-lifecycle-official": {"n8n"},
+            "wordpress-security-audit": {"wordpress", "woocommerce"},
+            "task-to-pr": {"git", "pr", "github", "pull"},
+            "seo": {"seo", "indexing", "search", "sitemap"},
+        }
+        if name not in narrow or task_tokens & narrow[name]:
+            return 40 - preferred.index(name) * 2.5 + 0.5 * len(overlap)
+        return 0
     if not overlap:
         return 0
     category_hint = {
