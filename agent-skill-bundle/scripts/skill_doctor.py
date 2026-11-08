@@ -130,7 +130,7 @@ def external_skill_catalog():
                 if skill_file.is_symlink() or skill_file.parent.is_symlink():
                     continue
                 body = skill_file.read_text(encoding="utf-8", errors="replace")[:3500]
-                match = re.search(r"^description:\\s*(.+)$", body, re.MULTILINE)
+                match = re.search(r"^description:\s*(.+)$", body, re.MULTILINE)
                 desc = match.group(1).strip().strip("'\\\"") if match else pack["description"]
                 result.append({
                     "name": skill_file.parent.name,
