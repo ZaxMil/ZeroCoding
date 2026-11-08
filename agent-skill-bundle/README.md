@@ -64,6 +64,12 @@ This keeps discovery focused. It does **not** mean that all 186 skill bodies are
 
 ![Three-step on-demand workflow: two bootstraps, search the reviewed source vault with separately configured MCP, and load the selected complete skill](docs/images/on-demand-workflow.svg)
 
+## Fresh routing per user message
+
+Project Core installs persistent discoverable starter skill folders, but it does not preload their complete bodies. When an AI agent has access to a local terminal and obeys managed `AGENTS.md` or `CLAUDE.md` rules, it should run the read-only `scripts/smart_skill_router.py` **for each incoming task**. A different task in the same chat triggers a new skill selection. Only the chosen `SKILL.md` files should be read, and zero is valid.
+
+This is a best-effort host instruction, not an always-running daemon or an LLM memory-reset feature. [Usage and verification](docs/PER_REQUEST_ROUTING.md).
+
 ## Quick start: strict on-demand
 
 **These commands are for the machine running the coding agent.** Review [`SECURITY.md`](SECURITY.md) and [the cross-host setup guide](adapters/multi-host/README.md) before installation. On Windows, use an appropriate Bash environment and check your actual user-profile and host skill paths.
