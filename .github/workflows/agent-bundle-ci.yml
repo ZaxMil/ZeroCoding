@@ -22,8 +22,15 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Syntax
         run: |
-          python3 -m py_compile scripts/bundle_manager.py scripts/agent_init.py
+          python3 -m py_compile scripts/bundle_manager.py scripts/agent_init.py scripts/skill_doctor.py scripts/optional_packs.py
           bash -n install/bootstrap.sh tests/bundle-installation.sh tests/agent-project-bootstrap.sh
+      - name: Optional pack registry and offline safety tests
+        run: |
+          python3 scripts/optional_packs.py verify-manifest
+          python3 scripts/optional_packs.py list
+          python3 scripts/optional_packs.py status
+          python3 -m unittest discover -s tests -p 'test_optional_packs.py'
+
       - name: Legacy repository references
         run: |
           if grep -RInE --exclude-dir=.git "ZAX-MILLION/(agent-skill-bundle|Coding)" .; then
