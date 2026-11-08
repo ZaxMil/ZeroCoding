@@ -31,6 +31,12 @@ jobs:
           python3 scripts/optional_packs.py status
           python3 -m unittest discover -s tests -p 'test_optional_packs.py'
 
+      - name: Real pinned upstream checkout smoke test
+        run: |
+          python3 scripts/optional_packs.py install --pack emil --cache "$RUNNER_TEMP/zerocoding-external-packs"
+          python3 scripts/optional_packs.py status --pack emil --cache "$RUNNER_TEMP/zerocoding-external-packs"
+          python3 scripts/optional_packs.py remove --pack emil --cache "$RUNNER_TEMP/zerocoding-external-packs"
+
       - name: Legacy repository references
         run: |
           if grep -RInE --exclude-dir=.git "ZAX-MILLION/(agent-skill-bundle|Coding)" .; then
