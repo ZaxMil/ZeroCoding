@@ -118,6 +118,20 @@ or deploy anything as part of setup. Explain any blocker clearly.
 
 > Skills are **instructions**, not installed applications or a guarantee of identical behavior across AI products. Optional integrations (including the Skill Retrieval MCP server) require separate setup. The local skill-search utility can work without MCP.
 
+## 🧰 Ten optional upstream sources (one-command add-on)
+
+ZeroCoding also registers 10 canonical upstream projects: Karpathy-inspired guidance, Emil Kowalski, Graphify, Ponytail, Caveman, Hallmark, Superpowers, Agent Skills specification, Antigravity Skills, and Anthropic Skills.
+
+After the normal machine bootstrap, you can optionally stage **seven source-only skill packs** in the external, on-demand vault using:
+
+```bash
+python agent-skill-bundle/scripts/optional_packs.py install --all
+```
+
+The other three are reference/runtime gateways, not silently installed apps. All sources are pinned; no third-party scripts, hooks or tools are executed, and no extra skills are pushed into projects by default. Use `skill_doctor.py search` to discover staged specialists.
+
+**[See source details, one-command Windows/macOS/Linux setup and safety notes](agent-skill-bundle/docs/OPTIONAL_PACKS.md).**
+
 ## 🎬 See a skill in action
 
 <div align="center">

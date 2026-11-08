@@ -102,11 +102,14 @@ def skill_catalog(vault):
 
 
 def external_skill_catalog():
-    """Metadata-only external skills. No external SKILL.md body is stored here."""
-    manifests = (ROOT / "registry/vendor-emilkowalski.json",)
+    """Upstream gateways plus locally staged optional source skills."""
     result = []
+    from optional_packs import DEFAULT_CACHE, installed as optional_installed, packs as optional_packs
+    optional = optional_packs()
+    emil_ready = optional_installed(DEFAULT_CACHE, optional["emil"])
+    manifests = (ROOT / "registry/vendor-emilkowalski.json",)
     for manifest_path in manifests:
-        if not manifest_path.is_file():
+        if not manifest_path.is_file() or emil_ready:
             continue
         data = json.loads(manifest_path.read_text(encoding="utf-8"))
         for item in data.get("skills", []):
@@ -118,6 +121,36 @@ def external_skill_catalog():
                 "external": True,
                 "repository": data["source_repository"],
                 "install_command": data["install_command"],
+            })
+    for pack in optional.values():
+        cache = DEFAULT_CACHE / pack["id"]
+        if pack["mode"] == "skills" and optional_installed(DEFAULT_CACHE, pack):
+            folder = cache / pack["skill_root"]
+            for skill_file in sorted(folder.glob("*/SKILL.md")):
+                if skill_file.is_symlink() or skill_file.parent.is_symlink():
+                    continue
+                body = skill_file.read_text(encoding="utf-8", errors="replace")[:3500]
+                match = re.search(r"^description:\s*(.+)$", body, re.MULTILINE)
+                desc = match.group(1).strip().strip("'\\\"") if match else pack["description"]
+                result.append({
+                    "name": skill_file.parent.name,
+                    "source": f"optional:{pack['id']}:{skill_file.parent.name}",
+                    "description": desc,
+                    "path": str(skill_file.resolve()),
+                })
+        elif pack["id"] != "emil":
+            result.append({
+                "name": pack["id"],
+                "source": f"upstream:{pack['id']}",
+                "description": pack["description"],
+                "path": pack.get("skill_root") or "README.md",
+                "external": True,
+                "repository": pack["repository"],
+                "install_command": (
+                    f"python agent-skill-bundle/scripts/optional_packs.py install --pack {pack['id']}"
+                    if pack["mode"] == "skills"
+                    else "reference/tool only; see docs/OPTIONAL_PACKS.md"
+                ),
             })
     return result
 

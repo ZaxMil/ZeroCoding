@@ -10,7 +10,7 @@
 4. Install the **machine bootstrap** if missing, and pass the target project as `AGENT_BUNDLE_PROJECT_ROOT` to initialize it in the same run. Reuse an existing checkout without force or replacing unmanaged files.
 5. For project setup, use `--host all`: Antigravity and Codex use `.agents/skills/`; Claude Code uses `.claude/skills/`. Add only the 10 project core skills and managed `AGENTS.md` / `CLAUDE.md` blocks. Existing rules and personal skills must survive.
 6. Verify with `agent-init --host all --status` (or the full Python command below). Inspect `.agents/agent-init.json` for the detected stack and its specialist search queries. Run `skill_doctor.py search "<query>"` only when a task needs a specialist; read the matching canonical skill. The complete vault remains outside the project.
-7. Record what was installed and what was only registered as an external gateway. For Emil Kowalski, actual skills remain at `https://github.com/emilkowalski/skills` and are **not installed by this setup**. Do not install third-party executables, MCP servers, optional external skill packs, hooks, paid services, or provider credentials automatically.
+7. Record what was installed and what was only registered as an external gateway. By default, Emil Kowalski skills remain upstream; the optional source pack manager can separately stage the original skills with explicit opt-in. Do not install third-party executables, MCP servers, optional external skill packs, hooks, paid services, or provider credentials automatically.
 8. Stop after a successful verification. Do not modify the app, install project dependencies, run migrations, deploy, push code, overwrite secrets, or publish anything merely because this setup completed.
 
 ## First-time setup — current project's terminal
@@ -65,6 +65,17 @@ py -3 "$HOME/.agent-tools/ZeroCoding/agent-skill-bundle/scripts/agent_init.py" -
 **Verify:** each relevant project skill root has 10 core skills, `.agents/agent-init.json` records the stack/vault path, and `AGENTS.md`/`CLAUDE.md` retain the owner's original content plus one managed section. Use `agent-init --host all --status`.
 
 To safely remove only files managed by Project Core: `agent-init --remove`. This leaves unmarked project skills, existing rules, and application files intact.
+
+## Optional ten-source expansion (explicit opt-in)
+
+The normal bootstrap deliberately preserves the small project core. If the user **explicitly requests all optional sources**, after verifying basic setup run:
+
+```bash
+python3 "$HOME/.agent-tools/ZeroCoding/agent-skill-bundle/scripts/optional_packs.py" install --all
+python3 "$HOME/.agent-tools/ZeroCoding/agent-skill-bundle/scripts/optional_packs.py" status
+```
+
+On Windows use `py -3` and `$HOME` in PowerShell. This stages seven pinned skill-source checkouts into the global external vault, while recording Karpathy guidelines, Graphify's separate CLI, and the Agent Skills specification as references. It runs no third-party code. It does not replace the 10 core project skills or modify application code. Read [the optional packs guide](agent-skill-bundle/docs/OPTIONAL_PACKS.md) for specific source and licensing details.
 
 ## What is and is not automatic
 
