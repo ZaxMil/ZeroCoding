@@ -132,6 +132,16 @@ The other three are reference/runtime gateways, not silently installed apps. All
 
 **[See source details, one-command Windows/macOS/Linux setup and safety notes](agent-skill-bundle/docs/OPTIONAL_PACKS.md).**
 
+## 🎯 Smart skills: a fresh selection for every task
+
+When you ask for UI work, the agent can find the relevant design and motion skills. Ask for a security review **next, in the same chat**, and it should select security skills instead of carrying over the earlier design list.
+
+ZeroCoding now includes a **read-only, per-request router**. Once your project is initialized, the managed agent rules ask the assistant to use it for each user message. It reads only skill metadata to select up to four relevant instructions and loads the selected skill bodies only on demand. Simple requests may need one or none.
+
+This is an agent-driven workflow, not a background listener or a guarantee that chat history can be erased. A compatible agent needs workspace/terminal access to invoke the router; re-run `agent-setup` in existing projects to refresh the managed rules.
+
+**[How per-request routing works and how to verify it](agent-skill-bundle/docs/PER_REQUEST_ROUTING.md)**
+
 ## 🎬 See a skill in action
 
 <div align="center">
