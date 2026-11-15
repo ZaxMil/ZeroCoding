@@ -125,7 +125,7 @@ assert "productivity/i-have-adhd|research/skill-retrieval-routing" in installer
 assert 'if [ "$ON_DEMAND" -eq 1 ] && [ "$count" -ne 2 ]' in installer
 assert '--prune-managed' in installer
 print(
-    "PASS: 217 unique skills, 2 native bootstraps, 14 official n8n, 
+    "PASS: 217 unique skills, 2 native bootstraps, 14 official n8n, "
     "15 Superpowers, 9 selected ECC, 4 local guides, "
     "7 source pins, Emil metadata-only gateway, and external runtime/credential boundaries"
 )
