@@ -40,6 +40,18 @@ RULES = {
         "pattern": r"\b(react[ -]?bits|canvas[ -]?ui|open[ -]?design|component[ -]?library|webgl)\b",
         "preferred": ("react-bits-reference", "canvas-ui-reference", "open-design-reference"),
     },
+    "orchestration": {
+        "pattern": r"\\b(swarm|multi[ -]?agent|orchestrat\\w*|parallel[ -]?agents?|subagents?|workers?|delegat\\w*|agent team)\\b|وكلاء|سرب|متواز",
+        "preferred": ("dispatching-parallel-agents", "subagent-driven-development", "native_swarm", "recursive-decomposition"),
+    },
+    "reverse": {
+        "pattern": r"\\b(reverse[ -]?engineer\\w*|decompil\\w*|apk|firmware|binary analysis|reconstruct\\w*)\\b|هندسة عكسية|عكسية|تفكيك",
+        "preferred": ("reverse-engineer-anything", "apk-reverse", "replica-recon"),
+    },
+    "agent-tools": {
+        "pattern": r"\\b(mcp|agent[ -]?skills?|plugin|hooks?|customizations?|antigravity)\\b|مهارات|بلاجن|وكلاء",
+        "preferred": ("agent-skills", "skill-creator", "mcp-builder"),
+    },
     "debug": {
         "pattern": r"\b(bugs?|debug|broken|crash|errors?|failure|stuck|not working|regression|troubleshoot)\b|اصلح|مشكله|خطأ|تعطل|مش شغال",
         "preferred": ("systematic-debugging", "frontend-silent-failure-debugging", "ai-regression-testing", "debugger"),
@@ -92,13 +104,15 @@ RULES = {
 
 # A word such as "fix" should not select a dozen debugging skills solely by
 # matching "development" in generic descriptions. Prefer precise names first.
-CONTROL_SKILLS = {"i-have-adhd", "skill-retrieval-routing", "credit-usage-helper"}
+CONTROL_SKILLS = {"i-have-adhd", "skill-retrieval-routing", "zerocoding", "credit-usage-helper"}
 GENERIC_GATEWAYS = {"graphify", "n8n-instance", "claude-mem", "openmontage", "shuohao-skills", "zax-editor"}
 WORD = re.compile(r"[a-z0-9][a-z0-9-]*", re.I)
 
 
 def terms(value: str) -> set[str]:
-    return {w for w in WORD.findall(value.lower()) if len(w) > 2 and w not in STOP}
+    # Include segments of kebab-case/underscored skill names for exact named routing.
+    value = value.lower().replace("_", " ").replace("-", " ")
+    return {w for w in WORD.findall(value) if len(w) > 2 and w not in STOP}
 
 
 def load_catalog(vault: Path) -> list[dict]:
@@ -186,6 +200,8 @@ def rank(row: dict, task_tokens: set[str], intent: str) -> float:
     category_hint = {
         "design": ("design/", "qa/screenshot"), "motion": ("creative/", "design/"),
         "components": ("design/",),
+        "orchestration": ("process/",), "reverse": ("reverse-engineering/",),
+        "agent-tools": ("design/", "research/", "coding/"),
         "debug": ("qa/", "process/"), "testing": ("qa/", "process/"),
         "security": ("security/",), "seo": ("qa/", "marketing/"),
         "performance": ("qa/",), "game": ("coding/", "creative/", "design/"),
@@ -198,19 +214,22 @@ def rank(row: dict, task_tokens: set[str], intent: str) -> float:
     return min(len(overlap & name_words), 5) * 3 + min(len(overlap & desc_words), 5) + bonus
 
 
-def route(task: str, catalog: list[dict], limit: int = DEFAULT_MAX) -> dict:
+def route(task: str, catalog: list[dict], limit: int = DEFAULT_MAX, project_stack=()) -> dict:
     if not task.strip():
         raise ValueError("task cannot be blank")
     if not 1 <= limit <= 8:
         raise ValueError("max-skills must be between 1 and 8")
     intents = detect_intents(task)
     task_tokens = terms(task)
+    # Infer stack only from read-only project markers. Never infer authorization.
+    project_stack = set(project_stack)
     selected: list[dict] = []
     seen = set()
     candidates = {}
     for intent in intents:
         ranked = sorted(
-            ((rank(row, task_tokens, intent), row) for row in catalog),
+            ((rank(row, task_tokens, intent) +
+              (2 if project_stack & terms(row["name"]) else 0), row) for row in catalog),
             key=lambda x: (-x[0], x[1]["name"], x[1]["source"]),
         )
         # Only choose a skill for the task if there is positive evidence.
@@ -267,6 +286,7 @@ def route(task: str, catalog: list[dict], limit: int = DEFAULT_MAX) -> dict:
     return {
         "policy": "fresh-selection-for-this-message-only",
         "intents": intents,
+        "project_stack": sorted(project_stack),
         "selected": selected,
         "count": len(selected),
         "limit": limit,
@@ -274,15 +294,86 @@ def route(task: str, catalog: list[dict], limit: int = DEFAULT_MAX) -> dict:
     }
 
 
+def detect_project_stack(project: Path) -> list[str]:
+    """Cheap, optional marker-only stack hints: no execution or dependency installation."""
+    if not project.is_dir() or project.is_symlink():
+        return []
+    names = set()
+    markers = {"project.godot": "godot", "Cargo.toml": "rust",
+               "pyproject.toml": "python", "wp-config.php": "wordpress",
+               "pubspec.yaml": "flutter", "go.mod": "go", "composer.json": "php"}
+    for file, name in markers.items():
+        if (project / file).is_file() and not (project / file).is_symlink():
+            names.add(name)
+    package = project / "package.json"
+    if package.is_file() and not package.is_symlink() and package.stat().st_size < 65536:
+        try:
+            data = json.loads(package.read_text(encoding="utf-8"))
+            dependencies = {**data.get("dependencies", {}), **data.get("devDependencies", {})}
+            for pkg, label in (("react","react"), ("next","nextjs"),
+                               ("astro","astro"), ("vue","vue"), ("svelte","svelte"),
+                               ("typescript","typescript"), ("gsap","gsap")):
+                if pkg in dependencies:
+                    names.add(label)
+        except (OSError, ValueError, TypeError):
+            pass
+    return sorted(names)
+
+
+def suggest_external(task: str, selected: list[dict], vault: Path, limit: int = 2) -> list[dict]:
+    """Return metadata ONLY; never stage sources or treat a candidate as runnable."""
+    source = vault / "registry" / "ind4x-catalog.json"
+    if not source.is_file():
+        return []
+    data = json.loads(source.read_text(encoding="utf-8"))
+    task_tokens = terms(task)
+    if len(task_tokens) < 2:
+        return []
+    available = {x["name"].lower() for x in selected}
+    # Names already in the local vault take precedence over a downstream mirror.
+    available.update(x["name"].lower() for x in skill_doctor.skill_catalog(vault))
+    words = task.lower().replace("_", "-")
+    candidates = []
+    for row in data["skills"]:
+        name = row["name"]
+        if name.lower() in available or row["already_in_zerocoding"]:
+            continue
+        name_tokens = terms(name)
+        description_tokens = terms(row["description"])
+        overlap = task_tokens & name_tokens
+        explicit = name.lower().replace("_", "-") in words or (
+            len(name_tokens) > 1 and name_tokens <= task_tokens
+        )
+        score = (18 if explicit else 0) + 6 * len(overlap) + min(4, len(task_tokens & description_tokens))
+        if not explicit and (not overlap or score < 8):
+            continue
+        if score < 9:
+            continue
+        candidates.append((score, row))
+    candidates.sort(key=lambda item: (-item[0], item[1]["name"]))
+    return [{
+        "name": row["name"],
+        "status": "not_installed_metadata_only",
+        "category": row["category"],
+        "url": f"https://github.com/ind4x/ai-agent-skills/blob/{data['upstream_revision']}/{row['source_path']}",
+        "source_revision": data["upstream_revision"],
+        "action": "explicit opt-in source-only checkout; verify original author, per-skill license and required host tools",
+    } for _, row in candidates[:limit]]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Pick only skills needed for the current user message")
     parser.add_argument("--task", required=True, help="Current user request only; do not paste the entire conversation")
     parser.add_argument("--max-skills", type=int, default=DEFAULT_MAX)
     parser.add_argument("--vault", type=Path, default=ROOT)
+    parser.add_argument("--project", type=Path, help="Optional project root for stack-aware, read-only hints")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
     try:
-        result = route(args.task, load_catalog(args.vault.resolve()), args.max_skills)
+        vault = args.vault.resolve()
+        result = route(args.task, load_catalog(vault), args.max_skills,
+                       detect_project_stack(args.project) if args.project else ())
+        result["external_candidates"] = suggest_external(args.task, result["selected"], vault)
     except (OSError, ValueError, json.JSONDecodeError) as error:
         print(f"Router: {error}", file=sys.stderr)
         return 2
@@ -294,6 +385,8 @@ def main() -> int:
             print("  none (no sufficiently relevant locally available skill)")
         for skill in result["selected"]:
             print(f"  {skill['name']} [{skill['reason']}] {skill['path']}")
+        for candidate in result["external_candidates"]:
+            print(f"  OPTIONAL (not installed): {candidate['name']} {candidate['url']}")
         print("Scope expires at the next user request. Open selected SKILL.md only.")
     return 0
 
