@@ -24,6 +24,10 @@ CATALOG = [
     row("animate", "design", "Animate frontend motion transitions and microinteractions."),
     row("systematic-debugging", "process", "Root-cause debugging of crashes and bugs."),
     row("webapp-testing", "design", "Test browser frontend application behavior."),
+    row("gsap-scrolltrigger", "design", "GSAP ScrollTrigger parallax and pinned scrolling motion."),
+    row("gsap-core", "design", "Official GSAP animation tweens."),
+    row("react-bits-reference", "design", "React Bits external UI component integration."),
+    row("canvas-ui-reference", "design", "Canvas UI WebGL effects reference."),
     row("web-security-audit", "security", "Audit website vulnerabilities and web security."),
     row("seo", "qa", "Check SEO indexing and search optimization."),
     row("godot-gdscript-patterns", "coding", "Godot GDScript game programming."),
@@ -48,6 +52,18 @@ class SmartRouterTest(unittest.TestCase):
         self.assertIn("seo", two)
         self.assertTrue(one.isdisjoint(two))
 
+    def test_gsap_scrolltrigger_is_selected_when_named(self):
+        names = [s["name"] for s in route("Use GSAP ScrollTrigger for a scroll animation", CATALOG)["selected"]]
+        self.assertIn("gsap-scrolltrigger", names)
+
+    def test_react_bits_reference_when_named(self):
+        names = [s["name"] for s in route("Use React Bits for animated interface components", CATALOG)["selected"]]
+        self.assertIn("react-bits-reference", names)
+
+    def test_canvas_ui_reference_when_named(self):
+        names = [s["name"] for s in route("Use Canvas UI WebGL components", CATALOG)["selected"]]
+        self.assertIn("canvas-ui-reference", names)
+
     def test_greeting_does_not_force_skills(self):
         self.assertEqual(route("Hi, how are you?", CATALOG)["selected"], [])
 
@@ -71,7 +87,7 @@ class SmartRouterTest(unittest.TestCase):
 
     def test_real_vault_is_readable_without_installing_anything(self):
         catalog = load_catalog(ROOT)
-        self.assertGreaterEqual(len(catalog), 190)
+        self.assertGreaterEqual(len(catalog), 202)
         results = route("Fix a crash", catalog)
         self.assertTrue(results["selected"])
         for item in results["selected"]:

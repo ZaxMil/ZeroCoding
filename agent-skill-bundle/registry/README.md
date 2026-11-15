@@ -28,6 +28,9 @@ This directory is the trust layer for Agent Skill Bundle.
 - `vendor-i-have-adhd.json` — pinned canonical communication skill and MIT license hashes; Antigravity always-on rule is a separate local adapter.
 - `zax-editor.json` — reviewed hash/size identity and redistribution boundary for the separately obtained `video-editor-bassam` runtime; the public bundle ships only its local cross-host router and verifier.
 
+- `design-expansion-2026-11-15.json` — pinned canonical URLs and roles for all twelve reviewed interface/design repositories, including MIT + Commons Clause distribution restrictions.
+- `vendor-emilkowalski.json` — current 20 canonical Emil skill names and tree hashes without bundling their instruction bodies.
+
 ## Source roles
 
 - `skill_upstream` — canonical source for exact skill syncing.

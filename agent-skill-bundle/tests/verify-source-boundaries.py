@@ -17,14 +17,14 @@ skills = sorted(
     p for category in categories
     for p in (repo / category).glob("*/SKILL.md")
 )
-assert len(skills) == 205, f"reviewed baseline changed: {len(skills)} != 205"
+assert len(skills) == 217, f"reviewed baseline changed: {len(skills)} != 217"
 names = [p.parent.name for p in skills]
 assert len(names) == len(set(names)), "duplicate native skill names across categories"
 
 # The two deliberately exposed native descriptions are the entire bootstrap.
 bootstrap = {"i-have-adhd", "skill-retrieval-routing"}
 assert bootstrap <= set(names)
-assert len(bootstrap) == 2 and len(skills) - len(bootstrap) == 203
+assert len(bootstrap) == 2 and len(skills) - len(bootstrap) == 215
 
 third = json.loads((repo / "registry/vendor-third-wave.json").read_text())
 ecc = json.loads((repo / "registry/vendor-ecc.json").read_text())
@@ -95,10 +95,29 @@ assert external["emilkowalski/skills"]["code_redistributed"] is False
 assert external["emilkowalski/skills"]["skills_copied"] == 0
 assert emil["source_repository"] == "emilkowalski/skills"
 assert emil["install_command"] == "npx skills@latest add emilkowalski/skills"
-assert len(emil["skills"]) == 14
+assert len(emil["skills"]) == 20
 assert emil["code_redistributed"] is False and emil["skills_copied"] == 0
 for item in emil["skills"]:
     assert not any((repo / category / item["name"] / "SKILL.md").exists() for category in categories), item["name"]
+
+# The 12 reviewed source integrations preserve original provenance and licenses.
+design_expansion = json.loads((repo / "registry/design-expansion-2026-11-15.json").read_text())
+assert len(design_expansion["sources"]) == 12
+assert design_expansion["original_copied_skill_count"] == 9
+assert design_expansion["emil_external_skill_count"] == 20
+for name in (
+    "gsap-core", "gsap-frameworks", "gsap-performance", "gsap-plugins",
+    "gsap-react", "gsap-scrolltrigger", "gsap-timeline", "gsap-utils", "scroll-world",
+):
+    directory = repo / "design" / name
+    assert (directory / "SKILL.md").is_file(), name
+    assert (directory / "LICENSE.txt").is_file(), name
+for name in ("open-design-reference", "react-bits-reference", "canvas-ui-reference"):
+    folder = repo / "design" / name
+    assert sorted(p.name for p in folder.iterdir()) == ["SKILL.md"], name
+    assert "No third-party executable" in (folder / "SKILL.md").read_text(), name
+assert not (repo / "design/react-bits").exists()
+assert not (repo / "design/canvas-ui").exists()
 
 # The installer only permits the two roots when --flat --on-demand is selected.
 installer = (repo / "install.sh").read_text()
@@ -106,7 +125,7 @@ assert "productivity/i-have-adhd|research/skill-retrieval-routing" in installer
 assert 'if [ "$ON_DEMAND" -eq 1 ] && [ "$count" -ne 2 ]' in installer
 assert '--prune-managed' in installer
 print(
-    "PASS: 205 unique skills, 2 native bootstraps, 14 official n8n, "
+    "PASS: 217 unique skills, 2 native bootstraps, 14 official n8n, "
     "15 Superpowers, 9 selected ECC, 4 local guides, "
     "7 source pins, Emil metadata-only gateway, and external runtime/credential boundaries"
 )

@@ -1,12 +1,12 @@
 # ZeroCoding | Complete Skills Catalog
 
-> **205 curated skill directories** across the main vault, excluding three reusable profile SKILL.md files. This index is preserved from the former main README so you can browse every category without cluttering the homepage.
+> **217 curated skill directories** across the main vault, excluding three reusable profile SKILL.md files. This index is preserved from the former main README so you can browse every category without cluttering the homepage.
 
 [← Back to ZeroCoding](README.md) · [Set up with AI](AI_SETUP.md) · [Source vault](agent-skill-bundle/)
 
 ---
 
-## 📚 All 205 Skills by Category
+## 📚 All 217 Skills by Category
 
 The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). Every skill is a self-contained directory containing `SKILL.md`, plus applicable scripts, templates, and reference guides.
 
@@ -36,8 +36,12 @@ The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). E
 </details>
 
 <details open>
-<summary><b>🎨 Design & UI/UX (26 skills)</b></summary>
+<summary><b>🎨 Design & UI/UX (38 skills)</b></summary>
 
+- [`gsap-core`](agent-skill-bundle/design/gsap-core/), [`gsap-frameworks`](agent-skill-bundle/design/gsap-frameworks/), [`gsap-react`](agent-skill-bundle/design/gsap-react/), [`gsap-performance`](agent-skill-bundle/design/gsap-performance/): Official GreenSock animation guidance.
+- [`gsap-plugins`](agent-skill-bundle/design/gsap-plugins/), [`gsap-scrolltrigger`](agent-skill-bundle/design/gsap-scrolltrigger/), [`gsap-timeline`](agent-skill-bundle/design/gsap-timeline/), [`gsap-utils`](agent-skill-bundle/design/gsap-utils/): Official GreenSock plugin, scroll, timeline and utility guidance.
+- [`scroll-world`](agent-skill-bundle/design/scroll-world/): Original immersive scroll-linked world/scene skill with references.
+- [`open-design-reference`](agent-skill-bundle/design/open-design-reference/), [`react-bits-reference`](agent-skill-bundle/design/react-bits-reference/), [`canvas-ui-reference`](agent-skill-bundle/design/canvas-ui-reference/): Original ZeroCoding reference skills for external apps/component libraries, no original third-party source redistributed.
 - [`ui-ux-pro-max`](agent-skill-bundle/design/ui-ux-pro-max/): Complete UI/UX intelligence system with typography, color palettes, and component reasoning.
 - [`frontend-design`](agent-skill-bundle/design/frontend-design/): Distinctive, production-grade frontend interfaces avoiding generic AI aesthetics.
 - [`design-taste-frontend`](agent-skill-bundle/design/design-taste-frontend/): High-taste layout, typography, and motion design curation.
@@ -191,3 +195,8 @@ Professional modern WordPress development workflows:
 ---
 
 The skills include instructions and supporting resources, not automatic access to the software, credentials, or permissions they mention. Explore [security notes](agent-skill-bundle/SECURITY.md) and [source credits](agent-skill-bundle/CREDITS.md).
+
+
+## Twelve verified design sources — 15 November 2026
+
+[View the integration status, installation method, licenses and pinned upstream revisions](agent-skill-bundle/docs/DESIGN_SOURCES_2026-11-15.md). The latest Impeccable, Hallmark, Emil, Taste and UI/UX Pro Max source packs are opt-in and are not silently installed by the project bootstrap.

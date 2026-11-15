@@ -7,7 +7,7 @@ trap 'rm -rf -- "$tmp"' EXIT
 
 "$root/install.sh" "$tmp/full" --flat >/dev/null
 full="$(find "$tmp/full" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
-[ "$full" -eq 205 ] || { echo "FAIL: expected 205 full skills, got $full" >&2; exit 1; }
+[ "$full" -eq 217 ] || { echo "FAIL: expected 217 full skills, got $full" >&2; exit 1; }
 for skill in graphify graft awesome-design design-taste-frontend image-to-code web-design-guidelines agent-skills; do
   [ -f "$tmp/full/$skill/SKILL.md" ] || { echo "FAIL: missing $skill" >&2; exit 1; }
 done
@@ -57,6 +57,14 @@ PY
 [ -f "$tmp/full/web-design-guidelines/references/pinned-command.md" ]
 [ -f "$tmp/full/awesome-design/references/catalog.md" ]
 [ -f "$tmp/full/image-to-code/LICENSE.txt" ]
+for skill in gsap-core gsap-frameworks gsap-performance gsap-plugins gsap-react gsap-scrolltrigger gsap-timeline gsap-utils scroll-world; do
+  [ -f "$tmp/full/$skill/SKILL.md" ] || { echo "FAIL: missing new official skill $skill" >&2; exit 1; }
+  [ -f "$tmp/full/$skill/LICENSE.txt" ] || { echo "FAIL: missing license for $skill" >&2; exit 1; }
+done
+[ -f "$tmp/full/scroll-world/references/scrub-engine.js" ]
+for skill in open-design-reference react-bits-reference canvas-ui-reference; do
+  [ -f "$tmp/full/$skill/SKILL.md" ]
+done
 [ -f "$tmp/full/agent-skills/references/voltagent-catalog.md" ]
 
 "$root/install.sh" "$tmp/minimal" --flat --on-demand >/dev/null
@@ -90,6 +98,9 @@ done
 [ ! -e "$tmp/minimal/diagnosing-superpowers" ]
 [ ! -e "$tmp/minimal/context-budget" ]
 [ ! -e "$tmp/minimal/ui-ux-pro-max" ]
+[ ! -e "$tmp/minimal/gsap-core" ]
+[ ! -e "$tmp/minimal/scroll-world" ]
+[ ! -e "$tmp/minimal/react-bits-reference" ]
 [ ! -e "$tmp/minimal/godot-gdscript-patterns" ]
 [ ! -e "$tmp/minimal/agent-introspection-debugging" ]
 [ ! -e "$tmp/minimal/cross-agent-skill-verification" ]
@@ -115,4 +126,4 @@ printf '%s\n' 'personal data' > "$tmp/full/personal-skill/SKILL.md"
 
 count="$(find "$tmp/full" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
 [ "$count" -eq 3 ] || { echo "FAIL: expected 2 bootstraps and personal skill, got $count" >&2; exit 1; }
-echo "PASS: 205 full packages (53 beyond original 136), two-skill bootstrap, deliberate migration, unmarked user skill preserved."
+echo "PASS: 217 full packages, two-skill bootstrap, deliberate migration, unmarked user skill preserved."

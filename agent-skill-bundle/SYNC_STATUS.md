@@ -1,6 +1,6 @@
 # Sync Status
 
-Last registry review: **2026-09-03**
+Last broad audit baseline: **2026-09-03**. Last targeted design source expansion: **2026-11-15**
 
 This file reports what the bundle can prove and deliberately separates provenance, update detection, review-branch preparation, and integration.
 
@@ -88,3 +88,8 @@ Neither command merges to `main`.
 - `QUARANTINED` — security/manual review required.
 
 No item is marked `EXACT` without a known canonical source, path, revision, and directory-tree comparison.
+
+
+## Twelve-source design integration — 2026-11-15
+
+All reviewed source revisions are pinned in [the manifest](registry/design-expansion-2026-11-15.json). Eight GreenSock and one Scroll World skills are copied exactly with supporting files and per-skill MIT license overlays. Three newly written source adapters cover Open Design, React Bits and Canvas UI without copying their components or applications. Optional pinned source checkouts are review-only and never run executable hooks or automatically merge to main. The complete vault now contains **217** local skill directories. The earlier 188-skill audit remains historical and should not be interpreted as the current size.

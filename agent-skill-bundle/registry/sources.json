@@ -508,6 +508,126 @@
       "syncable": false,
       "priority": 100,
       "note": "Gateway-only canonical upstream. ZeroCoding stores metadata and routing instructions only; no Emil Kowalski SKILL.md bodies are redistributed. Install from upstream with npx skills@latest add emilkowalski/skills."
+    },
+    {
+      "id": "nexu-open-design",
+      "name": "open-design",
+      "repository": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "default_branch": "main",
+      "categories": [
+        "design"
+      ],
+      "type": "upstream",
+      "role": "reference_docs",
+      "syncable": false,
+      "priority": 20,
+      "note": "Reviewed 2026-11-15; canonical upstream only, local reviewed copies updated on a manual review branch."
+    },
+    {
+      "id": "leon-taste-skill",
+      "name": "taste-skill",
+      "repository": "Leonxlnx/taste-skill",
+      "url": "https://github.com/Leonxlnx/taste-skill",
+      "default_branch": "main",
+      "categories": [
+        "design"
+      ],
+      "type": "upstream",
+      "role": "skill_upstream",
+      "syncable": false,
+      "priority": 100,
+      "note": "Reviewed 2026-11-15; canonical upstream only, local reviewed copies updated on a manual review branch."
+    },
+    {
+      "id": "pbakaus-impeccable",
+      "name": "impeccable",
+      "repository": "pbakaus/impeccable",
+      "url": "https://github.com/pbakaus/impeccable",
+      "default_branch": "main",
+      "categories": [
+        "design"
+      ],
+      "type": "upstream",
+      "role": "skill_upstream",
+      "syncable": false,
+      "priority": 100,
+      "note": "Reviewed 2026-11-15; canonical upstream only, local reviewed copies updated on a manual review branch."
+    },
+    {
+      "id": "davidhdev-react-bits",
+      "name": "react-bits",
+      "repository": "DavidHDev/react-bits",
+      "url": "https://github.com/DavidHDev/react-bits",
+      "default_branch": "main",
+      "categories": [
+        "design"
+      ],
+      "type": "upstream",
+      "role": "reference_docs",
+      "syncable": false,
+      "priority": 20,
+      "note": "Reviewed 2026-11-15; canonical upstream only, local reviewed copies updated on a manual review branch."
+    },
+    {
+      "id": "nutlope-hallmark",
+      "name": "hallmark",
+      "repository": "nutlope/hallmark",
+      "url": "https://github.com/nutlope/hallmark",
+      "default_branch": "main",
+      "categories": [
+        "design"
+      ],
+      "type": "upstream",
+      "role": "skill_upstream",
+      "syncable": false,
+      "priority": 100,
+      "note": "Reviewed 2026-11-15; canonical upstream only, local reviewed copies updated on a manual review branch."
+    },
+    {
+      "id": "greensock-gsap-skills",
+      "name": "gsap-skills",
+      "repository": "greensock/gsap-skills",
+      "url": "https://github.com/greensock/gsap-skills",
+      "default_branch": "main",
+      "categories": [
+        "design"
+      ],
+      "type": "upstream",
+      "role": "skill_upstream",
+      "syncable": false,
+      "priority": 100,
+      "note": "Reviewed 2026-11-15; canonical upstream only, local reviewed copies updated on a manual review branch."
+    },
+    {
+      "id": "oso95-scroll-world",
+      "name": "scroll-world",
+      "repository": "oso95/scroll-world",
+      "url": "https://github.com/oso95/scroll-world",
+      "default_branch": "main",
+      "categories": [
+        "design"
+      ],
+      "type": "upstream",
+      "role": "skill_upstream",
+      "syncable": false,
+      "priority": 100,
+      "note": "Reviewed 2026-11-15; canonical upstream only, local reviewed copies updated on a manual review branch."
+    },
+    {
+      "id": "davidhdev-canvas-ui",
+      "name": "canvas-ui",
+      "repository": "DavidHDev/canvas-ui",
+      "url": "https://github.com/DavidHDev/canvas-ui",
+      "default_branch": "main",
+      "categories": [
+        "design"
+      ],
+      "type": "upstream",
+      "role": "reference_docs",
+      "syncable": false,
+      "priority": 20,
+      "note": "Reviewed 2026-11-15; canonical upstream only, local reviewed copies updated on a manual review branch."
     }
   ]
 }

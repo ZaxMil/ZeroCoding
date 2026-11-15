@@ -17,11 +17,11 @@
       "id": "emil",
       "repository": "emilkowalski/skills",
       "branch": "main",
-      "revision": "5206a950b715e0cabe7043ea0b2304332b91494e",
+      "revision": "64eb3deb9a5fbfa041faf783e0bc3fd635872e9c",
       "mode": "skills",
       "skill_root": "skills",
       "license": "MIT",
-      "description": "Design engineering, motion, interaction and mobile UI skills."
+      "description": "Twenty current canonical design, motion, gesture, interaction and mobile UI skills, staged only on explicit request."
     },
     {
       "id": "graphify",
@@ -59,11 +59,11 @@
       "id": "hallmark",
       "repository": "nutlope/hallmark",
       "branch": "main",
-      "revision": "407fa689f4a276f2fd389208d271d0fef08f5058",
+      "revision": "04977e15f3dfd6ee4b74c887dac3eb52665d6c92",
       "mode": "skills",
       "skill_root": "skills",
       "license": "MIT",
-      "description": "Anti-AI-slop interface design and visual review."
+      "description": "Current original Hallmark anti-slop design skill and full supporting references, opt-in source-only checkout."
     },
     {
       "id": "superpowers",
@@ -108,6 +108,106 @@
       "license": "per-skill",
       "description": "Official Anthropic skill collection. Respect each skill's individual license and support requirements.",
       "note": "Do not presume the root repository has a blanket redistribution license."
+    },
+    {
+      "id": "ui-ux-pro-max-current",
+      "repository": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "branch": "main",
+      "revision": "1f50119f717e935f135d605ce537223d1d7a0dac",
+      "mode": "skills",
+      "skill_root": ".claude/skills",
+      "license": "MIT",
+      "description": "Current seven canonical UI/UX Pro Max source skills, outside projects; existing local snapshot remains in place."
+    },
+    {
+      "id": "awesome-design-md",
+      "repository": "VoltAgent/awesome-design-md",
+      "branch": "main",
+      "revision": "fcc70284932276d085f01ef9f83edde90b1258cb",
+      "mode": "reference",
+      "skill_root": null,
+      "license": "MIT",
+      "description": "Canonical design-systems collection; existing reviewed local design-systems snapshot is retained."
+    },
+    {
+      "id": "open-design",
+      "repository": "nexu-io/open-design",
+      "branch": "main",
+      "revision": "59e4f2ae85de7e7318a5e6bdcf3a34584c4b7582",
+      "mode": "reference",
+      "skill_root": null,
+      "license": "Apache-2.0",
+      "description": "Full external app, not an Agent Skill; do not auto-install daemon, service or software."
+    },
+    {
+      "id": "taste-current",
+      "repository": "Leonxlnx/taste-skill",
+      "branch": "main",
+      "revision": "f6b76575f949707b4e3c37cd86cb44b0b98643e8",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "MIT",
+      "description": "Current canonical taste-skill source, separate from older bundled taste skills."
+    },
+    {
+      "id": "impeccable",
+      "repository": "pbakaus/impeccable",
+      "branch": "main",
+      "revision": "2b86d9c07b97d4bed7de23583e1bd1e58dd2baae",
+      "mode": "skills",
+      "skill_root": ".agents/skills",
+      "license": "Apache-2.0",
+      "description": "Source-only current Impeccable skill pack; scripts, hooks and binaries are not executed."
+    },
+    {
+      "id": "react-bits",
+      "repository": "DavidHDev/react-bits",
+      "branch": "main",
+      "revision": "cf2801031f07f53d4684e65b961bde7c2e2a6921",
+      "mode": "reference",
+      "skill_root": null,
+      "license": "MIT + Commons Clause",
+      "description": "UI component library, no source redistribution into ZeroCoding."
+    },
+    {
+      "id": "google-design-md",
+      "repository": "google-labs-code/design.md",
+      "branch": "main",
+      "revision": "1ed38aa9dd4451b9039f9aeb9ed1d2579edafddf",
+      "mode": "reference",
+      "skill_root": null,
+      "license": "upstream license",
+      "description": "Google design.md reference/tool, not the already bundled Hermes design-md skill."
+    },
+    {
+      "id": "gsap",
+      "repository": "greensock/gsap-skills",
+      "branch": "main",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "MIT",
+      "description": "Eight canonical GSAP skills; existing reviewed copies also included in local vault."
+    },
+    {
+      "id": "scroll-world",
+      "repository": "oso95/scroll-world",
+      "branch": "main",
+      "revision": "71cc36d3bb150248ae36a2c552f9cbf88802a79c",
+      "mode": "skills",
+      "skill_root": "skills",
+      "license": "MIT",
+      "description": "Original immersive 3D scroll-world skill and references; reviewed copy included in vault."
+    },
+    {
+      "id": "canvas-ui",
+      "repository": "DavidHDev/canvas-ui",
+      "branch": "main",
+      "revision": "a0be3b7e1f42d0d1bafde470b6794b39f6729502",
+      "mode": "reference",
+      "skill_root": null,
+      "license": "MIT + Commons Clause",
+      "description": "Canvas/WebGL component library, no source redistribution into ZeroCoding."
     }
   ]
 }
