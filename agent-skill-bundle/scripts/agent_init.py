@@ -362,7 +362,7 @@ def status(project: Path, profile: dict[str, Any], host: str) -> int:
         print("Missing: " + ", ".join(missing))
     if unmanaged:
         print("Unmanaged/conflicting: " + ", ".join(unmanaged))
-    return 0 if not missing and not unmanaged and manifest_ok and rules_ok and claude_ok else 1
+    return 0 if not missing and not unmanaged and not stale and manifest_ok and rules_ok and claude_ok else 1
 
 
 def preflight(project: Path, roots: list[Path], profile: dict[str, Any], host: str, force: bool, prune_managed: bool = False) -> None:

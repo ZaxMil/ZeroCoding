@@ -41,15 +41,15 @@ RULES = {
         "preferred": ("react-bits-reference", "canvas-ui-reference", "open-design-reference"),
     },
     "orchestration": {
-        "pattern": r"\\b(swarm|multi[ -]?agent|orchestrat\\w*|parallel[ -]?agents?|subagents?|workers?|delegat\\w*|agent team)\\b|وكلاء|سرب|متواز",
+        "pattern": r"\b(swarm|multi[ -]?agent|orchestrat\w*|parallel[ -]?agents?|subagents?|workers?|delegat\w*|agent team)\b|وكلاء|سرب|متواز",
         "preferred": ("dispatching-parallel-agents", "subagent-driven-development", "native_swarm", "recursive-decomposition"),
     },
     "reverse": {
-        "pattern": r"\\b(reverse[ -]?engineer\\w*|decompil\\w*|apk|firmware|binary analysis|reconstruct\\w*)\\b|هندسة عكسية|عكسية|تفكيك",
+        "pattern": r"\b(reverse[ -]?engineer\w*|decompil\w*|apk|firmware|binary analysis|reconstruct\w*)\b|هندسة عكسية|عكسية|تفكيك",
         "preferred": ("reverse-engineer-anything", "apk-reverse", "replica-recon"),
     },
     "agent-tools": {
-        "pattern": r"\\b(mcp|agent[ -]?skills?|plugin|hooks?|customizations?|antigravity)\\b|مهارات|بلاجن|وكلاء",
+        "pattern": r"\b(mcp|agent[ -]?skills?|plugin|hooks?|customizations?|antigravity)\b|مهارات|بلاجن|وكلاء",
         "preferred": ("agent-skills", "skill-creator", "mcp-builder"),
     },
     "debug": {

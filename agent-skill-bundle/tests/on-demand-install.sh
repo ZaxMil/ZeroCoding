@@ -7,7 +7,7 @@ trap 'rm -rf -- "$tmp"' EXIT
 
 "$root/install.sh" "$tmp/full" --flat >/dev/null
 full="$(find "$tmp/full" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
-[ "$full" -eq 217 ] || { echo "FAIL: expected 217 full skills, got $full" >&2; exit 1; }
+[ "$full" -eq 218 ] || { echo "FAIL: expected 218 full skills, got $full" >&2; exit 1; }
 for skill in graphify graft awesome-design design-taste-frontend image-to-code web-design-guidelines agent-skills; do
   [ -f "$tmp/full/$skill/SKILL.md" ] || { echo "FAIL: missing $skill" >&2; exit 1; }
 done
@@ -69,18 +69,16 @@ done
 
 "$root/install.sh" "$tmp/minimal" --flat --on-demand >/dev/null
 minimal="$(find "$tmp/minimal" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
-[ "$minimal" -eq 2 ] || { echo "FAIL: expected 2 bootstrap skills, got $minimal" >&2; exit 1; }
-[ -f "$tmp/minimal/i-have-adhd/SKILL.md" ]
-[ -f "$tmp/minimal/skill-retrieval-routing/SKILL.md" ]
+[ "$minimal" -eq 1 ] || { echo "FAIL: expected 1 gateway skill, got $minimal" >&2; exit 1; }
+[ -f "$tmp/minimal/zerocoding/SKILL.md" ]
 
 # Exercise each supported host's *documented* strict-native target in isolation.
 # These are temporary simulated roots, not the owner's actual PC configuration.
 for host in antigravity codex claude-code; do
   "$root/install.sh" "$tmp/hosts/$host/skills" --flat --on-demand >/dev/null
   host_count="$(find "$tmp/hosts/$host/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
-  [ "$host_count" -eq 2 ] || { echo "FAIL: $host exposes $host_count bundle skills" >&2; exit 1; }
-  [ -f "$tmp/hosts/$host/skills/i-have-adhd/SKILL.md" ]
-  [ -f "$tmp/hosts/$host/skills/skill-retrieval-routing/SKILL.md" ]
+  [ "$host_count" -eq 1 ] || { echo "FAIL: $host exposes $host_count bundle skills" >&2; exit 1; }
+  [ -f "$tmp/hosts/$host/skills/zerocoding/SKILL.md" ]
   [ ! -e "$tmp/hosts/$host/skills/paul" ]
   [ ! -e "$tmp/hosts/$host/skills/n8n-instance" ]
   [ ! -e "$tmp/hosts/$host/skills/context-budget" ]
@@ -120,10 +118,9 @@ printf '%s\n' 'personal data' > "$tmp/full/personal-skill/SKILL.md"
 "$root/install.sh" "$tmp/full" --flat --on-demand --prune-managed >/dev/null
 [ -f "$tmp/full/personal-skill/SKILL.md" ]
 [ ! -e "$tmp/full/ponytail" ]
-[ -f "$tmp/full/i-have-adhd/SKILL.md" ]
-[ -f "$tmp/full/skill-retrieval-routing/SKILL.md" ]
+[ -f "$tmp/full/zerocoding/SKILL.md" ]
 "$root/install.sh" "$tmp/full" --flat --on-demand >/dev/null
 
 count="$(find "$tmp/full" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
-[ "$count" -eq 3 ] || { echo "FAIL: expected 2 bootstraps and personal skill, got $count" >&2; exit 1; }
-echo "PASS: 217 full packages, two-skill bootstrap, deliberate migration, unmarked user skill preserved."
+[ "$count" -eq 2 ] || { echo "FAIL: expected 1 gateway and personal skill, got $count" >&2; exit 1; }
+echo "PASS: 218 full packages, one-skill gateway, deliberate migration, unmarked user skill preserved."
