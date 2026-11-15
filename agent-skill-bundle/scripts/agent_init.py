@@ -160,6 +160,20 @@ def is_managed(destination: Path, source_key: str) -> bool:
     return data.get("manager") == MANAGER and data.get("source") == source_key
 
 
+def legacy_managed_skills(roots: list[Path], profile: dict[str, Any]) -> list[Path]:
+    """Only known old Project Core skills with a matching ownership marker."""
+    found = []
+    names = {entry["name"] for entry in profile["core_skills"]}
+    for root in roots:
+        for source_key in profile.get("legacy_managed_sources", []):
+            name = Path(source_key).name
+            candidate = root / name
+            if (name not in names and not candidate.is_symlink()
+                    and candidate.is_dir() and is_managed(candidate, source_key)):
+                found.append(candidate)
+    return found
+
+
 def git_head(source: Path) -> str | None:
     proc = run(["git", "-C", str(source), "rev-parse", "HEAD"], check=False)
     return proc.stdout.strip() if proc.returncode == 0 and proc.stdout.strip() else None
@@ -244,7 +258,8 @@ def write_manifest(
         "bundle_commit": head,
         "core_skills": [entry["name"] for entry in profile["core_skills"]],
         "specialist_search": f'python "{source / "scripts" / "skill_doctor.py"}" search "<keywords>"',
-        "skill_router": f'python "{source / "scripts" / "smart_skill_router.py"}" --task "<current user request>" --max-skills 4 --json',
+        "skill_router": f'python "{source / "scripts" / "smart_skill_router.py"}" --task "<current user request>" --project "{project}" --max-skills 4 --json',
+        "entrypoint_skill": "zerocoding",
         "skill_selection_scope": "fresh-per-user-message",
     }
     dest = agents / "agent-init.json"
@@ -282,12 +297,16 @@ def remove_managed_block(path: Path) -> None:
 
 def remove_profile(project: Path, profile: dict[str, Any]) -> None:
     removed = 0
-    for skills_root in target_skill_roots(project, "all"):
+    roots = target_skill_roots(project, "all")
+    for skills_root in roots:
         for entry in profile["core_skills"]:
             destination = skills_root / entry["name"]
             if destination.exists() and is_managed(destination, entry["source"]):
                 shutil.rmtree(destination)
                 removed += 1
+    for destination in legacy_managed_skills(roots, profile):
+        shutil.rmtree(destination)
+        removed += 1
     manifest = project / ".agents" / "agent-init.json"
     if manifest.is_file():
         try:
@@ -313,6 +332,7 @@ def status(project: Path, profile: dict[str, Any], host: str) -> int:
             elif not is_managed(destination, entry["source"]):
                 unmanaged.append(str(destination.relative_to(project)))
 
+    stale = legacy_managed_skills(roots, profile)
     manifest = project / ".agents" / "agent-init.json"
     manifest_ok = False
     if manifest.is_file():
@@ -332,6 +352,8 @@ def status(project: Path, profile: dict[str, Any], host: str) -> int:
     print(f"Project: {project}")
     print(f"Detected: {', '.join(detect_project(project)['detected_stacks'])}")
     print(f"Project core copies: {len(roots) * len(profile['core_skills']) - len(missing)}/{len(roots) * len(profile['core_skills'])}")
+    if stale:
+        print("Legacy managed skills still discoverable: " + ", ".join(str(p.relative_to(project)) for p in stale))
     print(f"Manifest: {'OK' if manifest_ok else 'MISSING'}")
     print(f"AGENTS rules: {'OK' if rules_ok else 'MISSING'}")
     if claude_required:
@@ -343,7 +365,12 @@ def status(project: Path, profile: dict[str, Any], host: str) -> int:
     return 0 if not missing and not unmanaged and manifest_ok and rules_ok and claude_ok else 1
 
 
-def preflight(project: Path, roots: list[Path], profile: dict[str, Any], host: str, force: bool) -> None:
+def preflight(project: Path, roots: list[Path], profile: dict[str, Any], host: str, force: bool, prune_managed: bool = False) -> None:
+    stale = legacy_managed_skills(roots, profile)
+    if stale and not prune_managed:
+        raise BootstrapError("old managed Project Core skills remain: " +
+                             ", ".join(str(p.relative_to(project)) for p in stale) +
+                             "; review them and pass --prune-managed to use one native gateway")
     for parent in (project / ".agents", project / ".claude"):
         if parent.is_symlink():
             raise BootstrapError(f"refusing symlink project directory: {parent}")
@@ -385,6 +412,8 @@ def main() -> int:
     parser.add_argument("--bundle-ref", default=os.environ.get("AGENT_BUNDLE_REF", DEFAULT_REF), help="Bundle Git ref to clone/update.")
     parser.add_argument("--no-update", action="store_true", help="Do not update an existing bundle checkout.")
     parser.add_argument("--force", action="store_true", help="Replace conflicting same-name unmarked core skills after review.")
+    parser.add_argument("--prune-managed", action="store_true",
+                        help="Explicitly remove only previously managed Project Core skills when migrating")
     parser.add_argument("--status", action="store_true", help="Check the current project's Project Core profile.")
     parser.add_argument("--remove", action="store_true", help="Remove only Project Core-managed project files/skill copies.")
     args = parser.parse_args()
@@ -400,7 +429,7 @@ def main() -> int:
         return 0
 
     roots = target_skill_roots(project, args.host)
-    preflight(project, roots, profile, args.host, args.force)
+    preflight(project, roots, profile, args.host, args.force, args.prune_managed)
     head = git_head(source)
     for skills_root in roots:
         skills_root.mkdir(parents=True, exist_ok=True)
@@ -413,6 +442,9 @@ def main() -> int:
                 head,
             )
 
+    if args.prune_managed:
+        for old in legacy_managed_skills(roots, profile):
+            shutil.rmtree(old)
     block = managed_rules(source, profile)
     update_agents(project, block)
     if args.host in ("claude", "all"):
