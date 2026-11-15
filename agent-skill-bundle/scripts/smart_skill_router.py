@@ -142,6 +142,9 @@ def rank(row: dict, task_tokens: set[str], intent: str) -> float:
     desc_words = terms(row.get("description") or "")
     preferred = rule["preferred"]
     overlap = task_tokens & (name_words | desc_words)
+    # Explicitly requested GSAP ScrollTrigger outranks a generic motion skill.
+    if intent == "motion" and name == "gsap-scrolltrigger" and {"gsap", "scrolltrigger"} <= task_tokens:
+        return 75
     if name in preferred:
         # Common core patterns (security, SEO, QA) are good for broad goals;
         # narrow engines/specialties require an actual matching clue.
