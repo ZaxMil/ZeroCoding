@@ -64,7 +64,7 @@ That installs the 10 project-local core skills under `.agents/skills/`, preserve
 
 Installing 215 skills natively exposes their descriptions to host discovery. The preferred setup exposes only **two** bootstrap descriptions from this bundle. When a task needs something specific, the separately configured local retrieval service finds the relevant skill; the agent then reads that skill and its supporting files from the **one source checkout**.
 
-This keeps discovery focused. It does **not** mean that all 186 skill bodies are automatically installed, that a skill grants a tool or permission, or that Antigravity/Codex/Claude have identical capabilities.
+This keeps discovery focused. It does **not** mean that all specialist skill bodies are automatically installed, that a skill grants a tool or permission, or that Antigravity/Codex/Claude have identical capabilities.
 
 ![Three-step on-demand workflow: two bootstraps, search the reviewed source vault with separately configured MCP, and load the selected complete skill](docs/images/on-demand-workflow.svg)
 
@@ -98,7 +98,7 @@ Antigravity **CLI** has a different path from the IDE. Verify each installed hos
 
 **Important second step:** the two-skill install does not provide search by itself. Separately review, install, and connect [Skill Retrieval MCP](https://github.com/JayCheng113/skill-retrieval-mcp), index **this source checkout only**, and merge its local MCP entry into each host's existing settings. The MCP index does not replace the source files: scripts, references, templates, images, and licenses remain in the checkout. Follow the [two-stage setup](adapters/antigravity/skill-retrieval-mcp.md) and [multi-host guide](adapters/multi-host/README.md).
 
-For an explicitly chosen full native install, see [`install.sh`](install.sh) and the host adapters. A full install exposes all 188 native skill descriptions and **is not** strict on-demand.
+For an explicitly chosen full native install, see [`install.sh`](install.sh) and the host adapters. A full install exposes all 217 native skill descriptions and **is not** strict on-demand.
 
 
 ### Check discovery and external-package readiness
@@ -120,7 +120,7 @@ For Shuohao, the existing router remains in the bundle; all six original full pa
 | Area | Highlights |
 |---|---|
 | **Planning & coding** | [Superpowers](https://github.com/obra/superpowers) process workflows, PAUL Plan–Apply–Unify adapter, six Ponytail skills, selected ECC workflows, test-driven development and debugging. |
-| **Design & creative** | Frontend Design, Taste, Image to Code, Awesome Design, design systems, source-routing guides for OpenMontage/shuohao-skills, plus metadata-only gateway discovery for Emil Kowalski's 14 canonical design/animation skills. |
+| **Design & creative** | Frontend Design, Taste, Image to Code, Awesome Design, design systems, source-routing guides for OpenMontage/shuohao-skills, plus metadata-only gateway discovery for Emil Kowalski's 20 canonical design/animation skills. |
 | **Automation** | All **14 official n8n skill packages**, with original supporting files and license overlays, plus a separate n8n instance-connection guide. |
 | **Productivity & writing** | i-have-adhd as the primary optional communication layer, Humanizer, Caveman writing skill, Roast-Me prompt auditor, and a Claude-Mem connection guide. |
 | **Reverse engineering & replication** | LeanREA fast CLI reversing, APK decompilation and Frida instrumentation, REA binary decompiler, plus the full 11-stage Replica clean-room app cloner. |
@@ -138,7 +138,7 @@ For Shuohao, the existing router remains in the bundle; all six original full pa
 - **zax-editor:** local cross-host router plus package-integrity verifier for the separately obtained 90-file `video-editor-bassam` Arabic talking-head editing runtime. The original runtime is not redistributed because the supplied materials did not establish a general code-redistribution license.
 - **shuohao-skills:** local router to six external original packages. Their scripts, references, and image assets must be kept together if installed separately.
 - **Pixel Agents:** reference-only visual agent-office/VS Code tooling, not an `SKILL.md` package or an upgrade to the model.
-- **Emil Kowalski Skills:** gateway-only integration for the 14 current canonical skills in `emilkowalski/skills`. ZeroCoding contains names, descriptions, source paths, reviewed tree IDs, and the upstream install command only. No Emil `SKILL.md` body is copied here. Install from the author source with `npx skills@latest add emilkowalski/skills`.
+- **Emil Kowalski Skills:** gateway-only integration for the 20 current canonical skills in `emilkowalski/skills`. ZeroCoding contains names, descriptions, source paths, reviewed tree IDs, and the upstream install command only. No Emil `SKILL.md` body is copied here. Install from the author source with `npx skills@latest add emilkowalski/skills`.
 
 The reviewed repositories, licenses, revisions, and distinctions between **original copied skills**, **bundle-authored adapters**, and **external runtimes** are documented in [the source audit](docs/REVIEW_2026-09-27.md), [the registry](registry/README.md), and [credits](CREDITS.md).
 
@@ -215,4 +215,4 @@ python3 scripts/sync_reviewed.py process/writing-skills
 
 Use `--write` with source/audit tools only when intentionally refreshing metadata. [`scripts/prepare_updates.py`](scripts/prepare_updates.py) prepares review branches; it never merges them automatically. The repository's GitHub Actions workflow runs the public-content and installation checks on PRs and main pushes. The separate [server-local update checker](ops/README.md) is optional; no GitHub Actions schedule is required.
 
-**Current baseline:** 188 unique directories, two native bootstrap skills in strict mode; 186 retained in one checked-out source vault. [Selected package pins](registry/vendor-skillsmp-2026-09-27.json) · [Previous source/runtime review](docs/REVIEW_2026-09-27.md).
+**Current baseline:** 217 local skill directories, two native bootstrap skills in strict mode; 215 specialist skills retained in one checked-out source vault. [Selected package pins](registry/vendor-skillsmp-2026-09-27.json) · [Previous source/runtime review](docs/REVIEW_2026-09-27.md).

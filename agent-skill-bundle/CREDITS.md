@@ -119,3 +119,10 @@ When syncing upstream content:
 - never mark a legacy/derived item as an exact mirror when the original source path can no longer be proven.
 
 Canonical source roles are in `registry/sources.json`; path mappings are in `registry/mappings.json`.
+
+
+## Twelve reviewed design sources (2026-11-15)
+
+[The complete immutable 12-source review](registry/design-expansion-2026-11-15.json) records canonical repositories, precise commit revisions and source boundaries. The eight `greensock/gsap-skills` instructions and one `oso95/scroll-world` skill with five supporting references are copied from original upstream files with unmodified contents and per-skill copies of the corresponding MIT license. The Open Design, React Bits and Canvas UI integration guides are *written by ZeroCoding*, not upstream mirrors.
+
+React Bits and Canvas UI carry **MIT + Commons Clause**, restricting redistribution of standalone components and tools: the bundle carries only metadata and independent integration guidance, no components, assets or runnable library source. Open Design is a standalone Apache-2.0 application, not a portable skill. Impeccable (Apache-2.0), Hallmark (MIT), the current Taste skill (MIT), UI/UX Pro Max source (MIT) and Emil's 20 MIT skills are made available by **opt-in pinned source checkout** without executing their scripts, installing dependencies or enabling plugins.
