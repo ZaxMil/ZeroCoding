@@ -21,9 +21,9 @@ class OptionalPacksTest(unittest.TestCase):
              "hallmark", "superpowers", "agentskills", "antigravity", "anthropic",
              "ui-ux-pro-max-current", "awesome-design-md", "open-design",
              "taste-current", "impeccable", "react-bits", "google-design-md",
-             "gsap", "scroll-world", "canvas-ui"},
+             "gsap", "scroll-world", "canvas-ui", "ind4x"},
         )
-        self.assertEqual(sum(p["mode"] == "skills" for p in rows.values()), 12)
+        self.assertEqual(sum(p["mode"] == "skills" for p in rows.values()), 13)
         self.assertEqual(sum(p["mode"] != "skills" for p in rows.values()), 8)
 
     def test_valid_dot_repository_is_allowed_without_relaxing_path_safety(self):
@@ -40,6 +40,22 @@ class OptionalPacksTest(unittest.TestCase):
                 with patch.object(module, "MANIFEST", candidate):
                     with self.assertRaises(module.PackError):
                         module.packs()
+
+    def test_nested_aggregator_skills_without_execution(self):
+        import json
+        pack = module.packs()["ind4x"]
+        self.assertTrue(pack["recursive"])
+        self.assertEqual(len(pack["skill_roots"]), 8)
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for category in pack["skill_roots"]:
+                skill = root / category / category / "SKILL.md"
+                skill.parent.mkdir(parents=True)
+                skill.write_text("---\\nname: demo\\n---\\n", encoding="utf-8")
+            # The synthetic fixture intentionally reuses category names as identifiers.
+            paths = module.skill_files(root, pack)
+            self.assertEqual(len(paths), 8)
+            self.assertEqual(len(module.skills_in(root, pack)), 8)
 
     def test_all_sources_are_immutable_pins(self):
         for pack in module.packs().values():
