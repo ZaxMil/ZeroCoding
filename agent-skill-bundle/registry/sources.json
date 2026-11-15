@@ -628,6 +628,25 @@
       "syncable": false,
       "priority": 20,
       "note": "Reviewed 2026-11-15; canonical upstream only, local reviewed copies updated on a manual review branch."
+    },
+    {
+      "id": "ind4x-ai-agent-skills",
+      "name": "AI Agent Skills Aggregator",
+      "repository": "ind4x/ai-agent-skills",
+      "url": "https://github.com/ind4x/ai-agent-skills",
+      "default_branch": "main",
+      "categories": [
+        "research",
+        "orchestration",
+        "design",
+        "qa",
+        "coding"
+      ],
+      "type": "upstream",
+      "role": "collection_upstream",
+      "syncable": false,
+      "priority": 10,
+      "note": "Metadata catalog of 106 third-party skill names; 95 not currently in ZeroCoding. No automatic source mirroring or execution; opt-in source cache only."
     }
   ]
 }

@@ -208,6 +208,28 @@
       "skill_root": null,
       "license": "MIT + Commons Clause",
       "description": "Canvas/WebGL component library, no source redistribution into ZeroCoding."
+    },
+    {
+      "id": "ind4x",
+      "repository": "ind4x/ai-agent-skills",
+      "branch": "main",
+      "revision": "3f67e572d185cad517a1024a4e5e0a214a69b4c9",
+      "mode": "skills",
+      "skill_root": ".",
+      "skill_roots": [
+        "analysis-reverse-engineering",
+        "code-review-refactoring",
+        "design-ui",
+        "integrations-frameworks",
+        "mcp-plugin-development",
+        "multi-agent-orchestration",
+        "specialized-domains",
+        "testing-qa"
+      ],
+      "recursive": true,
+      "license": "mixed / per original author, no universal redistribution grant",
+      "description": "Opt-in, read-only checkout of 106 third-party aggregated skills; original authors and runtimes must be verified before use.",
+      "note": "Store source outside ZeroCoding projects. The 106 skill instructions can be read selectively only after pinned checkout, but no third-party scripts, plugins, hooks, services, or executables are run. Duplicate skills prefer the reviewed ZeroCoding copy."
     }
   ]
 }

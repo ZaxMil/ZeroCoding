@@ -1,0 +1,865 @@
+{
+  "schema_version": 1,
+  "upstream_repository": "ind4x/ai-agent-skills",
+  "upstream_revision": "3f67e572d185cad517a1024a4e5e0a214a69b4c9",
+  "checked_date": "2026-11-15",
+  "relationship": "downstream_aggregator_metadata_only",
+  "author_credit": "Original authors retain ownership; ind4x curates a cross-origin collection",
+  "redistributed_skill_bodies": 0,
+  "installed_by_default": 0,
+  "unverified_license": "No single original-author license covers all 106 skills; do not republish or auto-execute them.",
+  "requires": "Explicit opt-in pinned source checkout and host/tool capability verification before reading source skills.",
+  "total_unique_skills": 106,
+  "matching_existing_skill_names": 11,
+  "not_present_in_local_vault": 95,
+  "skills": [
+    {
+      "name": "create-canvas",
+      "category": "analysis-reverse-engineering",
+      "source_path": "analysis-reverse-engineering/create-canvas/SKILL.md",
+      "blob_sha": "61584408a0410d87b60b83cdc84944db2f4d592e",
+      "description": "Create a Copilot extension canvas at user, workspace, or plugin scope.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "graphify",
+      "category": "analysis-reverse-engineering",
+      "source_path": "analysis-reverse-engineering/graphify/SKILL.md",
+      "blob_sha": "4611240c5afe862225e76d83e01b90944d185d73",
+      "description": "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools.",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "playground",
+      "category": "analysis-reverse-engineering",
+      "source_path": "analysis-reverse-engineering/playground/SKILL.md",
+      "blob_sha": "e8b2da023f4bfb25907fb7a48e8234bbd0e1cb7d",
+      "description": "Creates interactive HTML playgrounds — self-contained single-file explorers that let users configure something visually through controls, see a live preview, and copy out a prompt. Use when the user asks to make a playground, explorer, or interactive tool for a topic.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "project-artifact",
+      "category": "analysis-reverse-engineering",
+      "source_path": "analysis-reverse-engineering/project-artifact/SKILL.md",
+      "blob_sha": "44772ed78a5b30236284a6935d96131e2ed25759",
+      "description": "Generate and publish a project status artifact — an opinionated, tabbed status page for a project too big for one update (overview & success criteria, the workstream sequence, next steps, plus background, plan, risks & open questions, and decisions/FAQ when they earn a tab) — published with the built-in Artifact tool to a default-private claude.ai page the user can share with teammates. Use when a piece of work spans",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "receipts",
+      "category": "analysis-reverse-engineering",
+      "source_path": "analysis-reverse-engineering/receipts/SKILL.md",
+      "blob_sha": "93342c8a693646042ef80fb0e343ed557e2482e1",
+      "description": "Generate a personal Claude Code usage & impact report (\"receipts\") from this machine's local session transcripts — for justifying Claude Code usage/spend to a manager, self-review, or \"what have I been using this for\" check-ins. Mines ~/.claude/projects locally (no extra API calls beyond one final write-up), cross-references local git history, and writes a markdown report plus a self-contained HTML receipt to your ho",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "reverse-engineer-anything",
+      "category": "analysis-reverse-engineering",
+      "source_path": "analysis-reverse-engineering/reverse-engineer-anything/SKILL.md",
+      "blob_sha": "568b344d87c395befdd396405535e5b5b808dca0",
+      "description": "Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA for ordinary source-repository architecture analysis.",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "session-report",
+      "category": "analysis-reverse-engineering",
+      "source_path": "analysis-reverse-engineering/session-report/SKILL.md",
+      "blob_sha": "c3eea47947ca093c858a86d4619e43175730892d",
+      "description": "Generate an explorable HTML report of Claude Code session usage (tokens, cache, subagents, skills, expensive prompts) from ~/.claude/projects transcripts.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "add-python-version-support",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/add-python-version-support/SKILL.md",
+      "blob_sha": "36020c46e0fa4936f541baff700c43e088932072",
+      "description": "Guide changes required when a project adds a newer Python version above its current tested ceiling while preserving its existing minimum. Use when asked to support, test, certify, or prepare for a newer Python release at the upper end of the support range without dropping existing runtimes.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "code-reviewer",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/code-reviewer/SKILL.md",
+      "blob_sha": "37b7c2e1c3e46bcde054407f80b090e06f53b661",
+      "description": "Use this skill to review code. It supports both local changes (staged or working tree) and remote Pull Requests (by ID or URL). It focuses on correctness, maintainability, and adherence to project standards.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "docs-writer",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/docs-writer/SKILL.md",
+      "blob_sha": "5772e7fb3dc93875df144980558ff33234a3daf9",
+      "description": "Always use this skill when the task involves writing, reviewing, or editing files in the `/docs` directory or any `.md` files in the repository.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "drop-python-version-support",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/drop-python-version-support/SKILL.md",
+      "blob_sha": "625170bf7b064683077071ec97717839de8054b7",
+      "description": "Guide changes required when a project drops one or more oldest supported Python versions and raises its minimum supported version. Use when asked to remove the oldest supported runtimes, raise the minimum Python requirement, modernize code after raising the Python floor, or upgrade/migrate by replacing older runtimes.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "ponytail-audit",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/ponytail-audit/SKILL.md",
+      "blob_sha": "ff9a95480700600fe2664d2d0906a4d750b2da0b",
+      "description": "> Quality audit of a whole repo: bugs, security holes, what breaks under real load, risky code without tests, slow paths, and what to delete, merge or split. Ranked, each finding explained in plain English. One-shot report, changes nothing. Use for \"audit this codebase\", \"review the whole repo\", \"find bloat\", \"what can I delete\", /ponytail-audit.",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "ponytail-debt",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/ponytail-debt/SKILL.md",
+      "blob_sha": "bbb487189d50c9ccffa2037f2bbe8311049c6f17",
+      "description": "> List every `shortcut:` comment (and older `ponytail:` ones) as a debt ledger. One-shot report, changes nothing. Use for \"ponytail debt\", \"what did ponytail defer\", \"list the shortcuts\", /ponytail-debt.",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "ponytail-gain",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/ponytail-gain/SKILL.md",
+      "blob_sha": "1cc796c91346e118e471d1457bdbe490653c6176",
+      "description": "> Show ponytail's measured savings (code, cost, speed) from the benchmark. One-shot display. Use for /ponytail-gain, \"what does ponytail save\", \"ponytail impact\".",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "ponytail-help",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/ponytail-help/SKILL.md",
+      "blob_sha": "6bf18247de761d58f1c38975af2a64b3cdc6feb9",
+      "description": "> Quick reference for ponytail levels, skills and commands. One-shot display. Use for /ponytail-help, \"ponytail help\", \"how do I use ponytail\".",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "ponytail-review",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/ponytail-review/SKILL.md",
+      "blob_sha": "a50e3ac6ded6fccc9edae34ce37877bbce11e3fa",
+      "description": "> Quality review of a change: is the logic right, is it safe, does it hold under real load, is risky code tested, is it fast enough, and is every line needed. Reads the connected code, not only the diff. Each finding is explained in plain English. Use for \"review this\", \"code review\", \"review the last commit\", \"review my PR\", \"is this over-engineered\", /ponytail-review.",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "ponytail",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/ponytail/SKILL.md",
+      "blob_sha": "b76922f76ec6f4db532203c55d710b749fa1f6af",
+      "description": "> Lazy senior dev mode: the smallest change that fully solves the task, and a reply a busy human understands in one read. Use on any coding task (writing, fixing, refactoring, reviewing, choosing dependencies) and when the user says \"ponytail\", \"be lazy\", \"simplest solution\", \"yagni\", or complains about over-engineering or bloat. Levels: lite, full (default), ultra.",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "pylance-docs",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/pylance-docs/SKILL.md",
+      "blob_sha": "5e9afda71dc62e349e4550bd4fa30cc8c7bc18f1",
+      "description": "Use when the user explicitly asks for the Pylance docs skill, or when an answer depends on current official Pylance documentation for settings, diagnostics, configuration, troubleshooting, feature behavior, or supported workflows.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "pylance-python-profiling",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/pylance-python-profiling/SKILL.md",
+      "blob_sha": "d5644c6338568fdac102929c1b01b3ddf3d9d56a",
+      "description": "Use when the user wants to profile Python code with Pylance: capture CPU time (Tachyon), trace calls (sys.monitoring), or memory (Memray); profile a whole run or a specific region between two source locations; add sub-region markers; and explore the resulting profile (hot functions, call trees, time slices). Also use for the 3.15+ interpreter requirement and related error guidance.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "pylance-refactoring",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/pylance-refactoring/SKILL.md",
+      "blob_sha": "1da7b297c85c0de95973e467b862aab65ffe6857",
+      "description": "Use when the user explicitly asks for the Pylance refactoring skill, or when they want named automated Python refactorings applied to one file, many files, a workspace, a folder subset, or a composed cleanup workflow such as workspace-wide unused-import cleanup, wildcard-import conversion followed by unused-import cleanup, inferred type annotations, or Pylance fix-all.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "python-add-type-annotations",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/python-add-type-annotations/SKILL.md",
+      "blob_sha": "79f6227f12f67f666f5a6b55b36df92e68421184",
+      "description": "Use when the user explicitly asks for the Python type annotation skill, or when they want to make their own Python source type-safe by adding inline type annotations to one file, a set of files, or a package/workspace in bulk — annotating function return types, parameters, module-level and class-level variables/constants (including dataclass and similar fields), validating diagnostics against a baseline, and reportin",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "python-fact-grounded-coding",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/python-fact-grounded-coding/SKILL.md",
+      "blob_sha": "85930335af8a27560049d300796e34dddbe61a5c",
+      "description": "Use when the user explicitly asks for the Python fact-grounded coding skill, or when a Python coding, debugging, explanation, or bug-fix task should be grounded in verified Pylance facts, runtime values, diagnostics, selected interpreter state, tests, or debugger evidence before changing code or reporting a conclusion.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "python-type-inference",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/python-type-inference/SKILL.md",
+      "blob_sha": "9292cf02c991e36b256760d600c4ab97b1ca1979",
+      "description": "Use when the user explicitly asks for the Python type inference skill, or when a task needs the single correct type for a specific Python symbol — a function return, parameter, module-level value, or class/instance field — and that type must be verified against real code rather than guessed. This is the shared core used by the type-annotation and stub-writing skills.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "python-write-stubs",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/python-write-stubs/SKILL.md",
+      "blob_sha": "7f26e69610dc50d4fd8bf71d53551e52fad017d4",
+      "description": "Use when the user explicitly asks for the Python stub-writing skill, wants to create or improve `.pyi` type stubs for a third-party Python package, or needs partial stubs under a workspace `typings/` directory without modifying installed package source. Generates stubs through Pylance, resolves uncertain types with the Python type-inference skill, and validates public API, diagnostics, runtime compatibility, and type",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "troubleshoot",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/troubleshoot/SKILL.md",
+      "blob_sha": "04e70ba167ec28d5090fd39055b53bad053e735f",
+      "description": "Investigate unexpected chat agent behavior by analyzing direct debug logs in JSONL files. Use when users ask why something happened, why a request was slow, why tools or subagents were used or skipped, or why instructions/skills/agents did not load.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "typescript-setup",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/typescript-setup/SKILL.md",
+      "blob_sha": "035f6b214d1e3f82ebc77f0017702b4e5f881de0",
+      "description": "How to set up a new TypeScript project",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "typescript-update",
+      "category": "code-review-refactoring",
+      "source_path": "code-review-refactoring/typescript-update/SKILL.md",
+      "blob_sha": "d1f6b521d185190790ca0ae49b3f68d61e97f46b",
+      "description": "Guidance for updating to the newer versions of TypeScript. Use this when you need to upgrade TypeScript or as part of a larger dependency update process.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "agui-author",
+      "category": "design-ui",
+      "source_path": "design-ui/agui-author/SKILL.md",
+      "blob_sha": "398226f3cc476a7ea3ec0997e131113b8d0b4520",
+      "description": "Author live dashboard UI from an agent via the `emit_ui` MCP tool. Emit one of six allow-listed components (approval_card, choice_prompt, diff_summary, progress, metric, agent_card) with JSON props and it renders in any AG-UI client watching the fleet. Use when you want the operator to see a decision, a diff, or a status readout instead of scrolling terminal text. Arbitrary HTML/markup is refused.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "frontend-design",
+      "category": "design-ui",
+      "source_path": "design-ui/frontend-design/SKILL.md",
+      "blob_sha": "a5333457c414d20d625f307df945842c0952ecc3",
+      "description": "Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "generative_ui",
+      "category": "design-ui",
+      "source_path": "design-ui/generative_ui/SKILL.md",
+      "blob_sha": "0465bd2c05f1a0a56ab90f10a338daa31c89dddb",
+      "description": "How to render rich interactive HTML widgets inline in the chat or as standalone artifacts. Use this skill when you want to show the user diagrams, data visualizations, interactive controls, educational walkthroughs, or any rich visual content beyond plain text and markdown.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "impeccable",
+      "category": "design-ui",
+      "source_path": "design-ui/impeccable/SKILL.md",
+      "blob_sha": "42b728cc6b05b1c5b1fe2223670555eeb52a3572",
+      "description": "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performa",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "make-interfaces-feel-better",
+      "category": "design-ui",
+      "source_path": "design-ui/make-interfaces-feel-better/SKILL.md",
+      "blob_sha": "cd19691da5816c7accf48d2ef0108f2976568da0",
+      "description": "Design engineering principles for making interfaces feel polished. Use when building UI components, reviewing frontend code, implementing animations, hover states, shadows, borders, typography, micro-interactions, enter/exit animations, or any visual detail work. Triggers on UI polish, design details, \"make it feel better\", \"feels off\", stagger animations, border radius, optical alignment, font smoothing, tabular num",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "opendesign",
+      "category": "design-ui",
+      "source_path": "design-ui/opendesign/SKILL.md",
+      "blob_sha": "6fcf809346672d1754d39f3a3a3bcbfdd2a20e71",
+      "description": "Use when starting any design task — HTML pages, slide decks, interactive prototypes, UI kits, brand systems. Establishes the base designer role, workflow, and taste rules, and routes to specialist skills for the artifact type.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "ui-ux-pro-max",
+      "category": "design-ui",
+      "source_path": "design-ui/ui-ux-pro-max/SKILL.md",
+      "blob_sha": "a64d6c233a6293c05ab70f67156cc7e30284232a",
+      "description": "UI/UX design intelligence for web and mobile. Includes 50+ styles, 161 color palettes, 57 font pairings, 161 product types, 99 UX guidelines, and 25 chart types across 10 stacks (React, Next.js, Vue, Svelte, SwiftUI, React Native, Flutter, Tailwind, shadcn/ui, and HTML/CSS). Actions: plan, build, create, design, implement, review, fix, improve, optimize, enhance, refactor, and check UI/UX code. Projects: website, lan",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "unslop-ai-design",
+      "category": "design-ui",
+      "source_path": "design-ui/unslop-ai-design/SKILL.md",
+      "blob_sha": "a91aa2039637551ee7f3b52d6ae9b2ce1d343c39",
+      "description": "Strict 20-rule design rubric to eliminate AI frontend clichés, decorative clutter, and poor UI defaults. Covers removing vanity badges, redundant labels, random italics, decorative embellishments, and monospace overuse; enforcing visual hierarchy, dominant CTAs, product-first visuals, concentric border radii, optical alignment, text-wrap balance, tabular numbers, and production-ready states.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "add-app-to-server",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/add-app-to-server/SKILL.md",
+      "blob_sha": "02d09a4e24ab5ac4d81dbfd733e0a8e76b621393",
+      "description": "This skill should be used when the user asks to \"add an app to my MCP server\", \"add UI to my MCP server\", \"add a view to my MCP tool\", \"enrich MCP tools with UI\", \"add interactive UI to existing server\", \"add MCP Apps to my server\", or needs to add interactive UI capabilities to an existing MCP server that already has tools. Provides guidance for analyzing existing tools and adding MCP Apps UI resources.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "convert-web-app",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/convert-web-app/SKILL.md",
+      "blob_sha": "5db2d946c0be91642f5c0ff094766836ff368035",
+      "description": "This skill should be used when the user asks to \"add MCP App support to my web app\", \"turn my web app into a hybrid MCP App\", \"make my web page work as an MCP App too\", \"wrap my existing UI as an MCP App\", \"convert iframe embed to MCP App\", \"turn my SPA into an MCP App\", or needs to add MCP App support to an existing web application while keeping it working standalone. Provides guidance for analyzing existing web app",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "create-mcp-app",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/create-mcp-app/SKILL.md",
+      "blob_sha": "5bd12191d3332aa1a776c6364686d2ed2ac862ee",
+      "description": "This skill should be used when the user asks to \"create an MCP App\", \"add a UI to an MCP tool\", \"build an interactive MCP View\", \"scaffold an MCP App\", or needs guidance on MCP Apps SDK patterns, UI-resource registration, MCP App lifecycle, or host integration. Provides comprehensive guidance for building MCP Apps with interactive UIs.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "discord-access",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/discord-access/SKILL.md",
+      "blob_sha": "389065df51031eda1fe94e9050fb6985889a1f9b",
+      "description": "Manage Discord channel access — approve pairings, edit allowlists, set DM/group policy. Use when the user asks to pair, approve someone, check who's allowed, or change policy for the Discord channel.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "discord-configure",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/discord-configure/SKILL.md",
+      "blob_sha": "a1e15f8b927ca7385a06ebf6eacacbd4e4acd527",
+      "description": "Set up the Discord channel — save the bot token and review access policy. Use when the user pastes a Discord bot token, asks to configure Discord, asks \"how do I set this up\" or \"who can reach me,\" or wants to check channel status.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "fastapi",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/fastapi/SKILL.md",
+      "blob_sha": "7b62759ff5e6e712276a3309148d7253376bf9d5",
+      "description": "FastAPI best practices and conventions. Use when working with FastAPI APIs, Pydantic models, dependencies, streaming responses including Server-Sent Events (SSE), and serving frontend apps. Keeps FastAPI code clean and up to date with the latest features and patterns.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "imessage-access",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/imessage-access/SKILL.md",
+      "blob_sha": "c197d80a0277bf3600fce43d963cefb060786115",
+      "description": "Manage iMessage channel access — approve pairings, edit allowlists, set DM/group policy. Use when the user asks to pair, approve someone, check who's allowed, or change policy for the iMessage channel.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "imessage-configure",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/imessage-configure/SKILL.md",
+      "blob_sha": "fa6fec9df8f0e8b77c9a3a0c97cc0b73f889dcdd",
+      "description": "Check iMessage channel setup and review access policy. Use when the user asks to configure iMessage, asks \"how do I set this up\" or \"who can reach me,\" or wants to know why texts aren't reaching the assistant.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "migrate-oai-app",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/migrate-oai-app/SKILL.md",
+      "blob_sha": "6c63f8520be5e0d7bfae5280c22586af9a4bd9f5",
+      "description": "This skill should be used when the user asks to \"migrate from OpenAI Apps SDK\", \"convert OpenAI App to MCP\", \"port from window.openai\", \"migrate from skybridge\", \"convert openai/outputTemplate\", or needs guidance on converting OpenAI Apps SDK applications to MCP Apps SDK. Provides step-by-step migration guidance with API mapping tables.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "permissioned-github",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/permissioned-github/SKILL.md",
+      "blob_sha": "18c1f6a7483400de5920cd397c824fc6b39da4ab",
+      "description": "Guidelines for interacting with GitHub and request permissions from the user when commands fail due to restrictions in the agent environment.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "telegram-access",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/telegram-access/SKILL.md",
+      "blob_sha": "b104f963ffec80575419af07474abb9fb58a8626",
+      "description": "Manage Telegram channel access — approve pairings, edit allowlists, set DM/group policy. Use when the user asks to pair, approve someone, check who's allowed, or change policy for the Telegram channel.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "telegram-configure",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/telegram-configure/SKILL.md",
+      "blob_sha": "16cf133109844d61a5c13e5f18a1757248e6b95e",
+      "description": "Set up the Telegram channel — save the bot token and review access policy. Use when the user pastes a Telegram bot token, asks to configure Telegram, asks \"how do I set this up\" or \"who can reach me,\" or wants to check channel status.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "typer",
+      "category": "integrations-frameworks",
+      "source_path": "integrations-frameworks/typer/SKILL.md",
+      "blob_sha": "18f7660c167025371233e63e7642cf6f53b10470",
+      "description": "Typer best practices and conventions. Use when working with Typer CLIs. Keeps Typer code clean and up to date with the latest features and patterns, updated with new versions. Write new code or refactor and update old code.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "agent-customization",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/agent-customization/SKILL.md",
+      "blob_sha": "6c2dd839f36c022d28f5763529d5872c5055434c",
+      "description": "**WORKFLOW SKILL** — Create, update, review, fix, or debug VS Code agent customization files (.instructions.md, .prompt.md, .agent.md, SKILL.md, copilot-instructions.md, AGENTS.md). USE FOR: saving coding preferences; troubleshooting why instructions/skills/agents are ignored or not invoked; configuring applyTo patterns; defining tool restrictions; creating custom agent modes or specialized workflows; packaging domai",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "agent-development",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/agent-development/SKILL.md",
+      "blob_sha": "f4ea78d89bcee2febcce2285d9d41b3d17df3656",
+      "description": "This skill should be used when the user asks to \"create an agent\", \"add an agent\", \"write a subagent\", \"agent frontmatter\", \"when to use description\", \"agent examples\", \"agent tools\", \"agent colors\", \"autonomous agent\", or needs guidance on agent structure, system prompts, triggering conditions, or agent development best practices for Claude Code plugins.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "agy-customizations",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/agy-customizations/SKILL.md",
+      "blob_sha": "b4e85641aad5283fac5f0e9d46e745ae1e0124e4",
+      "description": "Comprehensive guide and reference for the Antigravity Customization System. Use to explain how customizations work, their loading priority, discovery mechanisms, and to guide the creation of skills, rules, plugins, hooks, and MCP servers.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "antigravity_guide",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/antigravity_guide/SKILL.md",
+      "blob_sha": "20101f58aba05c10e91484e589abcc17f8399fdd",
+      "description": "Provides a comprehensive guide, quick reference, and sitemap for Google Antigravity (AGY), including the Antigravity CLI (agy), Antigravity 2.0, Antigravity IDE, Python SDK, slash commands, keybindings, and customizations (skills, rules, MCP, sidecars). Activate this skill when the user asks questions about how to use, configure, or customize Antigravity, AGY, the agy CLI, the Antigravity IDE, or Antigravity 2.0.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "build-mcp-app",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/build-mcp-app/SKILL.md",
+      "blob_sha": "c400abdb126d392a2fbbf11539fa1bebf5b0146a",
+      "description": "This skill should be used when the user wants to build an \"MCP app\", add \"interactive UI\" or \"widgets\" to an MCP server, \"render components in chat\", build \"MCP UI resources\", make a tool that shows a \"form\", \"picker\", \"dashboard\" or \"confirmation dialog\" inline in the conversation, or mentions \"apps SDK\" in the context of MCP. Use AFTER the build-mcp-server skill has settled the deployment model, or when the user al",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "build-mcp-server",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/build-mcp-server/SKILL.md",
+      "blob_sha": "5ab19c3ae3ee57d11f4cdd0a550f942207dc6a5c",
+      "description": "This skill should be used when the user asks to \"build an MCP server\", \"create an MCP\", \"make an MCP integration\", \"wrap an API for Claude\", \"expose tools to Claude\", \"make an MCP app\", or discusses building something with the Model Context Protocol. It is the entry point for MCP server development — it interrogates the user about their use case, determines the right deployment model (remote HTTP, MCPB, local stdio),",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "build-mcpb",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/build-mcpb/SKILL.md",
+      "blob_sha": "772097ddbbd78e8faaad2ff57dc7faa64c7a5ea3",
+      "description": "This skill should be used when the user wants to \"package an MCP server\", \"bundle an MCP\", \"make an MCPB\", \"ship a local MCP server\", \"distribute a local MCP\", discusses \".mcpb files\", mentions bundling a Node or Python runtime with their MCP server, or needs an MCP server that interacts with the local filesystem, desktop apps, or OS and must be installable without the user having Node/Python set up.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "claude-automation-recommender",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/claude-automation-recommender/SKILL.md",
+      "blob_sha": "07712a231e19c498391dd819417136c89e142b81",
+      "description": "Analyze a codebase and recommend Claude Code automations (hooks, subagents, skills, plugins, MCP servers). Use when user asks for automation recommendations, wants to optimize their Claude Code setup, mentions improving Claude Code workflows, asks how to first set up Claude Code for a project, or wants to know what Claude Code features they should use.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "claude-md-improver",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/claude-md-improver/SKILL.md",
+      "blob_sha": "744444e4df385e9b9160e23fba02321062dfba9a",
+      "description": "Audit and improve CLAUDE.md files in repositories. Use when user asks to check, audit, update, improve, or fix CLAUDE.md files. Scans for all CLAUDE.md files, evaluates quality against templates, outputs quality report, then makes targeted updates. Also use when the user mentions \"CLAUDE.md maintenance\" or \"project memory optimization\".",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "claude-security",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/claude-security/SKILL.md",
+      "blob_sha": "00fb777430f2e7bc1199a48617acfbcf6b744003",
+      "description": "Claude Security: scan the codebase (the whole repository or a scoped part of it), scan changes (this branch's or a pull request's diff, or one commit), or suggest patches (findings turned into targeted patch files, each verified by a panel of agents, that you apply when you choose). Use when the user asks to scan, audit or check code with Claude Security, to scan their changes with Claude Security, or to fix or patch",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "command-development",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/command-development/SKILL.md",
+      "blob_sha": "4c82f7e8472706bcde5a0605d6e04f6c05bf4704",
+      "description": "This skill should be used when the user asks to \"create a slash command\", \"add a command\", \"write a custom command\", \"define command arguments\", \"use command frontmatter\", \"organize commands\", \"create command with file references\", \"interactive command\", \"use AskUserQuestion in command\", or needs guidance on slash command structure, YAML frontmatter fields, dynamic arguments, bash execution in commands, user interact",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "example-command",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/example-command/SKILL.md",
+      "blob_sha": "a1793378ec4135b7638a97650492c6d80e3f9131",
+      "description": "An example user-invoked skill that demonstrates frontmatter options and the skills/<name>/SKILL.md layout",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "example-skill",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/example-skill/SKILL.md",
+      "blob_sha": "9e0e268cac50d1c4016dc7e1dc5cddde54f594fb",
+      "description": "This skill should be used when the user asks to \"demonstrate skills\", \"show skill format\", \"create a skill template\", or discusses skill development patterns. Provides a reference template for creating Claude Code plugin skills.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "hook-development",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/hook-development/SKILL.md",
+      "blob_sha": "6317441bfe3fcb60ea0d611e3826c2c4147d65f0",
+      "description": "This skill should be used when the user asks to \"create a hook\", \"add a PreToolUse/PostToolUse/Stop hook\", \"validate tool use\", \"implement prompt-based hooks\", \"use ${CLAUDE_PLUGIN_ROOT}\", \"set up event-driven automation\", \"block dangerous commands\", or mentions hook events (PreToolUse, PostToolUse, Stop, SubagentStop, SessionStart, SessionEnd, UserPromptSubmit, PreCompact, Notification). Provides comprehensive guida",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "hookify-writing-rules",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/hookify-writing-rules/SKILL.md",
+      "blob_sha": "58f9e6d1b4f37f52f936372ba0c65ab627fcf4e0",
+      "description": "This skill should be used when the user asks to \"create a hookify rule\", \"write a hook rule\", \"configure hookify\", \"add a hookify rule\", or needs guidance on hookify rule syntax and patterns.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "mcp-apps-builder",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/mcp-apps-builder/SKILL.md",
+      "blob_sha": "86da9c8ad0cc52afc576ec6e05203fe258c5f3aa",
+      "description": "Load the official MCP Apps builder skills (create-mcp-app, migrate-oai-app, add-app-to-server, convert-web-app) from github.com/modelcontextprotocol/ext-apps. Use when the user says \"build an MCP App\", \"add a ui:// view to my MCP server\", \"create an interactive MCP App from scratch\", \"migrate from OpenAI Apps SDK to MCP\", or \"turn my web app into a hybrid MCP App\". Targets the MCP Apps SDK (SEP-1865 ui:// resources) ",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "mcp-integration",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/mcp-integration/SKILL.md",
+      "blob_sha": "1a77a654b1bf43f5955a895434d92f049cbd8758",
+      "description": "This skill should be used when the user asks to \"add MCP server\", \"integrate MCP\", \"configure MCP in plugin\", \"use .mcp.json\", \"set up Model Context Protocol\", \"connect external service\", mentions \"${CLAUDE_PLUGIN_ROOT} with MCP\", or discusses MCP server types (SSE, stdio, HTTP, WebSocket). Provides comprehensive guidance for integrating Model Context Protocol servers into Claude Code plugins for external tool and se",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "migrate-agent-settings",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/migrate-agent-settings/SKILL.md",
+      "blob_sha": "75d40380890aa4f582d7722759fccb038704f1db",
+      "description": "Migrates the user's MCP servers, skills, slash commands, subagents, and instruction files from other coding agents (Claude Code, Codex, Cursor, Gemini CLI) into one new Antigravity plugin. Use when the user wants to bring over, import, or migrate their setup or config from another agent or tool. Don't use for installing Marketplace plugins or authoring a new plugin from scratch (use the plugin skill).",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "migrate-customizations",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/migrate-customizations/SKILL.md",
+      "blob_sha": "13d6c1b06713571e67e0a063727e70a4e05201e3",
+      "description": "Guide a safe, reversible migration of VS Code agent customizations when launched from the Agent Customizations Migrations page with VS Code-generated migration context.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "plugin-settings",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/plugin-settings/SKILL.md",
+      "blob_sha": "3ab48bca0137d06557ef16d8b8448ab7de84f26f",
+      "description": "This skill should be used when the user asks about \"plugin settings\", \"store plugin configuration\", \"user-configurable plugin\", \".local.md files\", \"plugin state files\", \"read YAML frontmatter\", \"per-project plugin settings\", or wants to make plugin behavior configurable. Documents the .claude/plugin-name.local.md pattern for storing plugin-specific configuration with YAML frontmatter and markdown content.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "plugin-structure",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/plugin-structure/SKILL.md",
+      "blob_sha": "6bcae94a524429d1fbdc37fb08f2bb7d58630d7c",
+      "description": "This skill should be used when the user asks to \"create a plugin\", \"scaffold a plugin\", \"understand plugin structure\", \"organize plugin components\", \"set up plugin.json\", \"use ${CLAUDE_PLUGIN_ROOT}\", \"add commands/agents/skills/hooks\", \"configure auto-discovery\", or needs guidance on plugin directory layout, manifest configuration, component organization, file naming conventions, or Claude Code plugin architecture be",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "plugin",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/plugin/SKILL.md",
+      "blob_sha": "29707d08f21ab4ba1111fb3472a4b09c40da1afa",
+      "description": "How to manage and create plugins — namespaced bundles of skills, agents, rules, MCP servers and hooks that install, enable and disable as a single unit. Use this skill when the user wants to enable, disable, install or uninstall a plugin, when they want to create a new plugin, or when a new customization should be packaged into a plugin rather than left loose. Also triggered by the /plugin slash command. Don't use fo",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "skill-creator",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/skill-creator/SKILL.md",
+      "blob_sha": "65b3a402dbd09b8e83f9d637c6b553875189085c",
+      "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
+      "already_in_zerocoding": true
+    },
+    {
+      "name": "skill-development",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/skill-development/SKILL.md",
+      "blob_sha": "1cb3bd90b29d0469d25c5df9ad72741ac1e2c4cd",
+      "description": "This skill should be used when the user wants to \"create a skill\", \"add a skill to plugin\", \"write a new skill\", \"improve skill description\", \"organize skill content\", or needs guidance on skill structure, progressive disclosure, or skill development best practices for Claude Code plugins.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "ui-plugin-navigation",
+      "category": "mcp-plugin-development",
+      "source_path": "mcp-plugin-development/ui-plugin-navigation/SKILL.md",
+      "blob_sha": "4b8113fb7d886121972ae3df62a98173475d57f9",
+      "description": "Discover UI plugin panels relevant to the current task and surface a one-click pill in chat to open (toggle) them in the side pane. Use when a running UI plugin's panel would help with what the user is doing, or right after the user enables a new UI plugin pane and a shortcut to open it is handy.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "automation",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/automation/SKILL.md",
+      "blob_sha": "8346d1c669e777344d960d4b01a5a97c50e59337",
+      "description": "Interactive guide to design and create a scheduled background automation. Use this skill when the user wants to create an automated or recurring scheduled task (e.g. \"summarize my emails every morning\", \"every Monday send me a to-do list\"). Also triggered by the /automation slash command.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-agent-routing",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-agent-routing/SKILL.md",
+      "blob_sha": "94bfcf7123ad492d11d7e16974b6db2c924bc822",
+      "description": "Find and select the best installed CAO agent profile for a task before delegating with assign or handoff. Use when a supervisor needs to route coding, documentation, infrastructure, review, research, or other specialist work and the user has not already chosen an agent profile.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-learning",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-learning/SKILL.md",
+      "blob_sha": "795698acee7c8ba20366791a10b6ff3699bdbeaf",
+      "description": "Report task outcomes and distill lessons so the team improves across runs — report_outcome after each unit of work, retrospector handoffs at natural boundaries, and applying injected lessons. Use in workflows that run repeatedly over similar work items. Requires memory.learning_enabled; degrade silently when the tools report disabled.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-mcp-apps",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-mcp-apps/SKILL.md",
+      "blob_sha": "6a0b8f94c0c821cb71bf82cc4a8fb800ff361256",
+      "description": "Enable, operate, and extend CAO's MCP Apps surface — the host-rendered fleet dashboard visible inside MCP App hosts (Claude Desktop, ChatGPT, VS Code Copilot, Goose, Postman). Use when the user says \"enable MCP Apps in CAO\", \"the ui://cao views aren't rendering\", \"rebuild MCP Apps bundles\", \"add a new ui://cao/* view\", or \"configure the MCP Apps OAuth scope layer\". Operates on the CAO_MCP_APPS_ENABLED surface and cao",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-memory",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-memory/SKILL.md",
+      "blob_sha": "7c62bd5a1be953085fb08588535707fd132e999e",
+      "description": "Store, recall, and forget durable facts with CAO memory — user preferences, project conventions, decisions, and corrections that should persist across sessions and agents. Use proactively to check memory before asking the user, and to save anything worth remembering. Distinct from any provider-native memory.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-plugin",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-plugin/SKILL.md",
+      "blob_sha": "c47fc7195cd207fe820dc443d641d8b9e473ceee",
+      "description": "Create a new CAO (CLI Agent Orchestrator) plugin. Use this skill whenever the user wants to add a plugin that reacts to CAO lifecycle or messaging events, scaffold a plugin package, understand plugin requirements, or integrate an external system (Discord, Slack, dashboards, logging, metrics) with CAO. Also use when the user asks what plugin events are available, how plugin discovery works, or how to install a plugin ",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-provider",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-provider/SKILL.md",
+      "blob_sha": "4ebe1247caf74f6e70e51968abd7675656cb02f7",
+      "description": "Create a new CLI agent provider for CAO (CLI Agent Orchestrator). Use this skill whenever the user wants to add support for a new CLI-based AI agent (e.g., a new coding assistant CLI), integrate a new provider, or scaffold a provider implementation. Also use when the user asks about the provider architecture, what files to modify, or how providers work in CAO.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-session-liveness",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-session-liveness/SKILL.md",
+      "blob_sha": "28e018b1a1b859dd299b3fbe2fee8d706373d7f1",
+      "description": "Verify whether a CAO session is actually alive and what it really said, before reporting progress or completion to a user. Use alongside cao-session-management whenever you launch, poll, or report on a CAO session — especially when a session appears stalled, a send times out, or a status value looks inconsistent with the output.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-session-management",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-session-management/SKILL.md",
+      "blob_sha": "e8120a9f313eadc03917a45cbe8e13ee65b450d6",
+      "description": "Interact with CAO (CLI Agent Orchestrator) — launch multi-agent sessions, check status, send follow-up instructions, unblock stuck terminals, or shut down sessions. Use when working with CAO sessions in any capacity.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-supervisor-protocols",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-supervisor-protocols/SKILL.md",
+      "blob_sha": "861b4f847ed1a830ec1d7082fee35a3c0eb69c11",
+      "description": "Supervisor-side orchestration patterns for assign, handoff, and idle inbox delivery in CAO",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-worker-protocols",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-worker-protocols/SKILL.md",
+      "blob_sha": "bb321236fc2b00ccdb5d15fb773f838cd8e4a141",
+      "description": "Worker-side callback and completion rules for assigned and handed-off tasks in CAO",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cao-workflow",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/cao-workflow/SKILL.md",
+      "blob_sha": "bb674296429715727b03d3711d5f190151b31e0c",
+      "description": "Author and run CAO Python workflow scripts — multi-step, parameterized, fan-out orchestrations executed by `cao workflow run`. Use when the user wants a repeatable multi-step job (e.g. data analysis over many files, a review pipeline, a parameterized batch). Authoring ends at a validated script file; running it is a separate, user-approved step.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "migrate-workflows",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/migrate-workflows/SKILL.md",
+      "blob_sha": "c565269422c5f155cffda3e19c5ea9f5a712097f",
+      "description": "Automatically migrate legacy workflows to modern skills across global and workspace configurations. Scans for existing workflows, creates target SKILL.md files, and safely archives old workflow files.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "native_swarm",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/native_swarm/SKILL.md",
+      "blob_sha": "b8b5c17c330b9e24a9130f303bbb9bbb573b70f1",
+      "description": "(Preview & Quota Heavy) Run a swarm: several agents working in parallel on one task, each in its own conversation, collaborating through a shared message board. Use when the work splits into pieces that can be done at the same time, or when a second pair of eyes should check the first pair's work.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "recursive-decomposition",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/recursive-decomposition/SKILL.md",
+      "blob_sha": "43980d42563ab6a63823fdbb58de7e7f1c9c405b",
+      "description": "Decompose dense codebase-wide, multi-document, PDF, and aggregation work even when the input fits the context window, following Recursive Language Models (Zhang, Kraska, Khattab, 2025). Use when the user asks to analyse all files, a whole repo, all docs, large PDFs, or to aggregate or multi-hop across scattered sources. Skip one file, one function, a single needle, or a one-page PDF conversion. Triggers: long context",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "run-workflow",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/run-workflow/SKILL.md",
+      "blob_sha": "5bc0a91a985fd29f715ee6ca119538e2a75e6c3c",
+      "description": "How to write and run a dynamic workflow script with the `run_workflow` tool: a Python script that orchestrates many agents with `agent`, `parallel`, `pipeline`, and `phase`. Use when a task splits into many independent or staged pieces of agent work (fan out over files, modules, bugs, or review angles, then aggregate), or when the user asks for a workflow. Don't use for a single delegated task (use a subagent) or for",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "spec",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/spec/SKILL.md",
+      "blob_sha": "7279b9c3778fc15d8f2727a46844cd54a78a1e5f",
+      "description": "Turn vague intent into a precise, executable spec in five phases. (gstack)",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "swarm_monitor",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/swarm_monitor/SKILL.md",
+      "blob_sha": "68b4cd5bb211aa687137c188449a348212f608c8",
+      "description": "ONLY for the native-swarm worker whose brief says it is the monitor. On a timer, it checks whether the whole swarm has stalled and calls on the one member who can unstick it. Coordinators and other workers: do not load this.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "swarm_narrator",
+      "category": "multi-agent-orchestration",
+      "source_path": "multi-agent-orchestration/swarm_narrator/SKILL.md",
+      "blob_sha": "8d5f727868bc584549238733b87e59e31fde4724",
+      "description": "ONLY for the native-swarm worker whose brief says it is the narrator. It watches the board and keeps the facts behind the user's Overview (view.json) current. Coordinators and other workers: do not load this.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "cardputer-buddy",
+      "category": "specialized-domains",
+      "source_path": "specialized-domains/cardputer-buddy/SKILL.md",
+      "blob_sha": "932033cb5bc61a89d1421633d494ac04e87a8e57",
+      "description": "Iterate on the Cardputer-Adv MicroPython app bundle (Claude Buddy, Snake, Hello) after the device is already provisioned via m5-onboard. Use when the user wants to add a new app, push a single changed .py without re-flashing, watch device serial logs, or run a one-shot REPL command. Trigger on \"add an app\", \"push to the cardputer\", \"tail the device\", \"run on the device\", or follow-up work after /maker-setup.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "hardhat-toolbox-mocha-ethers",
+      "category": "specialized-domains",
+      "source_path": "specialized-domains/hardhat-toolbox-mocha-ethers/SKILL.md",
+      "blob_sha": "f4ee2e5cb0fc6b117e34522fe151c4faaf131a29",
+      "description": "Use alongside the `hardhat` skill when the project depends on `@nomicfoundation/hardhat-toolbox-mocha-ethers`. Covers the ethers helpers exposed on `network.create()`, contract interaction (`ethers.deployContract`, calling functions, `connect`), TypeChain-typed contract instances, and the chai matchers from `@nomicfoundation/hardhat-ethers-chai-matchers` (`.to.emit`, `.to.be.revertedWith*`, `.to.changeEtherBalance(s)",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "hardhat-toolbox-viem",
+      "category": "specialized-domains",
+      "source_path": "specialized-domains/hardhat-toolbox-viem/SKILL.md",
+      "blob_sha": "8e84a8677672b7e5ed704ddc44a86ba4d8cbab56",
+      "description": "Use alongside the `hardhat` skill when the project depends on `@nomicfoundation/hardhat-toolbox-viem`. Covers the viem clients exposed on `network.create()`, contract interaction (`viem.deployContract`, `read`, `write`, `getContractAt`), and `viem.assertions` (revert / event / balance assertions).",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "hardhat",
+      "category": "specialized-domains",
+      "source_path": "specialized-domains/hardhat/SKILL.md",
+      "blob_sha": "a20e77be81698110b44954dd776982d2436f5dcf",
+      "description": "Use when working with Hardhat 3 projects — writing or modifying Solidity tests, TypeScript tests, or any code touching hardhat.config.ts, the `hardhat` import, or `network.create()`. Covers test-layer choice, forge-std cheatcodes, the network connection API, `networkHelpers`, and the compile-then-typecheck workflow. For toolbox-specific guidance (clients, contract calls, assertions), also load the matching `hardhat-t",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "m5-onboard",
+      "category": "specialized-domains",
+      "source_path": "specialized-domains/m5-onboard/SKILL.md",
+      "blob_sha": "ae4517ff17f1543804764d1340e00f1ab471791b",
+      "description": "End-to-end onboarding for a freshly-plugged-in M5Stack ESP32 device (Cardputer, Cardputer-Adv, Core, CoreS3, Stick) — detect on USB, flash UIFlow 2.0 firmware, and install the Claude Buddy MicroPython app bundle. Use whenever the user plugs in or wants to flash/provision/reset an M5Stack or ESP32 board, or says \"m5-onboard go\".",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "math-olympiad",
+      "category": "specialized-domains",
+      "source_path": "specialized-domains/math-olympiad/SKILL.md",
+      "blob_sha": "94a064d7902d9d5282e7e75228ed2b3934cac30f",
+      "description": "Solve competition math problems (IMO, Putnam, USAMO, AIME) with adversarial verification that catches the errors self-verification misses. Activates when asked to 'solve this IMO problem', 'prove this olympiad inequality', 'verify this competition proof', 'find a counterexample', 'is this proof correct', or for any problem with 'IMO', 'Putnam', 'USAMO', 'olympiad', or 'competition math' in it. Uses pure reasoning (no",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "siege",
+      "category": "specialized-domains",
+      "source_path": "specialized-domains/siege/SKILL.md",
+      "blob_sha": "a705c8eca5dcd13218c304dc8b2bdf2edb804aaa",
+      "description": "Work on one hard mathematics problem in rounds: each round a judge writes a few self-contained questions, independent workers answer them, and the judge keeps a ledger of what is proved, refuted and open, until the judge concludes or the rounds run out, and then a proof.md says plainly what is and is not proved. A run takes hours and dozens of worker runs. Usage: /math-proof:siege [NAME=value settings] <the problem, ",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "solo",
+      "category": "specialized-domains",
+      "source_path": "specialized-domains/solo/SKILL.md",
+      "blob_sha": "baf2dc488e7d993bff4ae4be9d3a3ff0f08d172a",
+      "description": "Work on one hard mathematics problem in this session yourself, with no sub-agents: reason in stages, record each settled step in a notes file so that nothing written is lost if a response is cut off, and end with a self-contained proof.md. Usage: /math-proof:solo <the problem, stated in full, or the path of a file holding it>.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "guard",
+      "category": "testing-qa",
+      "source_path": "testing-qa/guard/SKILL.md",
+      "blob_sha": "e4dff7936f865fe9610178362e3551b982af6731",
+      "description": "Full safety mode: destructive command warnings + directory-scoped edits. (gstack)",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "investigate",
+      "category": "testing-qa",
+      "source_path": "testing-qa/investigate/SKILL.md",
+      "blob_sha": "daf6be6d8133c2c67d5eed9f8229c3add7443850",
+      "description": "Systematic debugging with root cause investigation. (gstack)",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "playwright-cli",
+      "category": "testing-qa",
+      "source_path": "testing-qa/playwright-cli/SKILL.md",
+      "blob_sha": "aa8dea4bba35a00b362fa925b25b8058b9a28fa6",
+      "description": "Automate browser interactions, test web pages and work with Playwright tests.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "playwright-component-testing",
+      "category": "testing-qa",
+      "source_path": "testing-qa/playwright-component-testing/SKILL.md",
+      "blob_sha": "60b97bf8604e3484ccf3a56d4dfc73b4b4277b80",
+      "description": "Set up component testing with Playwright using a story gallery — scaffold stories and a gallery dev page driven by the built-in mount fixture, no dedicated component-testing runtime. Use when asked to test React or Vue components in isolation with Playwright, or to migrate off @playwright/experimental-ct-react / -vue.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "playwright-trace",
+      "category": "testing-qa",
+      "source_path": "testing-qa/playwright-trace/SKILL.md",
+      "blob_sha": "95d6d47d1efad81e5936b4e04bfb77131f3c1573",
+      "description": "Inspect Playwright trace files from the command line — list actions, view requests, console, errors, snapshots and screenshots.",
+      "already_in_zerocoding": false
+    },
+    {
+      "name": "qa",
+      "category": "testing-qa",
+      "source_path": "testing-qa/qa/SKILL.md",
+      "blob_sha": "c5fdf9b565b02339026f60eee6aaa31a93f2cfce",
+      "description": "Systematically QA test a web application and fix bugs found. (gstack)",
+      "already_in_zerocoding": false
+    }
+  ]
+}
