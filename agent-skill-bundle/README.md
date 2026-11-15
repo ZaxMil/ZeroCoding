@@ -2,7 +2,7 @@
 
 ![Animated Agent Skill Bundle reactor — illustration of the earlier 174-skill edition](docs/images/agent-skill-bundle-reactor.gif)
 
-**205 reviewed agent-skill directories. One source vault. Two native bootstrap skills.**
+**217 reviewed agent-skill directories. One source vault. Two native bootstrap skills.**
 
 A source-preserving collection of reusable AI agent workflows for **Google Antigravity, OpenAI Codex, Claude Code**, and other file-based Agent Skills hosts. Find the skill you need without loading the entire collection into the agent's native startup discovery.
 
@@ -10,13 +10,17 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 
 [Installation](docs/INSTALLATION.md) · [Quick start](#quick-start-strict-on-demand) · [What's included](#whats-included) · [External tools](#skills-are-not-software) · [Security](SECURITY.md) · [Upstream credits](CREDITS.md) · [Source review](docs/REVIEW_2026-09-27.md)
 
+## Design source update — November 2026
+
+Eight official GSAP skills, the full Scroll World skill and three ZeroCoding-authored external-tool adapters are included in the searchable source vault. The other sources in the twelve-project review are present as existing snapshots, source metadata or updated pinned opt-in packs. Restricted React Bits and Canvas UI components are **not redistributed**. Read [the reviewed source integration guide](docs/DESIGN_SOURCES_2026-11-15.md).
+
 ## At a glance
 
 | | |
 |---|---|
-| **205** skill directories | The complete reviewed source vault, including local adapters. |
+| **217** skill directories | The complete reviewed source vault, including local adapters. |
 | **2** native bootstraps | `i-have-adhd` and `skill-retrieval-routing` in strict on-demand mode. |
-| **203** on-demand entries | Remain in the source checkout; local Skill Retrieval MCP must be configured separately for searchable access. |
+| **215** on-demand entries | Remain in the source checkout; local Skill Retrieval MCP must be configured separately for searchable access. |
 | **3 primary hosts** | Antigravity IDE, Codex, and Claude Code, using the same portable skill content. |
 | **Explicit setup only** | The installer copies selected locally bundled skill directories when you run it; gateway-only packs are installed directly from their canonical upstream source and are never mirrored here. |
 
@@ -58,7 +62,7 @@ That installs the 10 project-local core skills under `.agents/skills/`, preserve
 
 ### Why strict on-demand?
 
-Installing 188 skills natively exposes their descriptions to host discovery. The preferred setup exposes only **two** bootstrap descriptions from this bundle. When a task needs something specific, the separately configured local retrieval service finds the relevant skill; the agent then reads that skill and its supporting files from the **one source checkout**.
+Installing 215 skills natively exposes their descriptions to host discovery. The preferred setup exposes only **two** bootstrap descriptions from this bundle. When a task needs something specific, the separately configured local retrieval service finds the relevant skill; the agent then reads that skill and its supporting files from the **one source checkout**.
 
 This keeps discovery focused. It does **not** mean that all 186 skill bodies are automatically installed, that a skill grants a tool or permission, or that Antigravity/Codex/Claude have identical capabilities.
 
@@ -153,7 +157,7 @@ Eleven complete, pinned MIT-licensed upstream skill packages and two **original 
 | `game-ready-2d-asset-pipeline` | Original workflow for transparent, modular, production-ready sprite assets |
 | `cross-agent-skill-verification` | Original workflow to verify discovery and use across Antigravity, Codex and Claude Code |
 
-**Strict on-demand is unchanged:** only `i-have-adhd` and `skill-retrieval-routing` are installed natively. The 186 other skill directories remain in the one checkout until the separate local retrieval service is configured and a relevant skill is requested. No models, paid API, MCP server, host plugin, Python dependency, credential, or production service is installed automatically.
+**Strict on-demand is unchanged:** only `i-have-adhd` and `skill-retrieval-routing` are installed natively. The other skill directories remain in the one checkout until the separate local retrieval service is configured and a relevant skill is requested. No models, paid API, MCP server, host plugin, Python dependency, credential, or production service is installed automatically.
 
 ## Skills are not software
 

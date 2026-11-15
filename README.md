@@ -2,17 +2,17 @@
   <img src=".github/assets/zerocoding-hero.svg" alt="ZeroCoding — give your AI the right skills to turn ideas into working software" width="100%" />
 
   <p><strong>From “I have an idea” to “I know what to do next.”</strong></p>
-  <p>An organized, reusable collection of <strong>205 AI-agent skills</strong> for building websites, apps, games, automations, designs and more — with a practical way to load only what a task needs.</p>
+  <p>An organized, reusable collection of <strong>217 AI-agent skills</strong> for building websites, apps, games, automations, designs and more — with a practical way to load only what a task needs.</p>
 
   <p>
     <a href="AI_SETUP.md"><img src="https://img.shields.io/badge/START_WITH_YOUR_AI-A8FFAD?style=for-the-badge&amp;labelColor=14212A&amp;color=A8FFAD" alt="Start with your AI" /></a>
-    <a href="SKILLS.md"><img src="https://img.shields.io/badge/EXPLORE_205_SKILLS-8B87FF?style=for-the-badge&amp;labelColor=14212A&amp;color=8B87FF" alt="Explore 205 skills" /></a>
+    <a href="SKILLS.md"><img src="https://img.shields.io/badge/EXPLORE_217_SKILLS-8B87FF?style=for-the-badge&amp;labelColor=14212A&amp;color=8B87FF" alt="Explore 217 skills" /></a>
     <a href="agent-skill-bundle/docs/INSTALLATION.md"><img src="https://img.shields.io/badge/SETUP_GUIDE-3B496A?style=for-the-badge&amp;labelColor=14212A&amp;color=3B496A" alt="Setup guide" /></a>
   </p>
   <p>
     <a href="https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml"><img src="https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml/badge.svg" alt="CI workflow" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8F9DBA?style=flat-square" alt="MIT license" /></a>
-    <a href="SKILLS.md"><img src="https://img.shields.io/badge/skill_directories-205-86E5C0?style=flat-square" alt="205 skills" /></a>
+    <a href="SKILLS.md"><img src="https://img.shields.io/badge/skill_directories-217-86E5C0?style=flat-square" alt="217 skills" /></a>
     <a href="https://github.com/ZaxMil/ZeroCoding/stargazers"><img src="https://img.shields.io/github/stars/ZaxMil/ZeroCoding?style=flat-square&amp;color=9AAAF7" alt="GitHub stars" /></a>
   </p>
   <p>
@@ -110,7 +110,7 @@ or deploy anything as part of setup. Explain any blocker clearly.
 
 | What's included | Why it matters |
 | :--- | :--- |
-| **205 curated skill directories** | A broad source vault with instructions and related resources. |
+| **217 curated skill directories** | A broad source vault with instructions and related resources. |
 | **2 global bootstrap skills** | Antigravity can start with a small native entry point rather than the whole vault. |
 | **10 project core skills** | Added to supported project skill folders when you explicitly initialize a workspace. |
 | **Specialists on demand** | Search the local vault for a relevant skill instead of reading everything at once. |
@@ -155,7 +155,7 @@ This is an agent-driven workflow, not a background listener or a guarantee that 
 
 ## 🧩 Find your skill
 
-You don't need to scroll through 205 entries on the homepage. Jump into the category that matches your work:
+You don't need to scroll through 217 entries on the homepage. Jump into the category that matches your work:
 
 | **Create & design** | **Build & automate** | **Ship & grow** |
 | :--- | :--- | :--- |
@@ -166,6 +166,10 @@ You don't need to scroll through 205 entries on the homepage. Jump into the cate
 **[Browse the complete searchable-by-page skills catalog →](SKILLS.md)**
 
 You can also inspect the [full source vault](agent-skill-bundle/), [upstream credits](agent-skill-bundle/CREDITS.md) and [contribution guide](agent-skill-bundle/CONTRIBUTING.md).
+
+## 🎨 New verified design sources
+
+Added eight official GSAP Agent Skills, the complete Scroll World skill, and three small, license-respecting reference adapters for Open Design, React Bits, and Canvas UI. All twelve canonical design sources are tracked by immutable revision. Existing UI/UX Pro Max, Taste, Emil, Hallmark and design-system integrations remain available without blind duplication. [Review all twelve source integrations](agent-skill-bundle/docs/DESIGN_SOURCES_2026-11-15.md).
 
 ## 🛡️ Built for control, not magic
 

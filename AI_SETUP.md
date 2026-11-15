@@ -90,7 +90,7 @@ Full instructions and examples: [per-request skill routing](agent-skill-bundle/d
 ## What is and is not automatic
 
 - **Automatic once explicitly launched:** project stack detection (markers only), installation of the 10 reviewed project core skill directories, rules and routing configuration, status checks.
-- **On-demand:** searching the 188 local source-vault skills and 14 Emil external gateway names; load the relevant instructions when a task requires them.
+- **On-demand:** searching the local source-vault skills and 20 Emil external gateway names; load the relevant instructions when a task requires them.
 - **Not automatically installed:** the separate Skill Retrieval MCP runtime, external skills such as Emil's, external CLIs, dependencies, cloud accounts, keys, deployment or database updates. The local `skill_doctor.py` provides a read-only fallback even without MCP.
 - **Other AI products:** host-native skill discovery is not guaranteed outside Antigravity, Codex and Claude Code. Any AI with authenticated repository access and an authorized terminal can follow the documented steps; chat-only AIs can read the instructions but cannot modify your local machine.
 
