@@ -2,97 +2,133 @@
   "schema_version": 1,
   "source_repository": "emilkowalski/skills",
   "source_url": "https://github.com/emilkowalski/skills",
-  "checked_commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+  "checked_commit": "64eb3deb9a5fbfa041faf783e0bc3fd635872e9c",
   "upstream_license": "MIT",
   "install_command": "npx skills@latest add emilkowalski/skills",
   "relationship": "metadata_only_external_gateway",
   "code_redistributed": false,
   "skills_copied": 0,
-  "note": "Canonical Emil Kowalski skill bodies stay upstream. ZeroCoding records names, source paths, reviewed tree IDs, descriptions, and the canonical install command only.",
+  "note": "All 20 canonical Emil skill bodies remain upstream. This is metadata-only; no original skill instructions or executables are redistributed.",
   "skills": [
-    {
-      "name": "emil-design-eng",
-      "source_path": "skills/emil-design-eng",
-      "tree_sha": "db7a20dc1d8ad26a0307dcb45ebc79fc372f5c69",
-      "description": "Primary design-engineering skill focused on animation decisions and UI design advice."
-    },
     {
       "name": "animate",
       "source_path": "skills/animate",
-      "tree_sha": "a92e36f28d741aee4ff77d1a001300d7e86e07fe",
+      "tree_sha": "6a0393c04fe65ec31746b67956c5d7775a8b9dec",
       "description": "Build web UI animations with appropriate curves, durations, and properties."
     },
     {
       "name": "animate-expo",
       "source_path": "skills/animate-expo",
-      "tree_sha": "6874701c790c7e74926ccd0a8716647a81424c85",
+      "tree_sha": "d8aad567cb34790db6f32b47f0862797c58574b6",
       "description": "React Native and Expo animation guidance including gestures, sheets, haptics, transitions, and native-thread motion."
     },
     {
-      "name": "review-animations",
-      "source_path": "skills/review-animations",
-      "tree_sha": "0e0d3cb3e07ca307fe946ccaf57f6c82eb75124a",
-      "description": "Strict review of existing animations against Emil Kowalski's motion rules."
-    },
-    {
-      "name": "improve-animations",
-      "source_path": "skills/improve-animations",
-      "tree_sha": "cf1f7aabac34c08f2cf833f039fa99af2f415183",
-      "description": "Audit animations and produce prioritized self-contained improvement plans."
-    },
-    {
-      "name": "find-animation-opportunities",
-      "source_path": "skills/find-animation-opportunities",
-      "tree_sha": "e6443880f38e33cf78e5d678471eed35e8566763",
-      "description": "Find UI areas that genuinely benefit from motion and identify places that should not animate."
+      "name": "animation-performance",
+      "source_path": "skills/animation-performance",
+      "tree_sha": "70a3674a7db0ef9a27fc5e4eb2f9afc70ad2f0d8",
+      "description": "Analyze jank, paint cost, compositing and animation performance."
     },
     {
       "name": "animation-vocabulary",
       "source_path": "skills/animation-vocabulary",
-      "tree_sha": "d49565744427887a1f719de1ceee04d941d4e681",
+      "tree_sha": "5b8f08921a61e64893d5d4572752b3362cb8a24d",
       "description": "Use precise animation vocabulary to communicate desired motion to an AI agent."
     },
     {
       "name": "apple-design",
       "source_path": "skills/apple-design",
-      "tree_sha": "cd509ae729c86487d352e17a26651217a4c25711",
+      "tree_sha": "9bfcd2e17dbac4b390ab231bbf9bd3f3734b21ff",
       "description": "Apple interface and fluid-motion design principles translated into practical web guidance."
     },
     {
-      "name": "write-swift",
-      "source_path": "skills/write-swift",
-      "tree_sha": "bdefda3891d347b8a183bdc727e4a1de2be3c82b",
-      "description": "Modern Swift guidance covering value types, Swift 6 concurrency, generics, performance, and Swift Testing."
+      "name": "ask-emil",
+      "source_path": "skills/ask-emil",
+      "tree_sha": "7da3d47af274c796c2f9f599db70619e1a3a734f",
+      "description": "Design-engineering advice and critique for interface and motion choices."
+    },
+    {
+      "name": "ask-sonner",
+      "source_path": "skills/ask-sonner",
+      "tree_sha": "4c2100bb05d30b4e3a889edf25bfbeb27c3f1447",
+      "description": "Setup, styling, recipes, and troubleshooting guidance for the Sonner toast library."
+    },
+    {
+      "name": "break-ui",
+      "source_path": "skills/break-ui",
+      "tree_sha": "3366af548a363c2012e53503cbcf718dc07f047f",
+      "description": "Stress-test UI with worst-case data, extreme labels, empty states, large counts, and unusual identities."
+    },
+    {
+      "name": "choreograph",
+      "source_path": "skills/choreograph",
+      "tree_sha": "d95a9d2f4f47c56c05c04522eab52c6d997215c3",
+      "description": "Coordinate interface animations as a coherent sequence."
+    },
+    {
+      "name": "emil-design-eng",
+      "source_path": "skills/emil-design-eng",
+      "tree_sha": "8086a08e5ebde316c4b9226764f1f2196e1869fa",
+      "description": "Primary design-engineering skill focused on animation decisions and UI design advice."
+    },
+    {
+      "name": "find-animation-opportunities",
+      "source_path": "skills/find-animation-opportunities",
+      "tree_sha": "4a44e78f996f1e1877ab6d2c82596c64c36e8bb9",
+      "description": "Find UI areas that genuinely benefit from motion and identify places that should not animate."
+    },
+    {
+      "name": "gestures",
+      "source_path": "skills/gestures",
+      "tree_sha": "759639ab6e4ad2a8578dbf3a4d8cae7a43ecc64f",
+      "description": "Design and implement gesture-based UI interactions."
+    },
+    {
+      "name": "improve-animations",
+      "source_path": "skills/improve-animations",
+      "tree_sha": "f5891a5e4a2b535d59daf89f763abe7ed29135e5",
+      "description": "Audit animations and produce prioritized self-contained improvement plans."
+    },
+    {
+      "name": "learn-taste",
+      "source_path": "skills/learn-taste",
+      "tree_sha": "4d26b3fcff1c91b4fa82709839ca2f7f3e479c93",
+      "description": "Develop visual judgment by analyzing examples and contrasting design choices."
+    },
+    {
+      "name": "mobile-native",
+      "source_path": "skills/mobile-native",
+      "tree_sha": "a728bbf1f4a20873d3c041a9151da4b710a86ae2",
+      "description": "Make web apps feel native on phones by fixing mobile interaction and viewport details."
     },
     {
       "name": "pick-ui-library",
       "source_path": "skills/pick-ui-library",
-      "tree_sha": "370e19776f0aa2403a2edeed78266bd6a5d78036",
+      "tree_sha": "0fec768a94dee684dcbd0b8da8a438ca214443d0",
       "description": "Select trusted UI libraries instead of hand-rolling common components or choosing abandoned packages."
     },
     {
       "name": "prototype",
       "source_path": "skills/prototype",
-      "tree_sha": "34cd3a303aef0a975fcce3ac906d6b293e600399",
+      "tree_sha": "4ea5b3b58efecc83751b275fb58b516bbf42010b",
       "description": "Create multiple UI variants and compare them through a switcher."
     },
     {
-      "name": "mobile-native",
-      "source_path": "skills/mobile-native",
-      "tree_sha": "fdad6e6e91d8bbfda7164c7027269a8389dbadcd",
-      "description": "Make web apps feel native on phones by fixing mobile interaction and viewport details."
+      "name": "remove-animations",
+      "source_path": "skills/remove-animations",
+      "tree_sha": "8d9dbf29d9e3153420d80e518a85abc3a9a4a68b",
+      "description": "Remove unnecessary animations and reduce distracting motion."
     },
     {
-      "name": "break-ui",
-      "source_path": "skills/break-ui",
-      "tree_sha": "f2a3441d4cf14df060ee363e155502a4818b5f8d",
-      "description": "Stress-test UI with worst-case data, extreme labels, empty states, large counts, and unusual identities."
+      "name": "review-animations",
+      "source_path": "skills/review-animations",
+      "tree_sha": "5b83aaadbcae77e09b07b5057c342b8074f7225b",
+      "description": "Strict review of existing animations against Emil Kowalski's motion rules."
     },
     {
-      "name": "ask-sonner",
-      "source_path": "skills/ask-sonner",
-      "tree_sha": "aeca3dba0eb0415fa5a310cd6823b824fe60323d",
-      "description": "Setup, styling, recipes, and troubleshooting guidance for the Sonner toast library."
+      "name": "write-swift",
+      "source_path": "skills/write-swift",
+      "tree_sha": "631930d487cf9871128f582d309531481d26cabe",
+      "description": "Modern Swift guidance covering value types, Swift 6 concurrency, generics, performance, and Swift Testing."
     }
   ]
 }

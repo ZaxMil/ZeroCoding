@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-15",
+  "source_count": 12,
+  "policy": "Canonical source-of-truth at pinned commits; automatic upstream merge and execution prohibited. Source-only optional pack checkout requires opt-in. The Commons Clause component libraries are not redistributed.",
+  "sources": [
+    {
+      "repository": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+      "revision": "1f50119f717e935f135d605ce537223d1d7a0dac",
+      "integration": "Existing local skill, optional current source",
+      "path": "design/ui-ux-pro-max"
+    },
+    {
+      "repository": "VoltAgent/awesome-design-md",
+      "url": "https://github.com/VoltAgent/awesome-design-md",
+      "revision": "fcc70284932276d085f01ef9f83edde90b1258cb",
+      "integration": "Existing design system collection + reference",
+      "path": "design/design-systems"
+    },
+    {
+      "repository": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "revision": "59e4f2ae85de7e7318a5e6bdcf3a34584c4b7582",
+      "integration": "Original local adapter + reference only",
+      "path": "design/open-design-reference"
+    },
+    {
+      "repository": "Leonxlnx/taste-skill",
+      "url": "https://github.com/Leonxlnx/taste-skill",
+      "revision": "f6b76575f949707b4e3c37cd86cb44b0b98643e8",
+      "integration": "Existing older skills + optional current source",
+      "path": "design/design-taste-frontend"
+    },
+    {
+      "repository": "pbakaus/impeccable",
+      "url": "https://github.com/pbakaus/impeccable",
+      "revision": "2b86d9c07b97d4bed7de23583e1bd1e58dd2baae",
+      "integration": "Optional canonical source-only skill pack",
+      "path": "optional:impeccable"
+    },
+    {
+      "repository": "DavidHDev/react-bits",
+      "url": "https://github.com/DavidHDev/react-bits",
+      "revision": "cf2801031f07f53d4684e65b961bde7c2e2a6921",
+      "integration": "Original local adapter; source restricted",
+      "path": "design/react-bits-reference"
+    },
+    {
+      "repository": "emilkowalski/skills",
+      "url": "https://github.com/emilkowalski/skills",
+      "revision": "64eb3deb9a5fbfa041faf783e0bc3fd635872e9c",
+      "integration": "Current 20 metadata entries + optional source",
+      "path": "registry/vendor-emilkowalski.json"
+    },
+    {
+      "repository": "nutlope/hallmark",
+      "url": "https://github.com/nutlope/hallmark",
+      "revision": "04977e15f3dfd6ee4b74c887dac3eb52665d6c92",
+      "integration": "Current optional canonical source-only skill pack",
+      "path": "optional:hallmark"
+    },
+    {
+      "repository": "google-labs-code/design.md",
+      "url": "https://github.com/google-labs-code/design.md",
+      "revision": "1ed38aa9dd4451b9039f9aeb9ed1d2579edafddf",
+      "integration": "Reference specification linked to existing Hermes skill",
+      "path": "design/design-md"
+    },
+    {
+      "repository": "greensock/gsap-skills",
+      "url": "https://github.com/greensock/gsap-skills",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "integration": "8 exact original skills + MIT notices",
+      "path": "design/gsap-*"
+    },
+    {
+      "repository": "oso95/scroll-world",
+      "url": "https://github.com/oso95/scroll-world",
+      "revision": "71cc36d3bb150248ae36a2c552f9cbf88802a79c",
+      "integration": "Complete exact original skill, 5 references + MIT notice",
+      "path": "design/scroll-world"
+    },
+    {
+      "repository": "DavidHDev/canvas-ui",
+      "url": "https://github.com/DavidHDev/canvas-ui",
+      "revision": "a0be3b7e1f42d0d1bafde470b6794b39f6729502",
+      "integration": "Original local adapter; source restricted",
+      "path": "design/canvas-ui-reference"
+    }
+  ],
+  "original_copied_skill_count": 9,
+  "original_license_overlay_count": 9,
+  "zero_coding_original_reference_guides": [
+    "open-design-reference",
+    "react-bits-reference",
+    "canvas-ui-reference"
+  ],
+  "emil_external_skill_count": 20
+}

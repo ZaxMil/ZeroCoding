@@ -343,6 +343,87 @@
       "kind": "skill",
       "sync": "manual-review",
       "note": "Original complete skill directory, pinned in registry/vendor-skillsmp-2026-09-27.json; root MIT license overlaid per installable directory."
+    },
+    {
+      "local_path": "design/gsap-core",
+      "source_id": "greensock-gsap-skills",
+      "source_path": "skills/gsap-core",
+      "kind": "skill-with-license-overlay",
+      "sync": "manual-review",
+      "attribution": "GreenSock / GSAP Skills, MIT",
+      "note": "SKILL.md exact copied from canonical pinned upstream; root MIT license overlaid as LICENSE.txt."
+    },
+    {
+      "local_path": "design/gsap-frameworks",
+      "source_id": "greensock-gsap-skills",
+      "source_path": "skills/gsap-frameworks",
+      "kind": "skill-with-license-overlay",
+      "sync": "manual-review",
+      "attribution": "GreenSock / GSAP Skills, MIT",
+      "note": "SKILL.md exact copied from canonical pinned upstream; root MIT license overlaid as LICENSE.txt."
+    },
+    {
+      "local_path": "design/gsap-performance",
+      "source_id": "greensock-gsap-skills",
+      "source_path": "skills/gsap-performance",
+      "kind": "skill-with-license-overlay",
+      "sync": "manual-review",
+      "attribution": "GreenSock / GSAP Skills, MIT",
+      "note": "SKILL.md exact copied from canonical pinned upstream; root MIT license overlaid as LICENSE.txt."
+    },
+    {
+      "local_path": "design/gsap-plugins",
+      "source_id": "greensock-gsap-skills",
+      "source_path": "skills/gsap-plugins",
+      "kind": "skill-with-license-overlay",
+      "sync": "manual-review",
+      "attribution": "GreenSock / GSAP Skills, MIT",
+      "note": "SKILL.md exact copied from canonical pinned upstream; root MIT license overlaid as LICENSE.txt."
+    },
+    {
+      "local_path": "design/gsap-react",
+      "source_id": "greensock-gsap-skills",
+      "source_path": "skills/gsap-react",
+      "kind": "skill-with-license-overlay",
+      "sync": "manual-review",
+      "attribution": "GreenSock / GSAP Skills, MIT",
+      "note": "SKILL.md exact copied from canonical pinned upstream; root MIT license overlaid as LICENSE.txt."
+    },
+    {
+      "local_path": "design/gsap-scrolltrigger",
+      "source_id": "greensock-gsap-skills",
+      "source_path": "skills/gsap-scrolltrigger",
+      "kind": "skill-with-license-overlay",
+      "sync": "manual-review",
+      "attribution": "GreenSock / GSAP Skills, MIT",
+      "note": "SKILL.md exact copied from canonical pinned upstream; root MIT license overlaid as LICENSE.txt."
+    },
+    {
+      "local_path": "design/gsap-timeline",
+      "source_id": "greensock-gsap-skills",
+      "source_path": "skills/gsap-timeline",
+      "kind": "skill-with-license-overlay",
+      "sync": "manual-review",
+      "attribution": "GreenSock / GSAP Skills, MIT",
+      "note": "SKILL.md exact copied from canonical pinned upstream; root MIT license overlaid as LICENSE.txt."
+    },
+    {
+      "local_path": "design/gsap-utils",
+      "source_id": "greensock-gsap-skills",
+      "source_path": "skills/gsap-utils",
+      "kind": "skill-with-license-overlay",
+      "sync": "manual-review",
+      "attribution": "GreenSock / GSAP Skills, MIT",
+      "note": "SKILL.md exact copied from canonical pinned upstream; root MIT license overlaid as LICENSE.txt."
+    },
+    {
+      "local_path": "design/scroll-world",
+      "source_id": "oso95-scroll-world",
+      "source_path": "skills/scroll-world",
+      "kind": "skill-with-license-overlay",
+      "sync": "manual-review",
+      "attribution": "cyw / Scroll World, MIT",
+      "note": "Original skill and five references preserved; upstream root MIT license overlaid as LICENSE.txt."
     }
   ],
   "anthropic_design_skills": [
