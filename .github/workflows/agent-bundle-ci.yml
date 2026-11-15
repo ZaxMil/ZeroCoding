@@ -43,6 +43,15 @@ jobs:
           python3 scripts/optional_packs.py install --pack emil --cache "$RUNNER_TEMP/zerocoding-external-packs"
           python3 scripts/optional_packs.py status --pack emil --cache "$RUNNER_TEMP/zerocoding-external-packs"
           python3 scripts/optional_packs.py remove --pack emil --cache "$RUNNER_TEMP/zerocoding-external-packs"
+          python3 scripts/optional_packs.py install --pack ind4x --cache "$RUNNER_TEMP/zerocoding-external-packs"
+          python3 scripts/optional_packs.py status --pack ind4x --cache "$RUNNER_TEMP/zerocoding-external-packs"
+          python3 - "$RUNNER_TEMP/zerocoding-external-packs/ind4x" <<'PY'
+          import pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          assert sum(1 for x in root.glob("*/*/SKILL.md") if x.is_file()) == 106
+          print("Verified 106 pinned ind4x source-only SKILL.md files")
+          PY
+          python3 scripts/optional_packs.py remove --pack ind4x --cache "$RUNNER_TEMP/zerocoding-external-packs"
 
       - name: Legacy repository references
         run: |
