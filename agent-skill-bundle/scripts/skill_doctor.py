@@ -24,8 +24,7 @@ CATEGORIES = (
     "productivity", "automation", "creative", "reverse-engineering",
 )
 BOOTSTRAPS = {
-    "i-have-adhd": "productivity/i-have-adhd",
-    "skill-retrieval-routing": "research/skill-retrieval-routing",
+    "zerocoding": "research/zerocoding",
 }
 MARKER = ".agent-skill-bundle-external.json"
 
@@ -104,10 +103,28 @@ def skill_catalog(vault):
 def external_skill_catalog():
     """Upstream gateways plus locally staged optional source skills."""
     result = []
-    from optional_packs import DEFAULT_CACHE, installed as optional_installed, packs as optional_packs
+    from optional_packs import (DEFAULT_CACHE, installed as optional_installed,
+                                packs as optional_packs, skill_files)
     optional = optional_packs()
     emil_ready = optional_installed(DEFAULT_CACHE, optional["emil"])
     manifests = (ROOT / "registry/vendor-emilkowalski.json",)
+    aggregator_path = ROOT / "registry/ind4x-catalog.json"
+    aggregator_ready = optional_installed(DEFAULT_CACHE, optional["ind4x"])
+    if aggregator_path.is_file() and not aggregator_ready:
+        catalog = json.loads(aggregator_path.read_text(encoding="utf-8"))
+        for item in catalog["skills"]:
+            if item["already_in_zerocoding"]:
+                continue
+            result.append({
+                "name": item["name"],
+                "source": f"external:ind4x/ai-agent-skills:{item['name']}",
+                "description": item["description"],
+                "path": item["source_path"],
+                "external": True,
+                "repository": "ind4x/ai-agent-skills",
+                "revision": catalog["upstream_revision"],
+                "install_command": "python scripts/optional_packs.py install --pack ind4x",
+            })
     for manifest_path in manifests:
         if not manifest_path.is_file() or emil_ready:
             continue
@@ -125,8 +142,7 @@ def external_skill_catalog():
     for pack in optional.values():
         cache = DEFAULT_CACHE / pack["id"]
         if pack["mode"] == "skills" and optional_installed(DEFAULT_CACHE, pack):
-            folder = cache / pack["skill_root"]
-            for skill_file in sorted(folder.glob("*/SKILL.md")):
+            for skill_file in skill_files(cache, pack):
                 if skill_file.is_symlink() or skill_file.parent.is_symlink():
                     continue
                 body = skill_file.read_text(encoding="utf-8", errors="replace")[:3500]
@@ -138,7 +154,7 @@ def external_skill_catalog():
                     "description": desc,
                     "path": str(skill_file.resolve()),
                 })
-        elif pack["id"] != "emil":
+        elif pack["id"] not in ("emil", "ind4x"):
             result.append({
                 "name": pack["id"],
                 "source": f"upstream:{pack['id']}",
@@ -282,8 +298,8 @@ def doctor(args):
     entries = skill_catalog(vault)
     names = [x["name"] for x in entries]
     issues = []
-    if len(entries) != 205:
-        issues.append(f"source vault has {len(entries)} skill directories, expected 205")
+    if len(entries) != 218:
+        issues.append(f"source vault has {len(entries)} skill directories, expected 218")
     if len(names) != len(set(names)):
         issues.append("duplicate local native skill names")
     host = None
@@ -349,7 +365,7 @@ def doctor(args):
         "source_vault_count": len(entries),
         "status_counts": status_counts,
         "per_skill": per_skill,
-        "native_mode": "two-bootstrap only; runtime host discovery not verified",
+        "native_mode": "one-bootstrap gateway; runtime host discovery not verified",
         "native_bootstraps": host if host is not None else "Unverified (provide --host-root)",
         "retrieval_mcp": "Unverified; test the live MCP in each host with list_categories/keyword_search/search_skills/get_skill",
         "external": external,
