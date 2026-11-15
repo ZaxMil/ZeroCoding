@@ -2,17 +2,17 @@
   <img src=".github/assets/zerocoding-hero.svg" alt="ZeroCoding — give your AI the right skills to turn ideas into working software" width="100%" />
 
   <p><strong>From “I have an idea” to “I know what to do next.”</strong></p>
-  <p>An organized, reusable collection of <strong>217 AI-agent skills</strong> for building websites, apps, games, automations, designs and more — with a practical way to load only what a task needs.</p>
+  <p>An organized, reusable collection of <strong>218 AI-agent skills</strong> for building websites, apps, games, automations, designs and more — with a practical way to load only what a task needs.</p>
 
   <p>
     <a href="AI_SETUP.md"><img src="https://img.shields.io/badge/START_WITH_YOUR_AI-A8FFAD?style=for-the-badge&amp;labelColor=14212A&amp;color=A8FFAD" alt="Start with your AI" /></a>
-    <a href="SKILLS.md"><img src="https://img.shields.io/badge/EXPLORE_217_SKILLS-8B87FF?style=for-the-badge&amp;labelColor=14212A&amp;color=8B87FF" alt="Explore 217 skills" /></a>
+    <a href="SKILLS.md"><img src="https://img.shields.io/badge/EXPLORE_218_SKILLS-8B87FF?style=for-the-badge&amp;labelColor=14212A&amp;color=8B87FF" alt="Explore 218 skills" /></a>
     <a href="agent-skill-bundle/docs/INSTALLATION.md"><img src="https://img.shields.io/badge/SETUP_GUIDE-3B496A?style=for-the-badge&amp;labelColor=14212A&amp;color=3B496A" alt="Setup guide" /></a>
   </p>
   <p>
     <a href="https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml"><img src="https://github.com/ZaxMil/ZeroCoding/actions/workflows/agent-bundle-ci.yml/badge.svg" alt="CI workflow" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8F9DBA?style=flat-square" alt="MIT license" /></a>
-    <a href="SKILLS.md"><img src="https://img.shields.io/badge/skill_directories-217-86E5C0?style=flat-square" alt="217 skills" /></a>
+    <a href="SKILLS.md"><img src="https://img.shields.io/badge/skill_directories-218-86E5C0?style=flat-square" alt="218 skills" /></a>
     <a href="https://github.com/ZaxMil/ZeroCoding/stargazers"><img src="https://img.shields.io/github/stars/ZaxMil/ZeroCoding?style=flat-square&amp;color=9AAAF7" alt="GitHub stars" /></a>
   </p>
   <p>
@@ -110,9 +110,9 @@ or deploy anything as part of setup. Explain any blocker clearly.
 
 | What's included | Why it matters |
 | :--- | :--- |
-| **217 curated skill directories** | A broad source vault with instructions and related resources. |
-| **2 global bootstrap skills** | Antigravity can start with a small native entry point rather than the whole vault. |
-| **10 project core skills** | Added to supported project skill folders when you explicitly initialize a workspace. |
+| **218 curated skill directories** | A broad source vault with instructions and related resources. |
+| **1 global gateway skill** | Antigravity can start with a small native entry point rather than the whole vault. |
+| **1 project gateway skill** | Added to supported project skill folders when you explicitly initialize a workspace. |
 | **Specialists on demand** | Search the local vault for a relevant skill instead of reading everything at once. |
 | **Cross-host project layout** | Documented setup for Antigravity, OpenAI Codex and Claude Code. |
 
@@ -122,7 +122,7 @@ or deploy anything as part of setup. Explain any blocker clearly.
 
 ZeroCoding also registers 10 canonical upstream projects: Karpathy-inspired guidance, Emil Kowalski, Graphify, Ponytail, Caveman, Hallmark, Superpowers, Agent Skills specification, Antigravity Skills, and Anthropic Skills.
 
-After the normal machine bootstrap, you can optionally stage **seven source-only skill packs** in the external, on-demand vault using:
+After the normal machine bootstrap, you can optionally stage **source-only skill packs** in the external, on-demand vault using:
 
 ```bash
 python agent-skill-bundle/scripts/optional_packs.py install --all
@@ -132,13 +132,19 @@ The other three are reference/runtime gateways, not silently installed apps. All
 
 **[See source details, one-command Windows/macOS/Linux setup and safety notes](agent-skill-bundle/docs/OPTIONAL_PACKS.md).**
 
+## 🧠 One skill governs the entire ZeroCoding vault
+
+**One visible native entry point:** `zerocoding`. It selects a few relevant skills from the 218-directory local source vault per task, without loading the others. The source index also lists **106 third-party skills** from [ind4x/ai-agent-skills](https://github.com/ind4x/ai-agent-skills): 11 already have matching local names and 95 are **metadata only** until explicitly acquired and checked. External sources are not bundled or executed. [How the one-skill gateway works](agent-skill-bundle/docs/UNIFIED_ROUTER.md).
+
+For previous ZeroCoding installs, review and deliberately migrate only marked old skills with `bundle-update --prune-managed` and `agent-init --host all --prune-managed`. The migration never removes unmarked personal skills; inspect any locally modified managed skills before pruning.
+
 ## 🎯 Smart skills: a fresh selection for every task
 
 When you ask for UI work, the agent can find the relevant design and motion skills. Ask for a security review **next, in the same chat**, and it should select security skills instead of carrying over the earlier design list.
 
 ZeroCoding now includes a **read-only, per-request router**. Once your project is initialized, the managed agent rules ask the assistant to use it for each user message. It reads only skill metadata to select up to four relevant instructions and loads the selected skill bodies only on demand. Simple requests may need one or none.
 
-This is an agent-driven workflow, not a background listener or a guarantee that chat history can be erased. A compatible agent needs workspace/terminal access to invoke the router; re-run `agent-setup` in existing projects to refresh the managed rules.
+This is an agent-driven workflow, not a background listener or a guarantee that chat history can be erased. A compatible agent needs workspace/terminal access to invoke the router; re-run `agent-init --host all --prune-managed` in existing projects after reviewing old managed skills; the default initializer never silently deletes them.
 
 **[How per-request routing works and how to verify it](agent-skill-bundle/docs/PER_REQUEST_ROUTING.md)**
 
@@ -155,7 +161,7 @@ This is an agent-driven workflow, not a background listener or a guarantee that 
 
 ## 🧩 Find your skill
 
-You don't need to scroll through 217 entries on the homepage. Jump into the category that matches your work:
+You don't need to scroll through 218 entries on the homepage. Jump into the category that matches your work:
 
 | **Create & design** | **Build & automate** | **Ship & grow** |
 | :--- | :--- | :--- |

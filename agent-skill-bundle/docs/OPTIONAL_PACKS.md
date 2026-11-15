@@ -1,6 +1,6 @@
 # Optional upstream packs (10 canonical sources)
 
-ZeroCoding's existing bootstrap, 2 global starter skills, 10 project core skills, and 205 local vault skills are **unchanged**. This add-on follows the same **source outside project, discover on demand** method.
+ZeroCoding's existing bootstrap, 1 global gateway skill, 1 project gateway skill, and 218 local vault skills follow the unified on-demand architecture. This add-on follows the same **source outside project, discover on demand** method.
 
 The extra pack manager downloads only reviewed, immutable **Git commit** snapshots into the machine's external source vault. It does not install software, execute third-party scripts, add hooks/MCP servers, change agent rules, or modify application code. A skill document is not a guarantee that an external runtime works.
 
@@ -46,7 +46,7 @@ If you prefer not to fetch every skill pack, first use `--dry-run`, or replace `
 
 **What does `install --all` do?** Stages the seven sources in `skills` mode at `~/.agent-tools/ZeroCoding/external-packs/`, and prints reference/runtime messages for the other three. Installed source files stay *outside* projects; search includes their skill documents on demand. It does not copy hundreds of files into an app's `.agents/skills` or `.claude/skills` directories.
 
-Use normal `agent-setup` to initialize a new project; the default 10 core skills and your existing rules are unaffected.
+Use normal `agent-setup` to initialize a new project; the single default `zerocoding` skill and your existing rules are unaffected.
 
 ## Maintenance and safety
 
@@ -63,3 +63,15 @@ python agent-skill-bundle/scripts/optional_packs.py remove --pack hallmark
 - `Graphify` can work locally, but its actual CLI/dependencies are separate from the skill text. Follow its official instructions if you intentionally choose to install the application.
 - This manager needs to be run explicitly. It never authorizes credentials, deployments, file deletion outside its own managed cache, or external software execution.
 
+
+
+## Ind4x discovery-only collection
+
+The pinned `ind4x` source index lists 106 third-party skill names: **11 already have local matches and 95 are not bundled**. Browsing the metadata is immediate and offline; skill bodies stay external. If the user explicitly approves acquiring source files, fetch the pinned read-only checkout separately:
+
+```bash
+python3 scripts/optional_packs.py install --pack ind4x
+python3 scripts/optional_packs.py status --pack ind4x
+```
+
+This clones source text into the external cache, **not** the current project or host's native skills directory. It neither executes included scripts nor enables tools. The collection does not offer one universal license for its third-party content; verify the original author, license and host-specific tools of any skill before use. Never publish that collection as a single bundled skill file. See [single gateway](UNIFIED_ROUTER.md).

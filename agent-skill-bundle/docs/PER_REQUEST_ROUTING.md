@@ -24,7 +24,7 @@ Eight exact GSAP skills, Scroll World and three library/app reference adapters a
 
 ## Use in an initialized project
 
-Your existing ZeroCoding bootstrap creates a source checkout and installs a small Project Core. In a project already set up, run `agent-setup` again to refresh the managed agent rules without overwriting user-authored rules.
+Your existing ZeroCoding bootstrap creates a source checkout and installs a single native `zerocoding` gateway. In a project already set up, review legacy managed skills and run `agent-init --host all --prune-managed` without overwriting user-authored rules.
 
 The coding agent is instructed through its managed `AGENTS.md` / `CLAUDE.md` block to run the selector automatically **when the host permits local terminal access**. The command is available in the project's `.agents/agent-init.json` as `skill_router`.
 
@@ -62,4 +62,9 @@ python3 -m unittest discover -s tests -p 'test_smart_skill_router.py'
 python3 scripts/smart_skill_router.py --task "Improve UI and animations" --json
 ```
 
-Existing installer, Project Core and legacy source provenance checks should continue to pass. The router does not add a new global host skill, replace the original 205 local skills, or change upstream skill bodies.
+Existing installer, Project Core and legacy source provenance checks should continue to pass. The router now uses one default global host skill and retains all 217 specialist source bodies. It does not rewrite original upstream skill bodies.
+
+
+## One native gateway
+
+See [the unified ZeroCoding architecture](UNIFIED_ROUTER.md). A source vault contains 218 local skill folders, but **only one** is installed natively by default. Third-party ind4x entries are not copied into the vault or included in the router's `selected` paths until the pinned source is separately checked out. The `external_candidates` response is discovery-only.

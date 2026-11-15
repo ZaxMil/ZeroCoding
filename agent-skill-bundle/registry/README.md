@@ -31,6 +31,8 @@ This directory is the trust layer for Agent Skill Bundle.
 - `design-expansion-2026-11-15.json` — pinned canonical URLs and roles for all twelve reviewed interface/design repositories, including MIT + Commons Clause distribution restrictions.
 - `vendor-emilkowalski.json` — current 20 canonical Emil skill names and tree hashes without bundling their instruction bodies.
 
+- `ind4x-catalog.json` — read-only pinned metadata for 106 third-party skill names (11 names already local, 95 absent); not a redistribution license or execution approval.
+
 ## Source roles
 
 - `skill_upstream` — canonical source for exact skill syncing.

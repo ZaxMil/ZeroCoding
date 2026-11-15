@@ -2,7 +2,7 @@
 
 ![Animated Agent Skill Bundle reactor — illustration of the earlier 174-skill edition](docs/images/agent-skill-bundle-reactor.gif)
 
-**217 reviewed agent-skill directories. One source vault. Two native bootstrap skills.**
+**218 reviewed agent-skill directories. One source vault. One native gateway skill.**
 
 A source-preserving collection of reusable AI agent workflows for **Google Antigravity, OpenAI Codex, Claude Code**, and other file-based Agent Skills hosts. Find the skill you need without loading the entire collection into the agent's native startup discovery.
 
@@ -14,13 +14,17 @@ A source-preserving collection of reusable AI agent workflows for **Google Antig
 
 Eight official GSAP skills, the full Scroll World skill and three ZeroCoding-authored external-tool adapters are included in the searchable source vault. The other sources in the twelve-project review are present as existing snapshots, source metadata or updated pinned opt-in packs. Restricted React Bits and Canvas UI components are **not redistributed**. Read [the reviewed source integration guide](docs/DESIGN_SOURCES_2026-11-15.md).
 
+## One-skill unified gateway (2026-11-15)
+
+The default native entry point is now [`zerocoding`](research/zerocoding/), which invokes a small offline router per request and reads only needed specialist instructions. The other 217 local skill directories are not loaded at startup. It can also suggest 95 metadata-only missing third-party skills from the `ind4x` discovery index; these are **not installed or executed**. Review [architecture, opt-in sources and safe migration](docs/UNIFIED_ROUTER.md).
+
 ## At a glance
 
 | | |
 |---|---|
-| **217** skill directories | The complete reviewed source vault, including local adapters. |
-| **2** native bootstraps | `i-have-adhd` and `skill-retrieval-routing` in strict on-demand mode. |
-| **215** on-demand entries | Remain in the source checkout; local Skill Retrieval MCP must be configured separately for searchable access. |
+| **218** skill directories | The complete reviewed source vault, including local adapters. |
+| **1** native gateway | `zerocoding` is the only default host-visible skill. |
+| **215** on-demand entries | Remain in the source checkout; built-in read-only CLI lookup works without an MCP server. |
 | **3 primary hosts** | Antigravity IDE, Codex, and Claude Code, using the same portable skill content. |
 | **Explicit setup only** | The installer copies selected locally bundled skill directories when you run it; gateway-only packs are installed directly from their canonical upstream source and are never mirrored here. |
 
@@ -48,7 +52,7 @@ gh api repos/ZaxMil/ZeroCoding/contents/agent-skill-bundle/install/bootstrap.ps1
 gh api repos/ZaxMil/ZeroCoding/contents/agent-skill-bundle/install/bootstrap.sh -H "Accept: application/vnd.github.raw+json" | bash
 ```
 
-The bootstrap creates a sparse checkout containing only this Bundle, installs the two global Antigravity bootstrap skills, and exposes `bundle-install`, `bundle-update`, `bundle-status`, `bundle-remove`, and `agent-init`.
+The bootstrap creates a sparse checkout containing only this Bundle, installs the one global Antigravity gateway skill, and exposes `bundle-install`, `bundle-update`, `bundle-status`, `bundle-remove`, and `agent-init`.
 
 For every new project:
 
@@ -58,11 +62,11 @@ agent-setup
 
 `agent-init --host antigravity` keeps the original Antigravity-only option; `agent-init --host all` configures both `.agents/skills` and `.claude/skills` for universal project setup.
 
-That installs the 10 project-local core skills under `.agents/skills/`, preserves existing project rules, and leaves specialist skills in the external vault for on-demand use. See [INSTALLATION.md](docs/INSTALLATION.md).
+That installs the one project-local `zerocoding` gateway skill under `.agents/skills/`, preserves existing project rules, and leaves specialist skills in the external vault for on-demand use. See [INSTALLATION.md](docs/INSTALLATION.md).
 
 ### Why strict on-demand?
 
-Installing 215 skills natively exposes their descriptions to host discovery. The preferred setup exposes only **two** bootstrap descriptions from this bundle. When a task needs something specific, the separately configured local retrieval service finds the relevant skill; the agent then reads that skill and its supporting files from the **one source checkout**.
+Installing 215 skills natively exposes their descriptions to host discovery. The preferred setup exposes only **one** gateway description from this bundle. When a task needs something specific, the separately configured local retrieval service finds the relevant skill; the agent then reads that skill and its supporting files from the **one source checkout**.
 
 This keeps discovery focused. It does **not** mean that all specialist skill bodies are automatically installed, that a skill grants a tool or permission, or that Antigravity/Codex/Claude have identical capabilities.
 
@@ -86,7 +90,7 @@ cd ZeroCoding/agent-skill-bundle
 bash tests/on-demand-install.sh
 ```
 
-Install only the two native bootstrap skills into **each host you actually use**:
+Install only the one native gateway skill into **each host you actually use**:
 
 | Host | Strict on-demand command |
 |---|---|
@@ -96,9 +100,9 @@ Install only the two native bootstrap skills into **each host you actually use**
 
 Antigravity **CLI** has a different path from the IDE. Verify each installed host's documented location; do not duplicate the same skill in multiple discovery roots. The installer refuses to replace an unmarked personal/third-party skill. If a previous full bundle is installed, inspect it first and explicitly choose `--prune-managed` to remove only other marker-identified bundle copies.
 
-**Important second step:** the two-skill install does not provide search by itself. Separately review, install, and connect [Skill Retrieval MCP](https://github.com/JayCheng113/skill-retrieval-mcp), index **this source checkout only**, and merge its local MCP entry into each host's existing settings. The MCP index does not replace the source files: scripts, references, templates, images, and licenses remain in the checkout. Follow the [two-stage setup](adapters/antigravity/skill-retrieval-mcp.md) and [multi-host guide](adapters/multi-host/README.md).
+**Important second step:** the one-skill install does not provide search by itself. Separately review, install, and connect [Skill Retrieval MCP](https://github.com/JayCheng113/skill-retrieval-mcp), index **this source checkout only**, and merge its local MCP entry into each host's existing settings. The MCP index does not replace the source files: scripts, references, templates, images, and licenses remain in the checkout. Follow the [two-stage setup](adapters/antigravity/skill-retrieval-mcp.md) and [multi-host guide](adapters/multi-host/README.md).
 
-For an explicitly chosen full native install, see [`install.sh`](install.sh) and the host adapters. A full install exposes all 217 native skill descriptions and **is not** strict on-demand.
+For an explicitly chosen full native install, see [`install.sh`](install.sh) and the host adapters. A full install exposes all 218 native skill descriptions and **is not** strict on-demand.
 
 
 ### Check discovery and external-package readiness
@@ -157,7 +161,7 @@ Eleven complete, pinned MIT-licensed upstream skill packages and two **original 
 | `game-ready-2d-asset-pipeline` | Original workflow for transparent, modular, production-ready sprite assets |
 | `cross-agent-skill-verification` | Original workflow to verify discovery and use across Antigravity, Codex and Claude Code |
 
-**Strict on-demand is unchanged:** only `i-have-adhd` and `skill-retrieval-routing` are installed natively. The other skill directories remain in the one checkout until the separate local retrieval service is configured and a relevant skill is requested. No models, paid API, MCP server, host plugin, Python dependency, credential, or production service is installed automatically.
+**Strict on-demand is unchanged:** only `zerocoding` is installed natively. The other skill directories remain in the one checkout until the separate local retrieval service is configured and a relevant skill is requested. No models, paid API, MCP server, host plugin, Python dependency, credential, or production service is installed automatically.
 
 ## Skills are not software
 
@@ -215,4 +219,4 @@ python3 scripts/sync_reviewed.py process/writing-skills
 
 Use `--write` with source/audit tools only when intentionally refreshing metadata. [`scripts/prepare_updates.py`](scripts/prepare_updates.py) prepares review branches; it never merges them automatically. The repository's GitHub Actions workflow runs the public-content and installation checks on PRs and main pushes. The separate [server-local update checker](ops/README.md) is optional; no GitHub Actions schedule is required.
 
-**Current baseline:** 217 local skill directories, two native bootstrap skills in strict mode; 215 specialist skills retained in one checked-out source vault. [Selected package pins](registry/vendor-skillsmp-2026-09-27.json) · [Previous source/runtime review](docs/REVIEW_2026-09-27.md).
+**Current baseline:** 218 local skill directories, one native gateway skill in strict mode; 217 specialist skills retained in one checked-out source vault. [Selected package pins](registry/vendor-skillsmp-2026-09-27.json) · [Previous source/runtime review](docs/REVIEW_2026-09-27.md).

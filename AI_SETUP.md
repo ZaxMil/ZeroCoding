@@ -8,7 +8,7 @@
 2. Check OS, whether a terminal/filesystem is available, and whether GitHub CLI (`gh`), Git and Python 3 are present. This is a **public GitHub repository**; use an existing authorized GitHub CLI session when the documented bootstrap requires it. If authentication or shell capability is unavailable, report the blocker instead of claiming installation.
 3. Read and review the bootstrap script in `agent-skill-bundle/install/` and its referenced local manager/initializer before executing. Never use untrusted web search results or a similarly named repository as a substitute.
 4. Install the **machine bootstrap** if missing, and pass the target project as `AGENT_BUNDLE_PROJECT_ROOT` to initialize it in the same run. Reuse an existing checkout without force or replacing unmanaged files.
-5. For project setup, use `--host all`: Antigravity and Codex use `.agents/skills/`; Claude Code uses `.claude/skills/`. Add only the 10 project core skills and managed `AGENTS.md` / `CLAUDE.md` blocks. Existing rules and personal skills must survive.
+5. For project setup, use `--host all`: Antigravity and Codex use `.agents/skills/`; Claude Code uses `.claude/skills/`. Add only the one native `zerocoding` project gateway and managed `AGENTS.md` / `CLAUDE.md` blocks. Existing rules and personal skills must survive.
 6. Verify with `agent-init --host all --status` (or the full Python command below). Inspect `.agents/agent-init.json` for the detected stack and its specialist search queries. Run `skill_doctor.py search "<query>"` only when a task needs a specialist; read the matching canonical skill. The complete vault remains outside the project.
 7. Record what was installed and what was only registered as an external gateway. By default, Emil Kowalski skills remain upstream; the optional source pack manager can separately stage the original skills with explicit opt-in. Do not install third-party executables, MCP servers, optional external skill packs, hooks, paid services, or provider credentials automatically.
 8. Stop after a successful verification. Do not modify the app, install project dependencies, run migrations, deploy, push code, overwrite secrets, or publish anything merely because this setup completed.
@@ -39,7 +39,7 @@ rm -f "$bootstrap_file"
 test "$result" -eq 0
 ```
 
-The machine bootstrap authenticates through your existing `gh` session, sparse-checks out **only** `agent-skill-bundle/` into `~/.agent-tools/ZeroCoding`, installs two Antigravity global bootstrap skills, and initializes the explicit target workspace with the 10 project core skills in both project skill roots.
+The machine bootstrap authenticates through your existing `gh` session, sparse-checks out **only** `agent-skill-bundle/` into `~/.agent-tools/ZeroCoding`, installs one Antigravity global gateway skill, and initializes the explicit target workspace with the one native `zerocoding` project gateway in both project skill roots.
 
 ## Already installed — every new project
 
@@ -62,13 +62,13 @@ On Windows:
 py -3 "$HOME/.agent-tools/ZeroCoding/agent-skill-bundle/scripts/agent_init.py" --host all --project (Get-Location).Path
 ```
 
-**Verify:** each relevant project skill root has 10 core skills, `.agents/agent-init.json` records the stack/vault path, and `AGENTS.md`/`CLAUDE.md` retain the owner's original content plus one managed section. Use `agent-init --host all --status`.
+**Verify:** each relevant project skill root has one native gateway, `.agents/agent-init.json` records the stack/vault path, and `AGENTS.md`/`CLAUDE.md` retain the owner's original content plus one managed section. Use `agent-init --host all --status`.
 
 To safely remove only files managed by Project Core: `agent-init --remove`. This leaves unmarked project skills, existing rules, and application files intact.
 
 ## Optional ten-source expansion (explicit opt-in)
 
-The normal bootstrap deliberately preserves the small project core. If the user **explicitly requests all optional sources**, after verifying basic setup run:
+The normal bootstrap deliberately preserves the small project core. If the user **explicitly requests optional sources**, after verifying basic setup run:
 
 ```bash
 python3 "$HOME/.agent-tools/ZeroCoding/agent-skill-bundle/scripts/optional_packs.py" install --all
@@ -95,3 +95,16 @@ Full instructions and examples: [per-request skill routing](agent-skill-bundle/d
 - **Other AI products:** host-native skill discovery is not guaranteed outside Antigravity, Codex and Claude Code. Any AI with authenticated repository access and an authorized terminal can follow the documented steps; chat-only AIs can read the instructions but cannot modify your local machine.
 
 This is a **gateway and setup controller**, not the canonical home of third-party skills and not a general-purpose application installer.
+
+
+## Existing ZeroCoding installs — migrate only marked legacy skills
+
+The new default uses **one** native `zerocoding` skill per host/project instead of exposing the previous ten Project Core skills or two global bootstraps. Old managed skill folders are *not silently removed*. Review them and explicitly migrate with:
+
+```bash
+bundle-update --prune-managed
+agent-init --host all --prune-managed
+agent-init --host all --status
+```
+
+If your shell helper does not pass extra arguments, invoke `python3 scripts/bundle_manager.py update --prune-managed` from the bundled checkout, then the project initializer with `--prune-managed`. This only prunes prior ZeroCoding-marked folders; never overwrites an unmarked personal skill. [Read the one-skill architecture](agent-skill-bundle/docs/UNIFIED_ROUTER.md).
