@@ -21,7 +21,7 @@ for arg in "$@"; do
       echo "Default target: ~/.claude/skills"
       echo "--flat  install skills directly under the target root"
       echo "--force replace an existing unmarked destination skill"
-      echo "--on-demand --flat  install only the i-have-adhd + skill-retrieval-routing bootstrap"
+      echo "--on-demand --flat  install only the zerocoding unified gateway"
       echo "--prune-managed  with --on-demand --flat, remove only OTHER bundle-owned flat skills"
       exit 0
       ;;
@@ -38,7 +38,7 @@ done
 
 TARGET="${TARGET:-$HOME/.claude/skills}"
 if [ "$ON_DEMAND" -eq 1 ] && [ "$FLAT" -ne 1 ]; then
-  echo "--on-demand requires --flat (two native bootstrap skills at the root)." >&2
+  echo "--on-demand requires --flat (one native gateway skill at the root)." >&2
   exit 2
 fi
 if [ "$PRUNE_MANAGED" -eq 1 ] && { [ "$ON_DEMAND" -ne 1 ] || [ "$FLAT" -ne 1 ]; }; then
@@ -48,7 +48,7 @@ fi
 BUNDLE_DIR="$(cd "$(dirname "$0")" && pwd)"
 mkdir -p "$TARGET"
 
-# Do not pretend two-skill mode is active while old bundle-owned native skills
+# Do not pretend one-skill mode is active while old bundle-owned native skills
 # remain installed. Explicit opt-in is needed before removing any old copies.
 legacy_count=0
 if [ "$ON_DEMAND" -eq 1 ]; then
@@ -61,7 +61,7 @@ if [ "$ON_DEMAND" -eq 1 ]; then
     skill_name="$(basename "$existing")"
     [ "${source_key##*/}" = "$skill_name" ] || continue
     case "$source_key" in
-      productivity/i-have-adhd|research/skill-retrieval-routing) ;;
+      research/zerocoding) ;;
       design/*|security/*|process/*|multiplayer/*|wordpress/*|marketing/*|qa/*|operations/*|coding/*|research/*|productivity/*|automation/*|creative/*|reverse-engineering/*)
         legacy_count=$((legacy_count + 1)) ;;
     esac
@@ -91,7 +91,7 @@ for category in design security process multiplayer wordpress marketing qa opera
     source_key="$category/$skill_name"
     if [ "$ON_DEMAND" -eq 1 ]; then
       case "$source_key" in
-        productivity/i-have-adhd|research/skill-retrieval-routing) ;;
+        research/zerocoding) ;;
         *) continue ;;
       esac
     fi
@@ -122,8 +122,8 @@ for category in design security process multiplayer wordpress marketing qa opera
   done
 done
 
-if [ "$ON_DEMAND" -eq 1 ] && [ "$count" -ne 2 ]; then
-  echo "Expected exactly two bootstrap skills; installed $count." >&2
+if [ "$ON_DEMAND" -eq 1 ] && [ "$count" -ne 1 ]; then
+  echo "Expected exactly one gateway skill; installed $count." >&2
   exit 1
 fi
 
@@ -140,7 +140,7 @@ if [ "$PRUNE_MANAGED" -eq 1 ]; then
     skill_name="$(basename "$existing")"
     [ "${source_key##*/}" = "$skill_name" ] || continue
     case "$source_key" in
-      productivity/i-have-adhd|research/skill-retrieval-routing) ;;
+      research/zerocoding) ;;
       design/*|security/*|process/*|multiplayer/*|wordpress/*|marketing/*|qa/*|operations/*|coding/*|research/*|productivity/*|automation/*|creative/*|reverse-engineering/*)
         rm -rf -- "$existing"
         pruned=$((pruned + 1)) ;;
@@ -159,6 +159,6 @@ else
   echo "Layout: flat."
 fi
 if [ "$ON_DEMAND" -eq 1 ]; then
-  echo "On-demand mode: only two bootstrap descriptions are exposed by this bundle."
-  echo "The full source checkout and a separately configured Skill Retrieval MCP remain necessary."
+  echo "On-demand mode: only one gateway description are exposed by this bundle."
+  echo "The full source checkout remains necessary; Skill Retrieval MCP is optional."
 fi

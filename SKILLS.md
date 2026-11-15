@@ -1,12 +1,12 @@
 # ZeroCoding | Complete Skills Catalog
 
-> **217 curated skill directories** across the main vault, excluding three reusable profile SKILL.md files. This index is preserved from the former main README so you can browse every category without cluttering the homepage.
+> **218 curated skill directories** across the main vault, excluding three reusable profile SKILL.md files. This index is preserved from the former main README so you can browse every category without cluttering the homepage.
 
 [← Back to ZeroCoding](README.md) · [Set up with AI](AI_SETUP.md) · [Source vault](agent-skill-bundle/)
 
 ---
 
-## 📚 All 217 Skills by Category
+## 📚 All 218 Skills by Category
 
 The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). Every skill is a self-contained directory containing `SKILL.md`, plus applicable scripts, templates, and reference guides.
 
@@ -158,7 +158,7 @@ The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). E
 </details>
 
 <details open>
-<summary><b>🌐 Operations, Multiplayer & Research (18 skills)</b></summary>
+<summary><b>🌐 Operations, Multiplayer & Research (19 skills)</b></summary>
 
 - **Multiplayer (3 skills)**:
   - [`live-cursors`](agent-skill-bundle/multiplayer/live-cursors/): Real-time collaborative multiplayer cursors.
@@ -171,8 +171,9 @@ The complete vault is located in [`agent-skill-bundle/`](agent-skill-bundle/). E
   - [`cloudflare-dns-operations`](agent-skill-bundle/operations/cloudflare-dns-operations/): Cloudflare DNS and edge routing.
   - [`postgresql-operations`](agent-skill-bundle/operations/postgresql-operations/): Schema migrations, indexing, and connection pools.
   - [`backup-recovery`](agent-skill-bundle/operations/backup-recovery/), [`codebase-onboarding`](agent-skill-bundle/operations/codebase-onboarding/), [`godot-android-ota`](agent-skill-bundle/operations/godot-android-ota/), [`project-handoff`](agent-skill-bundle/operations/project-handoff/), [`project-inventory`](agent-skill-bundle/operations/project-inventory/), [`secure-server-access`](agent-skill-bundle/operations/secure-server-access/)
-- **Research & Discovery (4 skills)**:
-  - [`skill-retrieval-routing`](agent-skill-bundle/research/skill-retrieval-routing/): Master routing skill for finding and loading specialist skills.
+- **Research & Discovery (5 skills)**:
+  - [`zerocoding`](agent-skill-bundle/research/zerocoding/): **Single native gateway** to the entire source vault and metadata-only external recommendations.
+  - [`skill-retrieval-routing`](agent-skill-bundle/research/skill-retrieval-routing/): Legacy routing guidance retained as an on-demand specialist; not installed by default.
   - [`agent-project-catalog`](agent-skill-bundle/research/agent-project-catalog/), [`agent-reach-routing`](agent-skill-bundle/research/agent-reach-routing/), [`agent-skills`](agent-skill-bundle/research/agent-skills/)
 </details>
 
@@ -200,3 +201,8 @@ The skills include instructions and supporting resources, not automatic access t
 ## Twelve verified design sources — 15 November 2026
 
 [View the integration status, installation method, licenses and pinned upstream revisions](agent-skill-bundle/docs/DESIGN_SOURCES_2026-11-15.md). The latest Impeccable, Hallmark, Emil, Taste and UI/UX Pro Max source packs are opt-in and are not silently installed by the project bootstrap.
+
+
+## Single-gateway mode and extra discovery index
+
+New default: only [`zerocoding`](agent-skill-bundle/research/zerocoding/) is placed in each host's native skill root, while the other **217** local skill bodies stay in the searchable source checkout. [The ind4x metadata index](agent-skill-bundle/registry/ind4x-catalog.json) records 106 additional discovery entries (95 new names) without redistributing downstream third-party skill bodies. [Instructions and migration](agent-skill-bundle/docs/UNIFIED_ROUTER.md).

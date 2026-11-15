@@ -13,14 +13,14 @@ printf '%s\n' '---' 'name: personal' 'description: personal' '---' > "$project/.
 python3 "$root/scripts/agent_init.py" --source "$root" --project "$project" --no-update >/dev/null
 
 managed="$(find "$project/.agents/skills" -mindepth 2 -maxdepth 2 -name .agent-init-managed.json | wc -l | tr -d ' ')"
-[ "$managed" -eq 10 ] || { echo "FAIL: expected 10 managed core skills, got $managed" >&2; exit 1; }
+[ "$managed" -eq 1 ] || { echo "FAIL: expected 1 managed core skill, got $managed" >&2; exit 1; }
 [ -f "$project/.agents/agent-init.json" ]
 [ -f "$project/.agents/skills/personal/SKILL.md" ]
 grep -q '# Existing Project Rule' "$project/AGENTS.md"
 [ "$(grep -c '<!-- AGENT_INIT:BEGIN -->' "$project/AGENTS.md")" -eq 1 ]
 [ "$(grep -c '<!-- AGENT_INIT:END -->' "$project/AGENTS.md")" -eq 1 ]
 
-for skill in i-have-adhd skill-retrieval-routing credit-usage-helper ponytail graft graphify secure-by-default-development verification-before-completion task-to-pr test; do
+for skill in zerocoding; do
   [ -f "$project/.agents/skills/$skill/SKILL.md" ] || { echo "FAIL: missing $skill" >&2; exit 1; }
 done
 
@@ -31,14 +31,14 @@ python3 "$root/scripts/agent_init.py" --source "$root" --project "$project" --no
 
 # Refuse to overwrite an unmarked same-name project skill.
 conflict="$tmp/conflict"
-mkdir -p "$conflict/.agents/skills/test"
-printf '%s\n' 'personal test skill' > "$conflict/.agents/skills/test/SKILL.md"
+mkdir -p "$conflict/.agents/skills/zerocoding"
+printf '%s\n' 'personal zerocoding skill' > "$conflict/.agents/skills/zerocoding/SKILL.md"
 if python3 "$root/scripts/agent_init.py" --source "$root" --project "$conflict" --no-update >/dev/null 2>"$tmp/conflict.err"; then
   echo "FAIL: bootstrap replaced an unmarked same-name skill" >&2
   exit 1
 fi
 grep -q 'refusing to replace existing unmarked skill' "$tmp/conflict.err"
-grep -q 'personal test skill' "$conflict/.agents/skills/test/SKILL.md"
+grep -q 'personal zerocoding skill' "$conflict/.agents/skills/zerocoding/SKILL.md"
 
 # Removal only removes managed content.
 python3 "$root/scripts/agent_init.py" --source "$root" --project "$project" --no-update --remove >/dev/null
@@ -58,9 +58,9 @@ printf '%s\n' '# Existing Claude rule' > "$universal/CLAUDE.md"
 python3 "$root/scripts/agent_init.py" --source "$root" --project "$universal" --host all --no-update >/dev/null
 python3 "$root/scripts/agent_init.py" --source "$root" --project "$universal" --host all --no-update --status >/dev/null
 for skills_root in ".agents/skills" ".claude/skills"; do
-  [ "$(find "$universal/$skills_root" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')" -eq 10 ]
-  [ -f "$universal/$skills_root/i-have-adhd/SKILL.md" ]
-  [ -f "$universal/$skills_root/graft/SKILL.md" ]
+  [ "$(find "$universal/$skills_root" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')" -eq 1 ]
+  [ -f "$universal/$skills_root/zerocoding/SKILL.md" ]
+  [ ! -e "$universal/$skills_root/graft" ]
 done
 grep -q '# Existing Claude rule' "$universal/CLAUDE.md"
 [ "$(grep -c '<!-- AGENT_INIT:BEGIN -->' "$universal/CLAUDE.md")" -eq 1 ]
@@ -77,13 +77,26 @@ grep -q '# Existing Claude rule' "$universal/CLAUDE.md"
 
 # No partial setup on skill-name conflict.
 conflict_all="$tmp/conflict-all"
-mkdir -p "$conflict_all/.claude/skills/test"
-printf '%s\n' 'personal Claude test' > "$conflict_all/.claude/skills/test/SKILL.md"
+mkdir -p "$conflict_all/.claude/skills/zerocoding"
+printf '%s\n' 'personal Claude test' > "$conflict_all/.claude/skills/zerocoding/SKILL.md"
 if python3 "$root/scripts/agent_init.py" --source "$root" --project "$conflict_all" --host all --no-update >"$tmp/all.err" 2>&1; then
   echo "FAIL: universal bootstrap accepted an unmarked Claude skill" >&2; exit 1
 fi
-[ ! -e "$conflict_all/.agents/skills/i-have-adhd" ]
-grep -q 'personal Claude test' "$conflict_all/.claude/skills/test/SKILL.md"
+[ ! -e "$conflict_all/.agents/skills/zerocoding" ]
+grep -q 'personal Claude test' "$conflict_all/.claude/skills/zerocoding/SKILL.md"
+
+# Old Project Core is not silently destroyed during upgrade.
+legacy="$tmp/legacy-core"
+mkdir -p "$legacy/.agents/skills/ponytail"
+printf '%s\n' '---' 'name: ponytail' '---' > "$legacy/.agents/skills/ponytail/SKILL.md"
+printf '%s\n' '{"manager":"agent-project-bootstrap","source":"coding/ponytail"}' > "$legacy/.agents/skills/ponytail/.agent-init-managed.json"
+if python3 "$root/scripts/agent_init.py" --source "$root" --project "$legacy" --no-update >"$tmp/legacy-warning.log" 2>&1; then
+  echo "FAIL: old 10-skill profile was silently retained" >&2; exit 1
+fi
+[ -f "$legacy/.agents/skills/ponytail/SKILL.md" ]
+python3 "$root/scripts/agent_init.py" --source "$root" --project "$legacy" --no-update --prune-managed >/dev/null
+[ -f "$legacy/.agents/skills/zerocoding/SKILL.md" ]
+[ ! -e "$legacy/.agents/skills/ponytail" ]
 
 # Godot detection is read-only.
 godot="$tmp/godot-project"

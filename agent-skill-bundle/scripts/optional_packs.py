@@ -50,6 +50,15 @@ def packs():
         root = item.get("skill_root")
         if item["mode"] == "skills" and (not root or root.startswith("/") or ".." in Path(root).parts):
             raise PackError("unsafe skill root")
+        if item.get("recursive"):
+            roots = item.get("skill_roots")
+            if not isinstance(roots, list) or not roots or not all(
+                isinstance(x, str) and x and x not in (".", "..")
+                and not x.startswith("/") and ".." not in Path(x).parts
+                and len(Path(x).parts) == 1 and x[0].isalnum()
+                for x in roots
+            ) or len(set(roots)) != len(roots):
+                raise PackError("unsafe recursive skill roots")
         result[ident] = item
     return result
 
@@ -90,18 +99,27 @@ def installed(cache, pack):
         return False
 
 
-def skills_in(folder, pack):
+def skill_files(folder, pack):
+    """Enumerate only declared skill roots, never recurse through arbitrary paths."""
     root = folder / pack["skill_root"]
     if not root.is_dir() or root.is_symlink():
         raise PackError("pinned checkout has no safe skill root")
-    names = []
-    for candidate in sorted(root.iterdir()):
-        skill = candidate / "SKILL.md"
-        if candidate.is_dir() and not candidate.is_symlink() and skill.is_file() and not skill.is_symlink():
-            names.append(candidate.name)
-    if not names:
-        raise PackError("pinned checkout contains no direct SKILL.md directories")
-    return names
+    children = [root / x for x in pack["skill_roots"]] if pack.get("recursive") else [root]
+    result = []
+    for parent in children:
+        if not parent.is_dir() or parent.is_symlink():
+            raise PackError("missing or unsafe declared source category")
+        for skill in sorted(parent.glob("*/SKILL.md")):
+            if (skill.is_file() and not skill.is_symlink()
+                    and not skill.parent.is_symlink()):
+                result.append(skill)
+    if not result or len({p.parent.name for p in result}) != len(result):
+        raise PackError("no skills or duplicate skill names in pinned source")
+    return result
+
+
+def skills_in(folder, pack):
+    return [path.parent.name for path in skill_files(folder, pack)]
 
 
 def install(cache, pack, dry_run=False):
@@ -125,7 +143,8 @@ def install(cache, pack, dry_run=False):
         call("git", "init", "-q", str(temporary))
         call("git", "remote", "add", "origin", f"https://github.com/{pack['repository']}.git", cwd=temporary)
         call("git", "sparse-checkout", "init", "--cone", cwd=temporary)
-        call("git", "sparse-checkout", "set", pack["skill_root"], cwd=temporary)
+        checkout_paths = pack.get("skill_roots", [pack["skill_root"]])
+        call("git", "sparse-checkout", "set", *checkout_paths, cwd=temporary)
         call("git", "-c", "submodule.recurse=false", "fetch", "--depth=1",
              "--filter=blob:none", "origin", pack["revision"], cwd=temporary)
         call("git", "-c", "submodule.recurse=false", "checkout", "--detach", "FETCH_HEAD", cwd=temporary)

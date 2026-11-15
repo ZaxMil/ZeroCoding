@@ -6,7 +6,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from smart_skill_router import route, load_catalog, detect_intents
+from smart_skill_router import route, load_catalog, detect_intents, suggest_external, detect_project_stack
 
 
 def row(name, category, description):
@@ -63,6 +63,21 @@ class SmartRouterTest(unittest.TestCase):
     def test_canvas_ui_reference_when_named(self):
         names = [s["name"] for s in route("Use Canvas UI WebGL components", CATALOG)["selected"]]
         self.assertIn("canvas-ui-reference", names)
+
+    def test_external_swarm_is_metadata_only_and_not_loaded(self):
+        result = route("Use native swarm to coordinate independent workers", CATALOG)
+        self.assertNotIn("native_swarm", [x["name"] for x in result["selected"]])
+        external = suggest_external("Use native swarm to coordinate independent workers", result["selected"], ROOT)
+        self.assertIn("native_swarm", [x["name"] for x in external])
+        self.assertTrue(all(x["status"] == "not_installed_metadata_only" for x in external))
+
+    def test_stack_markers_are_read_only(self):
+        import tempfile
+        import json
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text(json.dumps({"dependencies":{"react":"18","gsap":"3"}}))
+            self.assertEqual(detect_project_stack(root), ["gsap", "react"])
 
     def test_greeting_does_not_force_skills(self):
         self.assertEqual(route("Hi, how are you?", CATALOG)["selected"], [])

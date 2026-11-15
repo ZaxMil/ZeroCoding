@@ -22,7 +22,7 @@ gh api repos/ZaxMil/ZeroCoding/contents/agent-skill-bundle/install/bootstrap.sh 
 
 After bootstrap:
 
-- `bundle-status` verifies the checkout, managed config, and two Antigravity global bootstrap skills.
+- `bundle-status` verifies the checkout, managed config, and one Antigravity global gateway.
 - `bundle-update` fast-forwards the sparse checkout and refreshes managed bootstraps.
 - `bundle-install` reapplies the managed machine profile.
 - `bundle-remove` removes only Bundle-managed global skills/config and preserves the source checkout.
@@ -38,7 +38,7 @@ agent-setup
 agent-init --host all --status
 ```
 
-This installs 10 project-local core skills in `.agents/skills/` for Antigravity/Codex and `.claude/skills/` for Claude Code, preserves existing rules, appends managed `AGENTS.md` / `CLAUDE.md` blocks, detects the project's stack from existing files, and points specialist search at the local on-demand vault. No project dependencies, cloud accounts, paid integrations, or external gateway skill bodies are installed.
+This installs one project-local `zerocoding` skill in `.agents/skills/` for Antigravity/Codex and `.claude/skills/` for Claude Code, preserves existing rules, appends managed `AGENTS.md` / `CLAUDE.md` blocks, detects the project's stack from existing files, and points specialist search at the local on-demand vault. No project dependencies, cloud accounts, paid integrations, or external gateway skill bodies are installed.
 
 Useful project commands:
 
@@ -49,4 +49,17 @@ agent-init --remove
 
 ## Antigravity scope
 
-The machine installer copies only `i-have-adhd` and `skill-retrieval-routing` into `~/.gemini/config/skills/`. Project-specific core skills live in `<project>/.agents/skills/`. The complete vault is not copied into native startup discovery.
+The machine installer copies only `zerocoding` into `~/.gemini/config/skills/`. Project-specific core skills live in `<project>/.agents/skills/`. The complete vault is not copied into native startup discovery.
+
+
+## Upgrade older native installations
+
+The one-gateway default refuses to leave older managed skills silently discoverable. Once you have reviewed your current setup, run:
+
+```bash
+bundle-update --prune-managed
+agent-init --host all --prune-managed
+agent-init --host all --status
+```
+
+Only folders marked as managed by the earlier ZeroCoding profile are pruned. Unmarked skills and project code are left unchanged. Existing specialist source files remain in the local vault. See [unified router](UNIFIED_ROUTER.md).

@@ -10,7 +10,8 @@ REPO_ROOT = Path.home() / ".agent-tools" / "ZeroCoding"
 BUNDLE_SUBDIR = Path("agent-skill-bundle")
 CONFIG = Path.home() / ".agent-tools" / "bundle.json"
 GLOBAL_ROOT = Path.home() / ".gemini" / "config" / "skills"
-GLOBAL_SKILLS = (
+GLOBAL_SKILLS = (("zerocoding", "research/zerocoding"),)
+LEGACY_GLOBAL_SKILLS = (
     ("i-have-adhd", "productivity/i-have-adhd"),
     ("skill-retrieval-routing", "research/skill-retrieval-routing"),
 )
@@ -86,20 +87,34 @@ def write_config(repo,bundle,commit):
         "specialist_search":f'python "{bundle/"scripts"/"skill_doctor.py"}" search "<keywords>"'
     },indent=2)+"\n",encoding="utf-8")
 
-def install(repo,force=False):
+def legacy_managed_global():
+    return [(name, source) for name, source in LEGACY_GLOBAL_SKILLS
+            if (GLOBAL_ROOT/name).is_dir() and managed(GLOBAL_ROOT/name, source)]
+
+
+def install(repo,force=False,prune_managed=False):
     bundle=bundle_root(repo); validate(bundle)
+    old=legacy_managed_global()
+    if old and not prune_managed:
+        raise BundleError("old managed global skills remain discoverable: "+
+                          ", ".join(x[0] for x in old)+
+                          "; review and pass --prune-managed to switch to one gateway")
     GLOBAL_ROOT.mkdir(parents=True,exist_ok=True)
     commit=head(repo)
     for name,source in GLOBAL_SKILLS:
         copy_skill(bundle,name,source,commit,force)
+    if prune_managed:
+        for name,source in old:
+            if managed(GLOBAL_ROOT/name, source):
+                shutil.rmtree(GLOBAL_ROOT/name)
     write_config(repo,bundle,commit)
     print("Bundle machine profile installed.")
     print(f"Bundle: {bundle}")
-    print("Antigravity global bootstrap skills: 2")
+    print("Antigravity native gateway skills: 1")
     print("Vault mode: on-demand")
     print("New project command: agent-init")
 
-def update(repo,force=False):
+def update(repo,force=False,prune_managed=False):
     if not (repo/".git").is_dir():
         raise BundleError(f"managed ZeroCoding checkout not found: {repo}")
     dirty=run(["git","-C",str(repo),"status","--porcelain"],check=False)
@@ -107,7 +122,7 @@ def update(repo,force=False):
         raise BundleError("checkout has local changes; refusing automatic update")
     run(["git","-C",str(repo),"remote","set-url","origin",REPO_URL])
     run(["git","-C",str(repo),"pull","--ff-only","origin","main"])
-    install(repo,force)
+    install(repo,force,prune_managed)
     print("Bundle update complete.")
 
 def status(repo):
@@ -127,15 +142,17 @@ def status(repo):
         elif dst.exists(): conflicts.append(name)
     print(f"Bundle checkout: {'OK' if ok else 'MISSING'}")
     print(f"Machine config: {'OK' if config_ok else 'MISSING'}")
-    print(f"Antigravity bootstrap skills: {installed}/2")
+    stale=legacy_managed_global()
+    if stale: print("Old managed gateway skills still present: "+", ".join(x[0] for x in stale))
+    print(f"Antigravity native gateway skills: {installed}/1")
     print(f"Project core available: {'YES' if (bundle/'profiles'/'project-core'/'profile.json').is_file() else 'NO'}")
     print("Vault mode: on-demand")
     if conflicts: print("Conflicting/unmanaged: "+", ".join(conflicts))
-    return 0 if ok and config_ok and installed==2 and not conflicts else 1
+    return 0 if ok and config_ok and installed==1 and not conflicts and not stale else 1
 
 def remove(repo):
     removed=0
-    for name,source in GLOBAL_SKILLS:
+    for name,source in GLOBAL_SKILLS + LEGACY_GLOBAL_SKILLS:
         dst=GLOBAL_ROOT/name
         if dst.exists() and managed(dst,source):
             shutil.rmtree(dst); removed+=1
@@ -151,9 +168,10 @@ def main():
     ap.add_argument("command",choices=("install","update","status","remove"))
     ap.add_argument("--repo-root")
     ap.add_argument("--force",action="store_true")
+    ap.add_argument("--prune-managed",action="store_true",help="Remove only known old bundle-managed gateway skills")
     a=ap.parse_args(); repo=repo_root(a.repo_root)
-    if a.command=="install": install(repo,a.force); return 0
-    if a.command=="update": update(repo,a.force); return 0
+    if a.command=="install": install(repo,a.force,a.prune_managed); return 0
+    if a.command=="update": update(repo,a.force,a.prune_managed); return 0
     if a.command=="status": return status(repo)
     remove(repo); return 0
 
