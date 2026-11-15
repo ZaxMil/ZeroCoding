@@ -36,7 +36,12 @@ def packs():
         ident, repo, sha = item["id"], item["repository"], item["revision"]
         if not ident.replace("-", "").isalnum() or ident in result:
             raise PackError("invalid/duplicate pack ID")
-        if len(repo.split("/")) != 2 or not all(part.replace("-", "").replace("_", "").isalnum() for part in repo.split("/")):
+        if len(repo.split("/")) != 2 or not all(
+            part and part[0].isalnum() and part[-1].isalnum()
+            and ".." not in part
+            and part.replace("-", "").replace("_", "").replace(".", "").isalnum()
+            for part in repo.split("/")
+        ):
             raise PackError("invalid source repository")
         if len(sha) != 40 or not all(ch in "0123456789abcdef" for ch in sha):
             raise PackError("invalid pinned commit")

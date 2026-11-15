@@ -18,10 +18,28 @@ class OptionalPacksTest(unittest.TestCase):
         self.assertEqual(
             set(rows),
             {"karpathy", "emil", "graphify", "ponytail", "caveman",
-             "hallmark", "superpowers", "agentskills", "antigravity", "anthropic"},
+             "hallmark", "superpowers", "agentskills", "antigravity", "anthropic",
+             "ui-ux-pro-max-current", "awesome-design-md", "open-design",
+             "taste-current", "impeccable", "react-bits", "google-design-md",
+             "gsap", "scroll-world", "canvas-ui"},
         )
-        self.assertEqual(sum(p["mode"] == "skills" for p in rows.values()), 7)
-        self.assertEqual(sum(p["mode"] != "skills" for p in rows.values()), 3)
+        self.assertEqual(sum(p["mode"] == "skills" for p in rows.values()), 12)
+        self.assertEqual(sum(p["mode"] != "skills" for p in rows.values()), 8)
+
+    def test_valid_dot_repository_is_allowed_without_relaxing_path_safety(self):
+        import json
+        from unittest.mock import patch
+        self.assertEqual(module.packs()["google-design-md"]["repository"], "google-labs-code/design.md")
+        original = module.MANIFEST
+        for bad in ("bad/..", "bad/.hidden", "bad/evil..repo", "../repo", "bad/repo?query"):
+            with self.subTest(repository=bad), tempfile.TemporaryDirectory() as temp:
+                data = json.loads(original.read_text(encoding="utf-8"))
+                data["packs"][0]["repository"] = bad
+                candidate = Path(temp) / "unsafe.json"
+                candidate.write_text(json.dumps(data), encoding="utf-8")
+                with patch.object(module, "MANIFEST", candidate):
+                    with self.assertRaises(module.PackError):
+                        module.packs()
 
     def test_all_sources_are_immutable_pins(self):
         for pack in module.packs().values():
