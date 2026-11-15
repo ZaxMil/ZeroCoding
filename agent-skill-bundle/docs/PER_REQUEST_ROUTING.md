@@ -20,6 +20,8 @@ Example, using the same conversation:
 
 The router is **not** asked to load four skills every time; four is just a default ceiling that can be adjusted. An unrelated skill must never be added merely to fill a slot. User or project instructions override a poor automatic match.
 
+Eight exact GSAP skills, Scroll World and three library/app reference adapters are now in the local source vault. The current optional packs (Impeccable, Hallmark, Emil, latest Taste and UI/UX Pro Max) only become selectable after **explicit opt-in staging**; a new chat message alone never downloads or executes third-party tools. See [the reviewed 12-source status](DESIGN_SOURCES_2026-11-15.md).
+
 ## Use in an initialized project
 
 Your existing ZeroCoding bootstrap creates a source checkout and installs a small Project Core. In a project already set up, run `agent-setup` again to refresh the managed agent rules without overwriting user-authored rules.

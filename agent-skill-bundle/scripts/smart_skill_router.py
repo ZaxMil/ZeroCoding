@@ -30,11 +30,15 @@ project work task things something update thanks hello hi hey
 RULES = {
     "design": {
         "pattern": r"\b(ui|ux|design|redesign|layout|responsive|frontend|website|webpage|landing[ -]?page|interface|visual|aesthetic|mockup|antislop|anti[ -]?slop)\b|تصميم|واجه|متجاوب|شكل الموقع",
-        "preferred": ("hallmark", "ui-ux-pro-max", "frontend-design", "web-design-guidelines", "ui-designer", "design-taste-frontend"),
+        "preferred": ("hallmark", "impeccable", "ui-ux-pro-max", "frontend-design", "web-design-guidelines", "ui-designer", "design-taste-frontend"),
     },
     "motion": {
-        "pattern": r"\b(animations?|animate|motion|transitions?|parallax|microinteractions?|videos?|reels?|remotion|cinematic)\b|انيميشن|موشن|فيديو|حرك",
-        "preferred": ("animate", "emil-design-eng", "review-animations", "code-motion-reel", "animation-performance", "animation-vocabulary"),
+        "pattern": r"\b(animations?|animate|motion|transitions?|parallax|microinteractions?|videos?|reels?|remotion|cinematic|gsap|scrolltrigger|scroll[ -]?world|scroll[ -]?linked)\b|انيميشن|موشن|فيديو|حرك",
+        "preferred": ("animate", "emil-design-eng", "gsap-scrolltrigger", "gsap-core", "gsap-react", "gsap-timeline", "gsap-performance", "scroll-world", "review-animations", "code-motion-reel", "animation-performance", "animation-vocabulary"),
+    },
+    "components": {
+        "pattern": r"\b(react[ -]?bits|canvas[ -]?ui|open[ -]?design|component[ -]?library|webgl)\b",
+        "preferred": ("react-bits-reference", "canvas-ui-reference", "open-design-reference"),
     },
     "debug": {
         "pattern": r"\b(bugs?|debug|broken|crash|errors?|failure|stuck|not working|regression|troubleshoot)\b|اصلح|مشكله|خطأ|تعطل|مش شغال",
@@ -143,6 +147,16 @@ def rank(row: dict, task_tokens: set[str], intent: str) -> float:
         # narrow engines/specialties require an actual matching clue.
         narrow = {
             "hallmark": {"design", "redesign", "visual", "aesthetic", "slop", "generic", "look", "polish"},
+            "impeccable": {"design", "redesign", "audit", "polish", "critique", "ux", "ui"},
+            "gsap-scrolltrigger": {"gsap", "scroll", "scrolltrigger", "parallax", "pin", "scrub"},
+            "gsap-core": {"gsap", "tween", "tweens"},
+            "gsap-react": {"gsap", "react", "nextjs"},
+            "gsap-timeline": {"gsap", "timeline", "choreography", "sequence"},
+            "gsap-performance": {"gsap", "performance", "jank", "fps"},
+            "scroll-world": {"scroll", "world", "diorama", "immersive", "flythrough"},
+            "react-bits-reference": {"react", "bits"},
+            "canvas-ui-reference": {"canvas", "webgl", "shader"},
+            "open-design-reference": {"open", "design"},
             "godot-gdscript-patterns": {"godot", "gdscript"},
             "game-ready-2d-asset-pipeline": {"2d", "asset", "assets", "sprite", "sprites"},
             "game-economy-designer": {"economy", "coins", "currency", "reward", "rewards", "pricing", "monetization"},
@@ -168,6 +182,7 @@ def rank(row: dict, task_tokens: set[str], intent: str) -> float:
         return 0
     category_hint = {
         "design": ("design/", "qa/screenshot"), "motion": ("creative/", "design/"),
+        "components": ("design/",),
         "debug": ("qa/", "process/"), "testing": ("qa/", "process/"),
         "security": ("security/",), "seo": ("qa/", "marketing/"),
         "performance": ("qa/",), "game": ("coding/", "creative/", "design/"),
